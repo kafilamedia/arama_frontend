@@ -8,6 +8,7 @@ export default class WebResponse{
 	code?:string;
     message?:string;
     items?:any[];
+    totalData?:number = 0;
     item?:any;
     percentage?:number;
     filter?:Filter;

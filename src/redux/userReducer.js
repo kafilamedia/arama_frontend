@@ -37,7 +37,7 @@ export const reducer = (state = initState, action) => {
             console.debug("result");
             console.debug("action.payload.requestId: ",action.payload.message); 
             console.debug("REQUEST_ID result.loginStatus:", result.loginStatus)
-             action.payload.referer.refresh();
+            action.payload.referer.refresh();
 
             return result;
         case types.DO_LOGIN:
