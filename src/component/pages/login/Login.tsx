@@ -31,9 +31,6 @@ class Login extends BaseComponent {
     }
     componentDidUpdate() {
 
-        console.debug("Login update");
-        console.debug("logged in : ", this.props.loginStatus);
-        console.debug("logged user : ", this.getLoggedUser());
         if (this.isUserLoggedIn()) {
             this.props.history.push("/dashboard");
         }
