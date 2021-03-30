@@ -1,17 +1,7 @@
 
 import { AuthorityType } from '../models/AuthorityType';
 import Menu from '../models/settings/Menu';
-
-export const HOME = "home"; 
-export const ABOUT = "about";
-export const ACCOUNT = "account";
-export const LOGIN = "login";
-export const LOGOUT = "logout";
-export const DASHBOARD = "dashboard"; 
-export const MENU_SETTING = "settings";
-export const MANAGEMENT = "management";
-export const LESSONS = "lessons";
-export const GALLERY = "gallery"; 
+ 
 
 export const getMenus = () => {
     let menuSet: Menu[] = [];
@@ -57,7 +47,7 @@ export const getMenuByMenuPath = (pathName: string): Menu | null => {
 
 const _menus: Menu[] = [
     {
-        code: HOME,
+        code: 'home',
         name: "Home",
         url: "/home",
         menuClass: "fa fa-home",
@@ -68,7 +58,7 @@ const _menus: Menu[] = [
     },
     
     {
-        code: DASHBOARD,
+        code: 'dashboard',
         name: "Dashboard",
         url: "/dashboard",
         menuClass: "fas fa-tachometer-alt",
@@ -94,10 +84,10 @@ const _menus: Menu[] = [
         ]
     }, 
     {
-        code: MANAGEMENT,
+        code: 'management',
         name: "Management",
         url: "/management",
-        menuClass: "fas fa-tachometer-alt",
+        menuClass: "fas fa-mail-bulk",
         active: false,
         authenticated: true,
         showSidebar: true,
@@ -107,7 +97,14 @@ const _menus: Menu[] = [
                 code: 'musyrifmanagement',
                 name: 'Musyrif Management',
                 url: 'musyrifmanagement',
-                menuClass: 'fas fa-history',
+                menuClass: 'fas fa-users',
+                role: [AuthorityType.admin_asrama],
+            },
+            {
+                code: 'rule_point',
+                name: 'Rule Point',
+                url: 'rule_point',
+                menuClass: 'fas fa-puzzle-piece',
                 role: [AuthorityType.admin_asrama],
             },
             // {
@@ -120,7 +117,40 @@ const _menus: Menu[] = [
         ]
     }, 
     {
-        code: MENU_SETTING,
+        code: 'students',
+        name: "Students",
+        url: "/students",
+        menuClass: "fas fa-user-graduate",
+        active: false,
+        authenticated: true,
+        showSidebar: true,
+        role: [  AuthorityType.musyrif_asrama],
+        subMenus: [
+            {
+                code: 'studentlist',
+                name: 'Student List',
+                url: 'studentlist',
+                menuClass: 'fas fa-users',
+                role: [ AuthorityType.musyrif_asrama],
+            },
+            {
+                code: 'input_point',
+                name: 'Input Point',
+                url: 'inputpoint',
+                menuClass: 'fas fa-pen-square',
+                role: [ AuthorityType.musyrif_asrama],
+            },
+            // {
+            //     code: 'dashboard_productsales',
+            //     name: 'Product Sales',
+            //     url: 'productsales',
+            //     menuClass: 'fas fa-chart-line',
+            //     role: [],
+            // }
+        ]
+    }, 
+    {
+        code: 'settings',
         name: "Setting",
         url: "/settings",
         menuClass: "fas fa-cogs",

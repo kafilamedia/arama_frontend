@@ -16,6 +16,7 @@ export default class User extends BaseEntity{
     }
 	nickname?:string;
 	name?:string;
+	email?:string;
 	password?:string;
 	profileImage?:string;
 	roles:AuthorityType[] = [AuthorityType.user];

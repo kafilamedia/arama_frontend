@@ -13,6 +13,7 @@ import Menu from '../../models/settings/Menu';
 import SettingsMain from '../pages/settings/SettingsMain';
 import UserProfile from '../pages/settings/UserProfile';
 import MusyrifManagement from '../pages/management/MusyrifManagement';
+import StudentList from '../pages/students/StudentList';
 import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
 import AboutUs from './../pages/home/AboutUs';
 import Register from '../pages/login/Register';
@@ -66,6 +67,7 @@ class ApplicationContent extends BaseComponent {
                 </Switch>
                 <LoginRoute />
                 <Settings />
+                <StudentsRoute />
                 <MusyrifManagementRoute/>
                 <Dashboard />
             </Fragment>
@@ -88,6 +90,17 @@ const MusyrifManagementRoute  = (props) => {
     )
 }
 
+const StudentsRoute = (proos) => {
+
+    return (
+        <Switch>
+             <Route exact path="/students/studentlist" render={
+                (props:any) => <StudentList />
+            } />
+            
+        </Switch>
+    )
+}
 const LoginRoute = (props) => {
 
     return (

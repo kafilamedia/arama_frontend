@@ -4,12 +4,14 @@ import UserService from '../services/UserService';
 
 import Services from './../services/Services';
 import MusyrifManagementService from './../services/MusyrifManagementService';
+import StudentService from '../services/StudentService';
 
 export const initState: { services: Services } = {
     services: {
         userService: UserService.getInstance(), 
         masterDataService: MasterDataService.getInstance(),
         musyrifManagementService: MusyrifManagementService.getInstance(),
+        studentService: StudentService.getInstance(),
     }
 
 };
