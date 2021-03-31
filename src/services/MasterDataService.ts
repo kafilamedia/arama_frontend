@@ -3,14 +3,9 @@ import Filter from './../models/Filter';
 import WebRequest from './../models/WebRequest';
 import { contextPath } from './../constant/Url';
 import { commonAjaxPostCalls, commonAjaxPostCallsWithBlob } from './Promises';
-import BaseEntity from './../models/BaseEntity';
-import ManagementProperty from '../models/ManagementProperty';
-import EntityProperty from '../models/settings/EntityProperty';
 import ApplicationProfile from './../models/ApplicationProfile';
 
-export default class MasterDataService {
-    managementProperties: ManagementProperty[] = [];
-    private entityPropertyMap: Map<string, EntityProperty> = new Map();
+export default class MasterDataService { 
     private static instance?: MasterDataService;
 
     static getInstance(): MasterDataService {
@@ -19,30 +14,23 @@ export default class MasterDataService {
         }
         return this.instance;
     }
-
-    setEntityProperty(code: string, data?: EntityProperty) {
-        if (!data) {
-            return;
-        }
-        this.entityPropertyMap.set(code, data);
+    getById = (request:WebRequest) => {
+        const endpoint: string = contextPath().concat("api/masterdata/getbyid");
+        return commonAjaxPostCalls(endpoint, request);
     }
-    getEntityProperty(code?: string): EntityProperty | undefined {
-        if (code == undefined) {
-            return undefined;
-        }
-        return this.entityPropertyMap.get(code);
+    delete = (request:WebRequest) => {
+        const endpoint: string = contextPath().concat("api/masterdata/delete");
+        return commonAjaxPostCalls(endpoint, request);
     }
-
-    loadManagementProperties(req?: any) {
-        const endpoint: string = contextPath().concat("api/app/entity/managementpages");
-        return commonAjaxPostCalls(endpoint, {});
-
-    }
-    
-    loadEntities(request: WebRequest) {
-        const endpoint: string = contextPath().concat("api/app/entity/get");
+    list = (request: WebRequest)  => {
+        const endpoint: string = contextPath().concat("api/masterdata/list");
         return commonAjaxPostCalls(endpoint, request);
 
+    }
+
+    update = (request: WebRequest) => {
+        const endpoint: string = contextPath().concat("api/masterdata/update");
+        return commonAjaxPostCalls(endpoint, request);
     }
    
     updateApplicationProfile = (applicationProfile: ApplicationProfile) => {

@@ -101,6 +101,13 @@ const _menus: Menu[] = [
                 role: [AuthorityType.admin_asrama],
             },
             {
+                code: 'rule_category',
+                name: 'Rule Category',
+                url: 'rule_category',
+                menuClass: 'fas fa-tags',
+                role: [AuthorityType.admin_asrama],
+            },
+            {
                 code: 'rule_point',
                 name: 'Rule Point',
                 url: 'rule_point',

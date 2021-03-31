@@ -4,7 +4,10 @@ import AnchorButton from '../navigation/AnchorButton';
 class IState {
     show:boolean = true
 }
-export default class Modal extends Component<any, IState> {
+interface IProps {
+    toggleable?:boolean, show?:boolean, title?:string, style?:any, footerContent?:any,showFooter?:boolean
+}
+export default class Modal extends Component<IProps, IState> {
     state:IState = new IState();
     constructor(props: any) {
         super(props);
@@ -15,8 +18,11 @@ export default class Modal extends Component<any, IState> {
     showModal = () => {
         this.setState({show:true});
     }
+    componentDidMount() {
+        if (this.props.show == false) { this.setState({show:false}); }
+    }
     render() {
-       if (this.props.show == false) { return null; }
+    //    if (this.props.show == false) { return null; }
         const title = this.props.title?? "Title"; 
         if (this.props.toggleable == true && this.state.show == false) {
             return (
@@ -25,7 +31,7 @@ export default class Modal extends Component<any, IState> {
         }
         const props = (({ style, show, footerContent, toggleable, ...props }) => props)(this.props) // remove b and c
         return (
-            <div {...props} className="modal-content " style={{...props.style, marginBottom:'10px'}}>
+            <div {...props} className="modal-content " style={{...this.props.style, marginBottom:'10px'}}>
                 <div className="modal-header">
                     <h5 className="modal-title">{title}</h5>
                     {this.props.toggleable?

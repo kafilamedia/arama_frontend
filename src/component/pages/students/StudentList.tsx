@@ -94,7 +94,7 @@ class StudentList extends BaseComponent {
                 
                 <form onSubmit={(e)=>{e.preventDefault();this.loadAtPage(0)}}>
                     <FormGroup label="Search">
-                        <input name="name" placeholder="Search by name or email" className="form-control" value={filter.fieldsFilter?filter.fieldsFilter['name']:""} onChange={this.updateFieldsFilter} />
+                        <input name="name" placeholder="Search by name" className="form-control" value={filter.fieldsFilter?filter.fieldsFilter['name']:""} onChange={this.updateFieldsFilter} />
                     </FormGroup>
                     <FormGroup label="Record Count">
                         <input name="limit" className="form-control" value={filter.limit??5} onChange={this.updateFilter} />

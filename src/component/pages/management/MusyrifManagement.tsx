@@ -14,6 +14,7 @@ import NavigationButtons from './../../navigation/NavigationButtons';
 import EmployeeRow from './EmployeeRow';
 import User from '../../../models/User';
 import ToggleButton from './../../navigation/ToggleButton';
+import Modal from './../../container/Modal';
 class State {
     items:Employee[] = [];
     filter:Filter = new Filter();
@@ -83,6 +84,7 @@ class MusyrifManagement extends BaseComponent{
             <div  className="section-body container-fluid">
                 <h2>Musyrif Management</h2>
                 <hr/>
+               
                 <form onSubmit={(e)=>{e.preventDefault(); this.loadAtPage(0)}}>
                     <FormGroup label="Search">
                         <input name="name" placeholder="Search by name or email" className="form-control" value={filter.fieldsFilter?filter.fieldsFilter['name']:""} onChange={this.updateFieldsFilter} />
