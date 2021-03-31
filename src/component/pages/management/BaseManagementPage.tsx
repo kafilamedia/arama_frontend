@@ -17,6 +17,7 @@ export default class BaseManagementPage extends BaseComponent
         }
         this.masterDataService = this.getServices().masterDataService;
     }
+     
     loadItems = () => {
         const request: WebRequest = {
             filter: this.state.filter,

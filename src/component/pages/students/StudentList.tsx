@@ -86,7 +86,7 @@ class StudentList extends BaseComponent {
     render() {
         const filter = this.state.filter;
         const classes = this.state.classes;
-        const classAll:Class = { id:"ALL", name:"ALL", school_name:"" };
+        const classAll:Class = { id:"ALL", level:"ALL", sekolah:{} };
         const selectedClassId = filter.fieldsFilter && filter.fieldsFilter['class_id'] ? filter.fieldsFilter['class_id'] : "ALL";
         return (
             <div className="container-fluid section-body">
@@ -102,7 +102,7 @@ class StudentList extends BaseComponent {
                     <FormGroup label="Kelas" >
                         <select value={selectedClassId} onChange={this.updateFieldsFilter } className="form-control" name="class_id">
                             {[classAll,...classes].map((_class )=>{
-                                return <option key={'class_'+_class.id} value={_class.id}>{_class.name} - {_class.school_name}</option>
+                                return <option key={'class_'+_class.id} value={_class.id}>{_class.level}{_class.rombel} - {_class.sekolah?.nama}</option>
                             })}
                         </select>
                     </FormGroup>
@@ -130,7 +130,7 @@ const ItemsList = (props:{startingNumber:number, items:Student[]}) => {
                             <tr key={"student-"+i}>
                                 <td>{i+1+props.startingNumber}</td>
                                 <td>{student.user?.name}</td>
-                                <td>{student.class_name} {student.school_name}</td>
+                                <td>{student.kelas?.level} {student.kelas?.rombel} {student.kelas?.sekolah?.nama}</td>
                             </tr>
                         )
                     })}

@@ -22,6 +22,7 @@ class State {
     totalData: number = 0;
     record: RulePoint = new RulePoint();
     categories: Category[] = [];
+    categoriesLoaded:boolean = false;
 
 }
 class RulePointManagement extends BaseManagementPage
@@ -47,7 +48,10 @@ class RulePointManagement extends BaseManagementPage
             })
     }
     categoriesLoaded = (response: WebResponse) => {
-        this.setState({categories:response.items}, this.resetForm);
+        this.setState({categories:response.items, categoriesLoaded: true}, this.resetForm);
+    }
+    categoriesNotLoaded = (response: WebResponse) => {
+        this.setState({categories: [], categoriesLoaded: true}, this.resetForm);
     }
     loadCategories = () => {
         const filter:Filter = new Filter();
@@ -59,7 +63,7 @@ class RulePointManagement extends BaseManagementPage
         this.commonAjax(
             this.masterDataService.list,
             this.categoriesLoaded,
-            this.showCommonErrorAlert,
+            this.categoriesNotLoaded,
             req
         )
     }
@@ -69,13 +73,22 @@ class RulePointManagement extends BaseManagementPage
     }
     emptyRecord = ():any => {
         const record = new RulePoint();
-        record.category_id = this.state.categories[0].id;
+        if (this.state.categories.length > 0) {
+            record.category_id = this.state.categories[0].id;
+        }
         return record;
     }
     
     render() {
         const filter: Filter = this.state.filter;
         const categories: Category[] = this.state.categories;
+        if (this.state.categoriesLoaded && categories.length == 0) {
+            return (
+                <div className="container-fluid section-body">
+                    <h2>Please insert categories record</h2>
+                </div>
+            )
+        }
         return (
             <div className="container-fluid section-body">
                 <h2>Rule Point Management</h2>

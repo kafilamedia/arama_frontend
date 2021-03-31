@@ -21,8 +21,8 @@ class DashboardMain extends BaseMainMenus {
                 <h2>Dashboard</h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{user.name}  </strong>
-                    <p />
-                    <p className="badge badge-dark">{JSON.stringify(user.roles)}</p>
+                    <hr/>
+                    <p className="badge badge-dark">{(user.roles).join(", ")}</p>
                 </div>
             </div>
         )

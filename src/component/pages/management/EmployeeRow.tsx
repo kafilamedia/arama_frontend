@@ -51,7 +51,7 @@ class EmployeeRow extends BaseComponent {
                 <td>{emp.user?.name}</td>
                 <td>{emp.user?.email}</td>
                 <td>{emp.user?.nip}</td>
-                <td>{isMusyrif ? "Yes" : "No"}</td>
+                <td><i className={isMusyrif ? "fas fa-check text-success" : "fas fa-times"} /></td>
                 <td> {isMusyrif == true?
                 <AnchorWithIcon className="btn btn-danger btn-sm" onClick={(e)=>this.activateMusyrif(false)} >
                     Deactivate
