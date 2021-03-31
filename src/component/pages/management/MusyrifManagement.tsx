@@ -1,66 +1,29 @@
 import React, { ChangeEvent } from 'react'
-import BaseComponent from './../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
-import MusyrifManagementService from './../../../services/MusyrifManagementService';
 import Employee from './../../../models/Employee';
-import WebResponse from './../../../models/WebResponse';
 import { tableHeader } from './../../../utils/CollectionUtil';
-import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 import Filter from './../../../models/Filter'; 
 import FormGroup from './../../form/FormGroup';
 import NavigationButtons from './../../navigation/NavigationButtons';
 import EmployeeRow from './EmployeeRow';
 import User from '../../../models/User';
 import ToggleButton from './../../navigation/ToggleButton';
-import Modal from './../../container/Modal';
+import BaseManagementPage from './BaseManagementPage';
 class State {
     items:Employee[] = [];
     filter:Filter = new Filter();
     totalData:number = 0;
 }
-class MusyrifManagement extends BaseComponent{
+class MusyrifManagement extends BaseManagementPage{
     state:State = new State();
-    musyrifManagementService:MusyrifManagementService;
     constructor(props) {
-        super(props,true);
+        super(props, 'employee');
         this.state.filter.limit = 10;
         this.state.filter.fieldsFilter = {
             'musyrif_only':true
         }
-        this.musyrifManagementService = this.getServices().musyrifManagementService;
-    }
-    itemsLoaded = (response:WebResponse) => {
-        this.setState({items:response.items, totalData:response.totalData});
-    }
-    updateFilter = (e:ChangeEvent) => {
-        const filter = this.state.filter;
-        const target = (e.target as any);
-        filter[target.name] = target.value;
-        this.setState({filter: filter})
-    }
-    updateFieldsFilter = (e:ChangeEvent) => {
-        const filter = this.state.filter;
-        const target = (e.target as any);
-        if (!filter.fieldsFilter) {
-            filter.fieldsFilter = {};
-        }
-        filter.fieldsFilter[target.name] = target.value;
-        this.setState({filter: filter})
-    }
-    loadAtPage = (page:number) => {
-        const filter = this.state.filter;
-        filter.page = page;
-        this.setState({filter: filter}, this.loadItems);
-    }
-    loadItems = () => {
-        this.commonAjax(
-            this.musyrifManagementService.employeeList,
-            this.itemsLoaded,
-            this.showCommonErrorAlert,
-            this.state.filter
-        )
     }
     setMusyrifOnly = (musyrifOnly:boolean) => {
         const filter = this.state.filter;
@@ -69,10 +32,6 @@ class MusyrifManagement extends BaseComponent{
         }
         filter.fieldsFilter['musyrif_only'] = musyrifOnly;
         this.setState({filter: filter}, ()=> this.loadAtPage(0))
-    }
-    componentDidMount() {
-        super.componentDidMount();
-        this.loadItems();
     }
     onEmployeeStatusUpdate = () => {
         this.loadItems();

@@ -13,7 +13,9 @@ import Menu from '../../models/settings/Menu';
 import SettingsMain from '../pages/settings/SettingsMain';
 import UserProfile from '../pages/settings/UserProfile';
 import MusyrifManagement from '../pages/management/MusyrifManagement';
+import ManagementMain from '../pages/management/ManagementMain';
 import CategoryManagement from '../pages/management/CategoryManagement';
+import RulePointManagement from '../pages/management/RulePointManagement';
 import StudentList from '../pages/students/StudentList';
 import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
 import AboutUs from './../pages/home/AboutUs';
@@ -84,11 +86,17 @@ const MusyrifManagementRoute  = (props) => {
 
     return (
         <Switch>
+            <Route exact path="/management" render={
+                (props:any) => <ManagementMain />
+            } />
             <Route exact path="/management/musyrifmanagement" render={
                 (props:any) => <MusyrifManagement />
             } />
             <Route exact path="/management/rule_category" render={
                 (props:any) => <CategoryManagement />
+            } />
+            <Route exact path="/management/rule_point" render={
+                (props:any) => <RulePointManagement />
             } />
         </Switch>
     )

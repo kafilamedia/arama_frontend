@@ -17,6 +17,7 @@ class SettingsMain extends BaseMainMenus
                 <h2>Settings</h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.name}</strong>
+                    <hr/>
                 </div>
             </div>
         )
