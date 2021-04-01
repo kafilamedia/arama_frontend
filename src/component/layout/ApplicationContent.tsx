@@ -17,6 +17,7 @@ import ManagementMain from '../pages/management/ManagementMain';
 import CategoryManagement from '../pages/management/CategoryManagement';
 import RulePointManagement from '../pages/management/RulePointManagement';
 import StudentList from '../pages/students/StudentList';
+import InputPoint from '../pages/students/InputPoint';
 import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
 import AboutUs from './../pages/home/AboutUs';
 import Register from '../pages/login/Register';
@@ -108,6 +109,9 @@ const StudentsRoute = (proos) => {
         <Switch>
              <Route exact path="/students/studentlist" render={
                 (props:any) => <StudentList />
+            } />
+             <Route exact path="/students/inputpoint" render={
+                (props:any) => <InputPoint/>
             } />
             
         </Switch>

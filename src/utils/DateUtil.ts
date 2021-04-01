@@ -52,13 +52,16 @@ export function addDays(date:Date, days:number) :Date{
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()); 
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
-const twoDigits = (value:number) :string => {
+export const twoDigits = (value:number) :string => {
     if (value >= 10) {
         return   value.toString();
     }
     return "0"+value;
 }
-
+export const parseDate = (s) :Date => {
+    var b = s.split(/\D/);
+    return new Date(b[0], --b[1], b[2]);
+  }
 export const timerString = (inputSeconds:number ) => {
     let hour = 0;
     let minutes:number = 0;

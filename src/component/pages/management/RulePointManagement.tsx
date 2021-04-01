@@ -89,6 +89,7 @@ class RulePointManagement extends BaseManagementPage
                 </div>
             )
         }
+        const selectedCategoryId = filter.fieldsFilter && filter.fieldsFilter['category_id'] ? filter.fieldsFilter['category_id'] : "ALL";
         return (
             <div className="container-fluid section-body">
                 <h2>Rule Point Management</h2>
@@ -98,6 +99,19 @@ class RulePointManagement extends BaseManagementPage
                     <FormGroup label="Search">
                         <input name="name" placeholder="Search by name" className="form-control" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
                     </FormGroup>
+                    <FormGroup label="Category">
+                    <div className="input-group">
+                        <select value={selectedCategoryId} className="form-control" name="category_id" onChange={this.updateFieldsFilter} >
+                            {[{id:"ALL", name:"ALL"},...categories].map((c)=>{
+
+                                return <option key={"filter-cat-"+c.id} value={c.id}>{c.name}</option>
+                            })}
+                        </select>
+                        <div className="input-group-append">
+                        <AnchorWithIcon iconClassName="fas fa-redo" onClick={this.loadCategories}>Reload</AnchorWithIcon>
+                        </div>
+                    </div>
+                </FormGroup>
                     <FormGroup label="Record Count">
                         <input name="limit" className="form-control" value={filter.limit ?? 5} onChange={this.updateFilter} />
                     </FormGroup>
@@ -153,7 +167,7 @@ const RecordForm = (props: { categories:Category[], formRef:React.RefObject<Moda
         <form onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
             <Modal show={false} ref={props.formRef} toggleable={true} title="Record Form" >
                 <FormGroup label="Name"><input value={props.record.name ?? ""} onChange={props.updateRecordProp} className="form-control" name="name" /></FormGroup>
-                <FormGroup label="Point"><input type="number" value={props.record.point} onChange={props.updateRecordProp} className="form-control" min={1} name="point" /></FormGroup>
+                <FormGroup label="Point"><input type="number" value={props.record.point} onChange={props.updateRecordProp} className="form-control" name="point" /></FormGroup>
                 <FormGroup label="Description">
                     <textarea className="form-control" name="description" onChange={props.updateRecordProp} value={props.record.description ?? ""} />
                 </FormGroup>
