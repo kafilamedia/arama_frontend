@@ -1,5 +1,4 @@
 import React, { ChangeEvent } from 'react'
-import BaseComponent from './../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
@@ -13,18 +12,21 @@ import NavigationButtons from './../../navigation/NavigationButtons';
 import { tableHeader } from './../../../utils/CollectionUtil';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 import MasterDataService from './../../../services/MasterDataService';
+import BaseManagementPage from './../management/BaseManagementPage';
+import Spinner from './../../loader/Spinner';
 class State {
     items: Student[] = [];
     classes: Class[] = [];
     totalData: number = 0;
     filter: Filter = new Filter();
+    loading:boolean = false;
 }
-class StudentList extends BaseComponent {
+class StudentList extends BaseManagementPage {
     state: State = new State();
     studentService: StudentService;
     masterDataService: MasterDataService;
     constructor(props) {
-        super(props, true);
+        super(props);
         this.studentService = this.getServices().studentService;
         this.masterDataService = this.getServices().masterDataService;
         this.state.filter.limit = 10;
@@ -32,6 +34,8 @@ class StudentList extends BaseComponent {
             'class_id': 'ALL'
         }
     }
+    startLoading = () => this.setState({ loading: true });
+    endLoading = () => this.setState({ loading: false });
     itemsLoaded = (response: WebResponse) => {
         this.setState({ items: response.items, totalData: response.totalData });
     }
@@ -73,22 +77,7 @@ class StudentList extends BaseComponent {
         }
         filter.fieldsFilter['class_id'] = target.value;
         this.setState({ filter: filter });
-    }
-    updateFilter = (e: ChangeEvent) => {
-        const filter = this.state.filter;
-        const target = (e.target as any);
-        filter[target.name] = target.value;
-        this.setState({ filter: filter })
-    }
-    updateFieldsFilter = (e: ChangeEvent) => {
-        const filter = this.state.filter;
-        const target = (e.target as any);
-        if (!filter.fieldsFilter) {
-            filter.fieldsFilter = {};
-        }
-        filter.fieldsFilter[target.name] = target.value;
-        this.setState({ filter: filter })
-    }
+    } 
     inputPoint = (student: Student) => {
         this.props.history.push({
             pathname: "/students/inputpoint",
@@ -126,20 +115,27 @@ class StudentList extends BaseComponent {
                 </form>
                 <p />
                 <NavigationButtons onClick={this.loadAtPage} activePage={filter.page ?? 0} limit={filter.limit ?? 10} totalData={this.state.totalData} />
-                <ItemsList inputPoint={this.inputPoint} startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} items={this.state.items} />
+                <ItemsList loading={this.state.loading} inputPoint={this.inputPoint} startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} items={this.state.items} />
             </div>
         )
     }
 }
 
-const ItemsList = (props: { startingNumber: number, inputPoint(s: Student): any, items: Student[] }) => {
+const ItemsList = (props: { loading:boolean, startingNumber: number, inputPoint(s: Student): any, items: Student[] }) => {
 
     return (
         <div style={{ overflow: 'scroll' }}>
             <table className="table table-striped">
                 {tableHeader("No", "", "Name", "Kelas" )}
                 <tbody>
-                    {props.items.map((student, i) => {
+                    {props.loading?
+                    <tr>
+                       <td colSpan={4}>
+                           <Spinner/>
+                        </td> 
+                    </tr>
+                    
+                    :props.items.map((student, i) => {
 
                         return (
                             <tr key={"student-" + i}>
