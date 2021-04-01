@@ -7,14 +7,12 @@ import Student from './../../../models/Student';
 import StudentService from './../../../services/StudentService';
 import Filter from './../../../models/Filter';
 import WebResponse from './../../../models/WebResponse';
-import AnchorButton from './../../navigation/AnchorButton';
 import Class from './../../../models/Class';
 import FormGroup from './../../form/FormGroup';
 import NavigationButtons from './../../navigation/NavigationButtons';
 import { tableHeader } from './../../../utils/CollectionUtil';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
-import Modal from './../../container/Modal';
-import Card from './../../container/Card';
+import MasterDataService from './../../../services/MasterDataService';
 class State {
     items: Student[] = [];
     classes: Class[] = [];
@@ -24,9 +22,11 @@ class State {
 class StudentList extends BaseComponent {
     state: State = new State();
     studentService: StudentService;
+    masterDataService: MasterDataService;
     constructor(props) {
         super(props, true);
         this.studentService = this.getServices().studentService;
+        this.masterDataService = this.getServices().masterDataService;
         this.state.filter.limit = 10;
         this.state.filter.fieldsFilter = {
             'class_id': 'ALL'
@@ -40,10 +40,13 @@ class StudentList extends BaseComponent {
     }
     loadItems = () => {
         this.commonAjax(
-            this.studentService.getList,
+            this.masterDataService.list,
             this.itemsLoaded,
             this.showCommonErrorAlert,
-            this.state.filter
+            {
+                modelName:'student',
+                filter:this.state.filter
+            }
         )
     }
     loadAtPage = (page: number) => {
@@ -134,14 +137,15 @@ const ItemsList = (props: { startingNumber: number, inputPoint(s: Student): any,
     return (
         <div style={{ overflow: 'scroll' }}>
             <table className="table table-striped">
-                {tableHeader("No", "Name", "Kelas" )}
+                {tableHeader("No", "", "Name", "Kelas" )}
                 <tbody>
                     {props.items.map((student, i) => {
 
                         return (
                             <tr key={"student-" + i}>
                                 <td>{i + 1 + props.startingNumber}</td>
-                                <td><AnchorWithIcon className="btn" onClick={(e) => props.inputPoint(student)} iconClassName="far fa-edit" />
+                                <td><AnchorWithIcon className="btn" onClick={(e) => props.inputPoint(student)} iconClassName="far fa-edit" /></td>
+                                <td>
                                 {student.user?.name}</td>
                                 <td>{student.kelas?.level} {student.kelas?.rombel} {student.kelas?.sekolah?.nama}</td>
                                  

@@ -58,9 +58,10 @@ export const twoDigits = (value:number) :string => {
     }
     return "0"+value;
 }
-export const parseDate = (s) :Date => {
-    var b = s.split(/\D/);
-    return new Date(b[0], --b[1], b[2]);
+export const parseDate = (s:string) :Date => {
+    var b:string[] = s.split(/\D/);
+    var m = parseInt(b[1]);
+    return new Date(parseInt(b[0]), --m, parseInt(b[2]));
   }
 export const timerString = (inputSeconds:number ) => {
     let hour = 0;

@@ -2,6 +2,7 @@
 import { commonAjaxPostCalls } from './Promises';
 import { contextPath } from '../constant/Url';
 import Filter from '../models/Filter';
+import PointRecord from './../models/PointRecord';
 export default class StudentService {
 
     private static instance?: StudentService;
@@ -12,9 +13,9 @@ export default class StudentService {
         }
         return this.instance;
     }
-    public getList(filter: Filter) {
-        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/studentlist", {
-            filter: filter
+    public submitPointRecord(pointRecord: PointRecord) {
+        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/submitpointrecord", {
+            pointRecord: pointRecord
         });
     }
     public getClasses(filter: Filter) {

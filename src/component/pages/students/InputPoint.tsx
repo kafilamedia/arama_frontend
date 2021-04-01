@@ -14,18 +14,24 @@ import FormStepOne from './form/FormStepOne';
 import Category from './../../../models/Category';
 import RulePoint from './../../../models/RulePoint';
 import SimpleError from './../../alert/SimpleError';
+import PointRecord from './../../../models/PointRecord';
+import StudentService from './../../../services/StudentService';
+import WebResponse from './../../../models/WebResponse';
+import FormGroup from './../../form/FormGroup';
+import { parseDate } from './../../../utils/DateUtil';
 class State {
     student?: Student  
     category?: Category; 
     rulePoint?:RulePoint;
     formStep: number = 1;
+    savedRecord?:PointRecord
 }
 class InputPoint extends BaseComponent {
     state: State = new State();
-    masterDataService: MasterDataService;
+    studentService:StudentService;
     constructor(props) {
         super(props, true);
-        this.masterDataService = this.getServices().masterDataService;
+        this.studentService = this.getServices().studentService;
     }
     validateStudentData = () => {
         if (!this.props.location.state) {
@@ -50,6 +56,24 @@ class InputPoint extends BaseComponent {
     nextStep = (step: number) => {
         this.setState({ formStep: step });
     }
+    submitRecord = (record:PointRecord) => {
+        console.debug("RECORD: ", record);
+        if (!this.state.student || !this.state.rulePoint) {
+            alert("ERROR: student or rulePoint missing!");
+            return;
+        }
+        record.student_id = this.state.student?.id;
+        record.point_id = this.state.rulePoint?.id;
+        this.commonAjax(
+            this.studentService.submitPointRecord,
+            this.recordSubmitted,
+            this.showCommonErrorAlert,
+            record
+        )
+    }
+    recordSubmitted = (response:WebResponse) => {
+        this.setState({savedRecord: response.item, formStep: 4});
+    }
     render() {
         const student: Student | undefined = this.state.student;
         if (!student) {
@@ -72,13 +96,36 @@ class InputPoint extends BaseComponent {
                         />:null} 
                     {this.state.formStep == 3 && this.state.category && this.state.rulePoint? 
                         <FormStepThree 
-                            rulePoint={this.state.rulePoint} 
-                             onBack={()=>this.nextStep(2)} onSubmit={() => { this.nextStep(4) }}
+                                submit={this.submitRecord}
+                                rulePoint={this.state.rulePoint} 
+                                onBack={()=>this.nextStep(2)} 
                         />:null} 
+                    {this.state.formStep == 4 && this.state.savedRecord ?
+                        <Detail back={()=>this.setState({student:null})} record={this.state.savedRecord}/>
+                        :null
+                    }
                 </Modal>
             </div>
         )
     }
+}
+
+const Detail = (props: {record:PointRecord, back():any}) => {
+    const record = Object.assign(new PointRecord(), props.record);
+    const date = parseDate(record.dateString());
+    return (
+        <div>
+        <h4 className="text-center text-success"><i className="fas fa-check" style={{marginRight:5}}/>Record saved</h4>
+        <p/>
+        <FormGroup label="Date">{date.toDateString()} {record.time}</FormGroup>
+        <FormGroup label="Category">{record.rule_point?.category?.name}</FormGroup>
+        <FormGroup label="Name">{record.rule_point?.name}</FormGroup>
+        <FormGroup label="Point">{record.rule_point?.point}</FormGroup>
+        <FormGroup label="Location">{record.location}</FormGroup>
+        <hr/>
+        <FormGroup><a onClick={props.back} className="btn btn-dark">Ok</a></FormGroup>
+</div>
+    )
 }
  
 const Warning = () => {
