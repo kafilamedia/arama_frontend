@@ -5,19 +5,33 @@ import MasterDataService from './../../../services/MasterDataService';
 import WebResponse from './../../../models/WebResponse';
 import WebRequest from './../../../models/WebRequest';
 
-export default class BaseManagementPage extends BaseComponent
-{
+export default class BaseManagementPage extends BaseComponent {
     protected masterDataService: MasterDataService;
-    protected modelName:string = "undefined";
-    protected formRef:React.RefObject<Modal> = React.createRef();
-    constructor(props, modelName?:string) {
+    protected modelName: string = "undefined";
+    protected formRef: React.RefObject<Modal> = React.createRef();
+    protected overrideLoading: boolean;
+    constructor(props, modelName?: string, overrideLoading: boolean = false) {
         super(props, true);
         if (modelName) {
             this.modelName = modelName;
         }
+        this.overrideLoading = overrideLoading;
         this.masterDataService = this.getServices().masterDataService;
     }
-     
+    startLoading = (withProgress: boolean = false) => {
+        if (this.overrideLoading) {
+            this.setState({ loading: true });
+        } else {
+            super.startLoading(withProgress);
+        }
+    }
+    endLoading = () => {
+        if (this.overrideLoading) {
+            this.setState({ loading: false });
+        } else {
+            super.endLoading();
+        }
+    }
     loadItems = () => {
         const request: WebRequest = {
             filter: this.state.filter,
@@ -33,7 +47,7 @@ export default class BaseManagementPage extends BaseComponent
     itemsLoaded = (response: WebResponse) => {
         this.setState({ items: response.items, totalData: response.totalData });
     }
-    emptyRecord = ():any => {
+    emptyRecord = (): any => {
         throw new Error("Not Implemented");
     }
     updateFilter = (e: ChangeEvent) => {
@@ -62,11 +76,11 @@ export default class BaseManagementPage extends BaseComponent
         record[target.name] = target.value;
         this.setState({ record: record });
     }
-    resetForm = (callback?:()=>any) => {
-        this.setState({record: this.emptyRecord()}, callback);
+    resetForm = (callback?: () => any) => {
+        this.setState({ record: this.emptyRecord() }, callback);
     }
-    oneRecordLoaded = (item:any) => {
-        this.setState({record:item}, ()=>{
+    oneRecordLoaded = (item: any) => {
+        this.setState({ record: item }, () => {
             if (this.formRef.current) {
                 this.formRef.current.showModal();
             }
@@ -85,7 +99,7 @@ export default class BaseManagementPage extends BaseComponent
             this.loadItems();
         });
     }
-    protected callApiSubmit = (request:WebRequest) => {
+    protected callApiSubmit = (request: WebRequest) => {
         this.commonAjax(
             this.masterDataService.update,
             this.recordUpdated,

@@ -26,7 +26,7 @@ class StudentList extends BaseManagementPage {
     studentService: StudentService;
     masterDataService: MasterDataService;
     constructor(props) {
-        super(props);
+        super(props, 'student', true);
         this.studentService = this.getServices().studentService;
         this.masterDataService = this.getServices().masterDataService;
         this.state.filter.limit = 10;
@@ -34,8 +34,7 @@ class StudentList extends BaseManagementPage {
             'class_id': 'ALL'
         }
     }
-    startLoading = () => this.setState({ loading: true });
-    endLoading = () => this.setState({ loading: false });
+   
     itemsLoaded = (response: WebResponse) => {
         this.setState({ items: response.items, totalData: response.totalData });
     }
