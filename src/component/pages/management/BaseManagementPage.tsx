@@ -72,8 +72,15 @@ export default class BaseManagementPage extends BaseComponent {
     }
     updateRecordProp = (e: ChangeEvent) => {
         const target = e.target as any;
+        const dataset = target.dataset;
+        let value:any;
+        if (dataset['type'] && dataset['type'] == 'boolean') {
+            value = target.value == "true" ? true : false;
+        } else {
+            value =  target.value;
+        }
         const record = this.state.record;
-        record[target.name] = target.value;
+        record[target.name] = value;
         this.setState({ record: record });
     }
     resetForm = (callback?: () => any) => {

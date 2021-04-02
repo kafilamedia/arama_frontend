@@ -9,4 +9,5 @@ export default class RulePoint extends BaseEntity
     name?:string;
     description?:string;
     point:number = 1;
+    droppable?:boolean = true;
 }

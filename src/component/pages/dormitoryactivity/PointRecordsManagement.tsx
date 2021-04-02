@@ -47,6 +47,7 @@ class PointRecordManagement extends BaseManagementPage {
         this.state.filter.limit = 10;
         this.state.filter.fieldsFilter['day'] = 'ALL';
         this.state.filter.fieldsFilter['month'] = 'ALL';
+        this.state.filter.fieldsFilter['dropped'] = 'ALL';
     }
 
     render() {
@@ -54,7 +55,7 @@ class PointRecordManagement extends BaseManagementPage {
         const fieldsFilter = filter.fieldsFilter;
         return (
             <div className="container-fluid section-body">
-                <h2>PointRecord Management</h2>
+                <h2>Point Record Management</h2>
                 <hr />
                 <form onSubmit={(e) => { e.preventDefault(); this.loadAtPage(0) }}>
                     <FormGroup label="Search">
@@ -81,7 +82,13 @@ class PointRecordManagement extends BaseManagementPage {
                             <input name="year" placeholder="year" className="form-control" value={fieldsFilter ? fieldsFilter['year'] : ""} onChange={this.updateFieldsFilter} />
 
                         </div>
-
+                    </FormGroup>
+                    <FormGroup label="Dropped">
+                        <select name="dropped" className="form-control"value={fieldsFilter?fieldsFilter['dropped']:'ALL'} onChange={this.updateFieldsFilter}>
+                            <option value="ALL">All</option>
+                            <option value="false">Not Dropped</option>
+                            <option value="true">Dropped</option>
+                        </select>
                     </FormGroup>
                     <FormGroup label="Record Count">
                         <input name="limit" className="form-control" value={filter.limit ?? 5} onChange={this.updateFilter} />
@@ -108,7 +115,7 @@ const ItemsList = (props: { loading: boolean, startingNumber: number, items: Poi
         <div style={{ overflow: 'scroll' }}>
              
             <table className="table table-striped">
-                {tableHeader("No", "Student", "Date", "Point Name", "Point", "Description", "Option")}
+                {tableHeader("No", "Student", "Date", "Point Name", "Point", "Dropped", "Option")}
                 <tbody>
 
                     {props.loading?
@@ -122,7 +129,7 @@ const ItemsList = (props: { loading: boolean, startingNumber: number, items: Poi
                                 <td>{item.location} {item.getDate().toDateString()} {item.time}</td>
                                 <td>{item.rule_point?.name} ({item.rule_point?.category?.name})</td>
                                 <td>{item.rule_point?.point}</td>
-                                <td>{item.description}</td>
+                                <td>{item.dropped_at ??  "-"}</td>
                                 <td><EditDeleteButton
                                     recordLoaded={props.recordLoaded}
                                     recordDeleted={props.recordDeleted}

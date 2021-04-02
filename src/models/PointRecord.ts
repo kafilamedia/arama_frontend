@@ -27,6 +27,7 @@ export default class PointRecord extends BaseEntity
 
     rule_point?:RulePoint;
     student?:Student;
+    dropped_at?:Date;
 
     getDate = ():Date => {
         return parseDate(this.dateString());

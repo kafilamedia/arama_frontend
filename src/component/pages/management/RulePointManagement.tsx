@@ -135,7 +135,7 @@ const ItemsList = (props: {startingNumber:number, items:RulePoint[], recordLoade
     return (
         <div style={{overflow:'scroll'}}>
         <table className="table table-striped">
-            {tableHeader("No", "Name", "Point", "Description", "Category", "Option")}
+            {tableHeader("No", "Name", "Point", "Description", "Category", "Droppable", "Option")}
             <tbody>
                     {props.items.map((item, i)=>{
 
@@ -146,6 +146,7 @@ const ItemsList = (props: {startingNumber:number, items:RulePoint[], recordLoade
                                 <td>{item.point}</td>
                                 <td>{item.description}</td>
                                 <td>{item.category?.name}</td>
+                                <td>{item.droppable ? "Yes" : "No"}</td>
                                 <td><EditDeleteButton 
                                     recordLoaded={props.recordLoaded}
                                     recordDeleted={props.recordDeleted}
@@ -170,6 +171,12 @@ const RecordForm = (props: { categories:Category[], formRef:React.RefObject<Moda
                 <FormGroup label="Point"><input type="number" value={props.record.point} onChange={props.updateRecordProp} className="form-control" name="point" /></FormGroup>
                 <FormGroup label="Description">
                     <textarea className="form-control" name="description" onChange={props.updateRecordProp} value={props.record.description ?? ""} />
+                </FormGroup>
+                <FormGroup label="Droppable">
+                    <select className="form-control" data-type="boolean" name="droppable" onChange={props.updateRecordProp} value={props.record.droppable == true ? "true":"false"} >
+                        <option value={"true"} >Yes</option>
+                        <option value={"false"}>No</option>
+                    </select>
                 </FormGroup>
                 <FormGroup label="Category">
                     <div className="input-group">
