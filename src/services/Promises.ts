@@ -2,7 +2,7 @@
 import { commonAuthorizedHeader, commonHeader } from '../middlewares/Common';
 import WebResponse from '../models/WebResponse';
 import { updateAccessToken } from './../middlewares/Common';
-import AttachmentInfo from './../models/AttachmentInfo';
+import AttachmentInfo from '../models/settings/AttachmentInfo';
 
 const axios = require('axios');
 

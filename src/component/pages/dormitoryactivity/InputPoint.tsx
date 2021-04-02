@@ -1,24 +1,24 @@
 
 import React from 'react'
-import BaseComponent from './../../BaseComponent';
+import BaseComponent from '../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../constant/stores';
-import Student from './../../../models/Student';
-import AnchorWithIcon from './../../navigation/AnchorWithIcon';
-import Modal from './../../container/Modal';
-import MasterDataService from './../../../services/MasterDataService';
+import { mapCommonUserStateToProps } from '../../../constant/stores';
+import Student from '../../../models/Student';
+import AnchorWithIcon from '../../navigation/AnchorWithIcon';
+import Modal from '../../container/Modal';
+import MasterDataService from '../../../services/MasterDataService';
 import FormStepThree from './form/FormStepThree';
 import FormStepTwo from './form/FormStepTwo';
 import FormStepOne from './form/FormStepOne';
-import Category from './../../../models/Category';
-import RulePoint from './../../../models/RulePoint';
-import SimpleError from './../../alert/SimpleError';
-import PointRecord from './../../../models/PointRecord';
-import StudentService from './../../../services/StudentService';
-import WebResponse from './../../../models/WebResponse';
-import FormGroup from './../../form/FormGroup';
-import { parseDate } from './../../../utils/DateUtil';
+import Category from '../../../models/Category';
+import RulePoint from '../../../models/RulePoint';
+import SimpleError from '../../alert/SimpleError';
+import PointRecord from '../../../models/PointRecord';
+import StudentService from '../../../services/StudentService';
+import WebResponse from '../../../models/WebResponse';
+import FormGroup from '../../form/FormGroup';
+import { parseDate } from '../../../utils/DateUtil';
 class State {
     student?: Student  
     category?: Category; 
@@ -111,8 +111,8 @@ class InputPoint extends BaseComponent {
 }
 
 const Detail = (props: {record:PointRecord, back():any}) => {
-    const record = Object.assign(new PointRecord(), props.record);
-    const date = parseDate(record.dateString());
+    const record = PointRecord.clone(props.record);
+    const date = record.getDate();
     return (
         <div>
         <h4 className="text-center text-success"><i className="fas fa-check" style={{marginRight:5}}/>Record saved</h4>
@@ -134,7 +134,7 @@ const Warning = () => {
             <h2>Input Point</h2>
             <SimpleError>
                 <i className="fas fa-exclamation-circle"/>&nbsp;Please select student <hr />
-                <AnchorWithIcon to={"/students/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
+                <AnchorWithIcon to={"/dormitoryactivity/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
             </SimpleError>
         </div>
     )

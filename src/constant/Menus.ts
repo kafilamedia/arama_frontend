@@ -124,10 +124,10 @@ const _menus: Menu[] = [
         ]
     }, 
     {
-        code: 'students',
-        name: "Students",
-        url: "/students",
-        menuClass: "fas fa-user-graduate",
+        code: 'dormitoryactivity',
+        name: "Dormitory",
+        url: "/dormitoryactivity",
+        menuClass: "fas fa-school",
         active: false,
         authenticated: true,
         showSidebar: true,
@@ -145,6 +145,13 @@ const _menus: Menu[] = [
                 name: 'Input Point',
                 url: 'inputpoint',
                 menuClass: 'fas fa-pen-square',
+                role: [ AuthorityType.musyrif_asrama],
+            },
+            {
+                code: 'pointsummary',
+                name: 'Summary Point',
+                url: 'pointsummary',
+                menuClass: 'fas fa-list',
                 role: [ AuthorityType.musyrif_asrama],
             },
             // {

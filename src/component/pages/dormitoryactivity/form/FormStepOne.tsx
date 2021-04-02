@@ -1,17 +1,17 @@
 
 import React from 'react'
-import BaseComponent from './../../../BaseComponent';
+import BaseComponent from '../../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../../constant/stores';
-import WebResponse from './../../../../models/WebResponse';
-import WebRequest from './../../../../models/WebRequest';
-import Category from './../../../../models/Category';
-import MasterDataService from './../../../../services/MasterDataService';
-import FormGroup from './../../../form/FormGroup';
-import SimpleError from './../../../alert/SimpleError';
-import Spinner from './../../../loader/Spinner';
-import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import WebResponse from '../../../../models/WebResponse';
+import WebRequest from '../../../../models/WebRequest';
+import Category from '../../../../models/Category';
+import MasterDataService from '../../../../services/MasterDataService';
+import FormGroup from '../../../form/FormGroup';
+import SimpleError from '../../../alert/SimpleError';
+import Spinner from '../../../loader/Spinner';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 class State {
     categories: Category[] = [];
     loading: boolean = false;

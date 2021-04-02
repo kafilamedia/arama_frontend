@@ -1,6 +1,6 @@
 
 import BaseEntity from './BaseEntity';
-import { twoDigits } from './../utils/DateUtil';
+import { parseDate, twoDigits } from './../utils/DateUtil';
 import RulePoint from './RulePoint';
 import Student from './Student';
 export default class PointRecord extends BaseEntity
@@ -27,4 +27,12 @@ export default class PointRecord extends BaseEntity
 
     rule_point?:RulePoint;
     student?:Student;
+
+    getDate = ():Date => {
+        return parseDate(this.dateString());
+    }
+
+    public static clone = (object:PointRecord) => {
+        return Object.assign(new PointRecord(), object);
+    }
 }

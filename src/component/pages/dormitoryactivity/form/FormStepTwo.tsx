@@ -1,18 +1,18 @@
 
 import React from 'react'
-import BaseComponent from './../../../BaseComponent';
-import MasterDataService from './../../../../services/MasterDataService';
+import BaseComponent from '../../../BaseComponent';
+import MasterDataService from '../../../../services/MasterDataService';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../../constant/stores';
-import FormGroup from './../../../form/FormGroup';
-import Category from './../../../../models/Category';
-import RulePoint from './../../../../models/RulePoint';
-import WebRequest from './../../../../models/WebRequest';
-import WebResponse from './../../../../models/WebResponse';
-import Spinner from './../../../loader/Spinner';
-import SimpleError from './../../../alert/SimpleError';
-import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import FormGroup from '../../../form/FormGroup';
+import Category from '../../../../models/Category';
+import RulePoint from '../../../../models/RulePoint';
+import WebRequest from '../../../../models/WebRequest';
+import WebResponse from '../../../../models/WebResponse';
+import Spinner from '../../../loader/Spinner';
+import SimpleError from '../../../alert/SimpleError';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 class State { 
     rulePoints: RulePoint[]  = []; 
     loading:boolean = false;

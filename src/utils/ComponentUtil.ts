@@ -1,6 +1,6 @@
 import { base64StringFileSize } from './StringUtil';
 import { ChangeEvent } from 'react';
-import AttachmentInfo from './../models/AttachmentInfo';
+import AttachmentInfo from '../models/settings/AttachmentInfo';
 export const byId = (id) => { return document.getElementById(id) }
  
 export function toBase64(file, referer, callback) {

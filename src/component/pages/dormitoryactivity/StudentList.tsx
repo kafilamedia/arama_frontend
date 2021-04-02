@@ -1,19 +1,19 @@
 import React, { ChangeEvent } from 'react'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../constant/stores';
-import Student from './../../../models/Student';
-import StudentService from './../../../services/StudentService';
-import Filter from './../../../models/Filter';
-import WebResponse from './../../../models/WebResponse';
-import Class from './../../../models/Class';
-import FormGroup from './../../form/FormGroup';
-import NavigationButtons from './../../navigation/NavigationButtons';
-import { tableHeader } from './../../../utils/CollectionUtil';
-import AnchorWithIcon from './../../navigation/AnchorWithIcon';
-import MasterDataService from './../../../services/MasterDataService';
-import BaseManagementPage from './../management/BaseManagementPage';
-import Spinner from './../../loader/Spinner';
+import { mapCommonUserStateToProps } from '../../../constant/stores';
+import Student from '../../../models/Student';
+import StudentService from '../../../services/StudentService';
+import Filter from '../../../models/Filter';
+import WebResponse from '../../../models/WebResponse';
+import Class from '../../../models/Class';
+import FormGroup from '../../form/FormGroup';
+import NavigationButtons from '../../navigation/NavigationButtons';
+import { tableHeader } from '../../../utils/CollectionUtil';
+import AnchorWithIcon from '../../navigation/AnchorWithIcon';
+import MasterDataService from '../../../services/MasterDataService';
+import BaseManagementPage from '../management/BaseManagementPage';
+import Spinner from '../../loader/Spinner';
 class State {
     items: Student[] = [];
     classes: Class[] = [];
@@ -80,7 +80,7 @@ class StudentList extends BaseManagementPage {
     } 
     inputPoint = (student: Student) => {
         this.props.history.push({
-            pathname: "/students/inputpoint",
+            pathname: "/dormitoryactivity/inputpoint",
             state: { student: student }
         })
     }

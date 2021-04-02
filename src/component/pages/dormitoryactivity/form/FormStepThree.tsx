@@ -1,14 +1,14 @@
 import React, { ChangeEvent } from 'react'
-import BaseComponent from './../../../BaseComponent';
+import BaseComponent from '../../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../../constant/stores';
-import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
-import RulePoint from './../../../../models/RulePoint';
-import FormGroup from './../../../form/FormGroup';
-import PointRecord from './../../../../models/PointRecord';
-import { parseDate } from './../../../../utils/DateUtil';
-import InputTime from './../../../form/InputTime';
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import RulePoint from '../../../../models/RulePoint';
+import FormGroup from '../../../form/FormGroup';
+import PointRecord from '../../../../models/PointRecord';
+import { parseDate } from '../../../../utils/DateUtil';
+import InputTime from '../../../form/InputTime';
 class State {
     pointRecord:PointRecord = new PointRecord();
 }
