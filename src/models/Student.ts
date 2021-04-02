@@ -7,4 +7,6 @@ export default class Student extends BaseEntity
     nis?:string;
     kelas?:Class;
     user?:User;
+
+    point?:number;
 }

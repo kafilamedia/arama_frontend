@@ -14,12 +14,15 @@ import AnchorWithIcon from '../../navigation/AnchorWithIcon';
 import MasterDataService from '../../../services/MasterDataService';
 import BaseManagementPage from '../management/BaseManagementPage';
 import Spinner from '../../loader/Spinner';
+import FilterPeriod from './../../form/FilterPeriod';
+import { MONTHS } from './../../../utils/DateUtil';
+import ToggleButton from './../../navigation/ToggleButton';
 class State {
     items: Student[] = [];
     classes: Class[] = [];
     totalData: number = 0;
     filter: Filter = new Filter();
-    loading:boolean = false;
+    loading: boolean = false;
 }
 class StudentList extends BaseManagementPage {
     state: State = new State();
@@ -30,11 +33,15 @@ class StudentList extends BaseManagementPage {
         this.studentService = this.getServices().studentService;
         this.masterDataService = this.getServices().masterDataService;
         this.state.filter.limit = 10;
+        this.state.filter.day = this.state.filter.dayTo = new Date().getDate();
+        this.state.filter.month = this.state.filter.monthTo = new Date().getMonth() + 1;
+        this.state.filter.year = this.state.filter.yearTo = new Date().getFullYear();
         this.state.filter.fieldsFilter = {
-            'class_id': 'ALL'
+            'class_id': 'ALL',
+            'with_point_record': false
         }
     }
-   
+
     itemsLoaded = (response: WebResponse) => {
         this.setState({ items: response.items, totalData: response.totalData });
     }
@@ -47,8 +54,8 @@ class StudentList extends BaseManagementPage {
             this.itemsLoaded,
             this.showCommonErrorAlert,
             {
-                modelName:'student',
-                filter:this.state.filter
+                modelName: 'student',
+                filter: this.state.filter
             }
         )
     }
@@ -76,18 +83,27 @@ class StudentList extends BaseManagementPage {
         }
         filter.fieldsFilter['class_id'] = target.value;
         this.setState({ filter: filter });
-    } 
+    }
     inputPoint = (student: Student) => {
         this.props.history.push({
             pathname: "/dormitoryactivity/inputpoint",
             state: { student: student }
         })
     }
+    updateWithPointRecord = (val: boolean) => {
+        const filter = this.state.filter;
+        if (filter.fieldsFilter) {
+            filter.fieldsFilter['with_point_record'] = val;
+        }
+        this.setState({ filter: filter });
+    }
     render() {
+
         const filter = this.state.filter;
         const classes = this.state.classes;
         const classAll: Class = { id: "ALL", level: "ALL", sekolah: {} };
         const selectedClassId = filter.fieldsFilter && filter.fieldsFilter['class_id'] ? filter.fieldsFilter['class_id'] : "ALL";
+        const showPointRecord = filter.fieldsFilter && filter.fieldsFilter['with_point_record'] && filter.fieldsFilter['with_point_record'] == true;
         return (
             <div className="container-fluid section-body">
                 <h2>Student List</h2>
@@ -107,6 +123,24 @@ class StudentList extends BaseManagementPage {
                             })}
                         </select>
                     </FormGroup>
+                    <FormGroup label="Period">
+                        <ToggleButton active={showPointRecord}
+                            yesLabel={"Show Point Record"} noLabel="Hide Point Record"
+                            onClick={this.updateWithPointRecord}
+                        />
+                        {showPointRecord ?
+                            <React.Fragment>
+                                <div className="input-group">
+                                    <FilterPeriod filter={filter} onChange={this.updateFilter} />
+                                </div>
+                                <div className="input-group">
+                                    <FilterPeriod mode={"to"} filter={filter} onChange={this.updateFilter} />
+                                </div>
+                            </React.Fragment> : null}
+                    </FormGroup>
+                    <FormGroup label="Period">
+                        {filter.day} {MONTHS[(filter.month ?? 1) - 1]} {filter.year} - {filter.dayTo} {MONTHS[(filter.monthTo ?? 1) - 1]} {filter.yearTo}
+                    </FormGroup>
                     <FormGroup>
                         <input type="submit" className="btn btn-primary" value="Submit" />
                     </FormGroup>
@@ -120,33 +154,33 @@ class StudentList extends BaseManagementPage {
     }
 }
 
-const ItemsList = (props: { loading:boolean, startingNumber: number, inputPoint(s: Student): any, items: Student[] }) => {
+const ItemsList = (props: { loading: boolean, startingNumber: number, inputPoint(s: Student): any, items: Student[] }) => {
 
     return (
         <div style={{ overflow: 'scroll' }}>
             <table className="table table-striped">
-                {tableHeader("No", "", "Name", "Kelas" )}
+                {tableHeader("No", "", "Name", "Kelas", "Point")}
                 <tbody>
-                    {props.loading?
-                    <tr>
-                       <td colSpan={4}>
-                           <Spinner/>
-                        </td> 
-                    </tr>
-                    
-                    :props.items.map((student, i) => {
+                    {props.loading ?
+                        <tr>
+                            <td colSpan={5}>
+                                <Spinner />
+                            </td>
+                        </tr>
 
-                        return (
-                            <tr key={"student-" + i}>
-                                <td>{i + 1 + props.startingNumber}</td>
-                                <td><AnchorWithIcon className="btn" onClick={(e) => props.inputPoint(student)} iconClassName="far fa-edit" /></td>
-                                <td>
-                                {student.user?.name}</td>
-                                <td>{student.kelas?.level} {student.kelas?.rombel} {student.kelas?.sekolah?.nama}</td>
-                                 
-                            </tr>
-                        )
-                    })}
+                        : props.items.map((student, i) => {
+
+                            return (
+                                <tr key={"student-" + i}>
+                                    <td>{i + 1 + props.startingNumber}</td>
+                                    <td><AnchorWithIcon className="btn" onClick={(e) => props.inputPoint(student)} iconClassName="far fa-edit" /></td>
+                                    <td>
+                                        {student.user?.name}</td>
+                                    <td>{student.kelas?.level} {student.kelas?.rombel} {student.kelas?.sekolah?.nama}</td>
+                                    <td>{student.point}</td>
+                                </tr>
+                            )
+                        })}
                 </tbody>
             </table>
         </div>
