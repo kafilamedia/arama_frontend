@@ -1,4 +1,5 @@
 import { join } from "path";
+import { twoDigits } from './StringUtil';
 
 export const MONTHS = [
     "January",
@@ -27,11 +28,7 @@ export const getMonthDays = (month:number) : number=> {
     }
     return regularMonths[month];
 }
- 
-export const getCurrentMMYY = () => {
-    return [new Date().getMonth() + 1, new Date().getFullYear()];
-}
-
+  
 export const getInputReadableDate = (date:Date) :string => {
     const year = date.getFullYear();
 
@@ -52,12 +49,7 @@ export function addDays(date:Date, days:number) :Date{
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()); 
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
-export const twoDigits = (value:number) :string => {
-    if (value >= 10) {
-        return   value.toString();
-    }
-    return "0"+value;
-}
+
 export const parseDate = (s:string) :Date => {
     var b:string[] = s.split(/\D/);
     var m = parseInt(b[1]);

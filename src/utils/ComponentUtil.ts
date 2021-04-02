@@ -1,7 +1,4 @@
-import { base64StringFileSize } from './StringUtil';
-import { ChangeEvent } from 'react';
 import AttachmentInfo from '../models/settings/AttachmentInfo';
-export const byId = (id) => { return document.getElementById(id) }
  
 export function toBase64(file, referer, callback) {
     const reader = new FileReader();
@@ -11,11 +8,7 @@ export function toBase64(file, referer, callback) {
         alert("Error Loading File");
     }
 }
- 
-export const getHtmlInputElement = (e:ChangeEvent) : HTMLInputElement => {
-    const target = e.target as HTMLInputElement;
-    return target;
-}
+  
 export const getAttachmentInfo = (fileInput:HTMLInputElement): Promise<AttachmentInfo> => {
     return new Promise<AttachmentInfo>((resolve, reject) =>{
         if (null == fileInput.files || !fileInput.files[0]) {
@@ -60,34 +53,7 @@ export const toBase64v2 = (fileInput): Promise<string> => {
     });
 
 }
-
-export const resizeImage = (data:string, ratio:number, extension:string) => {
-    const actualFilesize = base64StringFileSize(data);
-    console.debug("Actual filesize: ", actualFilesize);
-    return new Promise<string>(function(resolve, reject){
-        const img = new Image();
-        img.src = data;
-        img.onload = function () {
-            const width = img.width   * ratio;
-            const height = img.height   * ratio;
-            // create an off-screen canvas
-            var canvas:HTMLCanvasElement = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return;
-            // set its dimension to target size
-            canvas.width = width;
-            canvas.height = height;
-            var mime_type = "image/"+extension;
-            // draw source image into the off-screen canvas:
-            ctx.drawImage(img, 0, 0, width, height);
-            console.debug("Resize ratio: ", ratio, "mime_type: ",mime_type);
-            // encode image to data-uri with base64 version of compressed image
-            const dataURL = (canvas.toDataURL());
-            console.debug("Resized filesize: ", base64StringFileSize(dataURL));
-            resolve(dataURL);
-        }
-    });
-}
+ 
 
 export function toBase64FromFile(file) {
     return new Promise(function (resolve, reject) {
@@ -103,18 +69,7 @@ export function toBase64FromFile(file) {
         }
     });
 
-}
-
-
-export const checkExistance = function (...ids) {
-    for (let i = 0; i < ids.length; i++) {
-        if (byId(ids[i]) == null) {
-            console.log("component with id:", ids[i], "does not exist");
-            return false;
-        }
-    }
-    return true;
-}
+} 
 
 /**
  * 
@@ -153,18 +108,4 @@ export const createNavButtons = (totalButton, currentPage) => {
     return buttonData;
 }
 
-
-export const getDropdownOptionsMonth = () => {
-    let options:any[] = [];
-    for (let i = 1; i <= 12; i++) {
-        options.push({ value: i, text: i });
-    }
-    return options;
-}
-export const getDropdownOptionsYear = (from, to) => {
-    let options:any[] = [];
-    for (let i = from; i <= to; i++) {
-        options.push({ value: i, text: i });
-    }
-    return options;
-}
+ 

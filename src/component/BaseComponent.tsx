@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { byId } from '../utils/ComponentUtil';
 import WebResponse from './../models/WebResponse';
 import ApplicationProfile from './../models/ApplicationProfile';
 import User from './../models/User';
@@ -44,8 +43,7 @@ export default class BaseComponent extends Component<any, any> {
         }
     }
 
-    getApplicationProfile():ApplicationProfile
-    {
+    getApplicationProfile = ():ApplicationProfile => {
         return this.props.applicationProfile == null ? new ApplicationProfile() : this.props.applicationProfile;
     }
 
@@ -56,14 +54,7 @@ export default class BaseComponent extends Component<any, any> {
         console.debug("input changed: ", target.name, value);
     }
 
-    focusToActiveField() {
-        if (this.state.activeId != null && byId(this.state.activeId) != null) {
-            const element = byId(this.state.activeId);
-            if (element != null) {
-                element.focus();
-            }
-        }
-    }
+   
     /**
      * 
      * @param {boolean} withProgress 

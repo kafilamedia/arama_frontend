@@ -41,24 +41,7 @@ export function beautifyNominal(val:any) {
 	}
 	return result;
 }
-
-export const getMaxSales = (list) => {
-	let result = 0;
-	for (let i = 0; i < list.length; i++) {
-		const element = list[i];
-		if (element.sales > result)
-			result = element.sales;
-	}
-	return result;
-}
-
-export const isNonNullArray = function (array) {
-	return array != null && array.length > 0;
-}
-
-export const isNonNullArrayWithIndex = function (array, i) {
-	return array != null && array.length > 0 && array[i] != null;
-}
+ 
 
 const months = [
 	"January", "Ferbuary", "March", "April", "May", "June",
@@ -71,23 +54,9 @@ export const monthYearString = function (m, y) {
 	}
 	return months[m - 1] + " " + y;
 }
-
-export const base64StringFileSize = (base64String:string) : number => {
-	if (base64String.includes(",")) {
-		base64String = base64String.split(",")[1];
-	}
-	var stringLength = base64String.length;
-
-	var sizeInBytes = 4 * Math.ceil((stringLength / 3))*0.5624896334383812;
-	var sizeInKb=sizeInBytes/1000;
-	return sizeInBytes;
-}
-
-export const fileExtension = (fileName:string) :string => {
-	if (fileName.includes(".") == false) {
-		return "*";
-	}
-
-	const splitted = fileName.split(".");
-	return splitted[splitted.length - 1];
+export const twoDigits = (value:number) :string => {
+    if (value >= 10) {
+        return   value.toString();
+    }
+    return "0"+value;
 }

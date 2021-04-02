@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component, ChangeEvent } from 'react';
-import { twoDigits } from './../../utils/DateUtil';
+import { twoDigits } from './../../utils/StringUtil';
 interface Props{
     onChange(h:number,m:number,s:number):any,
     value:string,

@@ -1,6 +1,7 @@
 
 import BaseEntity from './BaseEntity';
-import { parseDate, twoDigits } from './../utils/DateUtil';
+import { parseDate } from './../utils/DateUtil';
+import { twoDigits } from './../utils/StringUtil';
 import RulePoint from './RulePoint';
 import Student from './Student';
 export default class PointRecord extends BaseEntity

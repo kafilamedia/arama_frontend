@@ -53,7 +53,18 @@ export default class BaseManagementPage extends BaseComponent {
     updateFilter = (e: ChangeEvent) => {
         const filter = this.state.filter;
         const target = (e.target as any);
-        filter[target.name] = target.value;
+
+        if (!target.value || target.value == "") {
+            return;
+        }
+
+        let value:any;
+        if (target.type == 'number' || (target.dataset && target.dataset['type'] == 'number')) {
+            value = parseInt(target.value);
+        } else {
+            value = target.value;
+        }
+        filter[target.name] = value;
         this.setState({ filter: filter })
     }
     updateFieldsFilter = (e: ChangeEvent) => {
