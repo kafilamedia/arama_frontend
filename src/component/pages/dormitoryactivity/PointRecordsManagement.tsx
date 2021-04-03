@@ -3,17 +3,16 @@ import BaseManagementPage from '../management/BaseManagementPage';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
+import EditDeleteButton from '../management/EditDeleteButton'
 import PointRecord from './../../../models/PointRecord';
 import Filter from './../../../models/Filter';
 import FormGroup from './../../form/FormGroup';
 import NavigationButtons from './../../navigation/NavigationButtons';
 import { tableHeader } from './../../../utils/CollectionUtil';
-import EditDeleteButton from '../management/EditDeleteButton';
+import DropPointButtons from './DropPointButtons';
 import Spinner from './../../loader/Spinner';
 import { MONTHS } from './../../../utils/DateUtil';
-import FilterPeriod from './../../form/FilterPeriod';
-import AnchorWithIcon from './../../navigation/AnchorWithIcon';
-import StudentService from './../../../services/StudentService';
+import FilterPeriod from './../../form/FilterPeriod'; 
 class State {
     items: PointRecord[] = [];
     filter: Filter = new Filter();
@@ -26,25 +25,20 @@ class State {
 
 class PointRecordManagement extends BaseManagementPage {
     state: State = new State(); 
-    studentService:StudentService;
+    
     constructor(props) {
-        super(props, 'pointrecord', true); 
+        super(props, 'pointrecord', false); 
         if (!this.state.filter.fieldsFilter) {
             this.state.filter.fieldsFilter = {};
         }
-        this.studentService = this.getServices().studentService;
+        
         this.state.filter.limit = 10;
         this.state.filter.day = this.state.filter.dayTo = new Date().getDate();
         this.state.filter.month = this.state.filter.monthTo = new Date().getMonth() + 1;
         this.state.filter.year = this.state.filter.yearTo = new Date().getFullYear();
         this.state.filter.fieldsFilter['dropped'] = 'ALL';
     }
-    setDropped = (id:number, dropped:boolean) => {
-        this.commonAjax(this.studentService.setPointDropped,
-            this.loadItems,
-            this.showCommonErrorAlert,
-            id, dropped);
-    }
+    
     render() {
         const filter: Filter = this.state.filter;
         const fieldsFilter = filter.fieldsFilter;
@@ -90,7 +84,7 @@ class PointRecordManagement extends BaseManagementPage {
                     onClick={this.loadAtPage} />
                 <ItemsList startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} loading={this.state.loading}
                     recordLoaded={this.oneRecordLoaded}
-                    recordDeleted={this.loadItems} setDropped={this.setDropped}
+                    recordUpdated={this.loadItems}  
                     items={this.state.items} />
             </div>
         )
@@ -98,7 +92,7 @@ class PointRecordManagement extends BaseManagementPage {
 
 }
 
-const ItemsList = (props: { setDropped(id:number, dropped:boolean):void, loading: boolean, startingNumber: number, items: PointRecord[], recordLoaded(item: any), recordDeleted() }) => {
+const ItemsList = (props: {  loading: boolean, startingNumber: number, items: PointRecord[], recordLoaded(item: any), recordUpdated() }) => {
 
     return (
         <div style={{ overflow: 'scroll' }}>
@@ -121,16 +115,10 @@ const ItemsList = (props: { setDropped(id:number, dropped:boolean):void, loading
                                     <td>{item.dropped_at ?? "-"}</td>
                                     <td>
                                         <div style={{width:'200px'}}>
-                                        {item.dropped_at?
-                                        <AnchorWithIcon onClick={(e)=>props.setDropped(item.id, false)} className="btn btn-info btn-sm" iconClassName="fas fa-arrow-up">
-                                            Undrop
-                                        </AnchorWithIcon>:
-                                        <AnchorWithIcon onClick={(e)=>props.setDropped(item.id, true)} className="btn btn-info btn-sm" iconClassName="fas fa-arrow-down">
-                                            Drop
-                                        </AnchorWithIcon>}
+                                       <DropPointButtons record={item} onUpdated={props.recordUpdated} />
                                         <EditDeleteButton record={item}  hideEdit
                                             recordLoaded={props.recordLoaded}
-                                            recordDeleted={props.recordDeleted}
+                                            recordDeleted={props.recordUpdated}
                                             modelName={'pointrecord'} />
                                         </div>
                                     </td>
