@@ -29,7 +29,7 @@ class StudentList extends BaseManagementPage {
     studentService: StudentService;
     masterDataService: MasterDataService;
     constructor(props) {
-        super(props, 'student', true);
+        super(props, 'student');
         this.studentService = this.getServices().studentService;
         this.masterDataService = this.getServices().masterDataService;
         this.state.filter.limit = 10;
@@ -148,18 +148,18 @@ class StudentList extends BaseManagementPage {
                 </form>
                 <p />
                 <NavigationButtons onClick={this.loadAtPage} activePage={filter.page ?? 0} limit={filter.limit ?? 10} totalData={this.state.totalData} />
-                <ItemsList loading={this.state.loading} inputPoint={this.inputPoint} startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} items={this.state.items} />
+                <ItemsList showPointRecord={showPointRecord} loading={this.state.loading} inputPoint={this.inputPoint} startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} items={this.state.items} />
             </div>
         )
     }
 }
 
-const ItemsList = (props: { loading: boolean, startingNumber: number, inputPoint(s: Student): any, items: Student[] }) => {
+const ItemsList = (props: { showPointRecord:boolean, loading: boolean, startingNumber: number, inputPoint(s: Student): any, items: Student[] }) => {
 
     return (
         <div style={{ overflow: 'scroll' }}>
             <table className="table table-striped">
-                {tableHeader("No", "", "Name", "Kelas", "Point")}
+                {props.showPointRecord?tableHeader("No", "", "Name", "Kelas", "Point"):tableHeader("No", "", "Name", "Kelas")}
                 <tbody>
                     {props.loading ?
                         <tr>
@@ -177,7 +177,7 @@ const ItemsList = (props: { loading: boolean, startingNumber: number, inputPoint
                                     <td>
                                         {student.user?.name}</td>
                                     <td>{student.kelas?.level} {student.kelas?.rombel} {student.kelas?.sekolah?.nama}</td>
-                                    <td>{student.point}</td>
+                                    {props.showPointRecord? <td>{student.point}</td> : null}
                                 </tr>
                             )
                         })}
