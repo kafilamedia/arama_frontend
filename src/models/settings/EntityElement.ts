@@ -1,5 +1,5 @@
 import EntityProperty from './EntityProperty';
-import { FieldType } from '../FieldType';
+import { FieldType } from '../commons/FieldType';
 
 export default class EntityElement{
 	ignoreBaseField?:boolean;

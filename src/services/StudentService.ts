@@ -1,7 +1,7 @@
 
 import { commonAjaxPostCalls } from './Promises';
 import { contextPath } from '../constant/Url';
-import Filter from '../models/Filter';
+import Filter from '../models/commons/Filter';
 import PointRecord from './../models/PointRecord';
 export default class StudentService {
     

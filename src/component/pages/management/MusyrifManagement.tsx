@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
 import Employee from './../../../models/Employee';
 import { tableHeader } from './../../../utils/CollectionUtil';
-import Filter from './../../../models/Filter'; 
+import Filter from '../../../models/commons/Filter'; 
 import FormGroup from './../../form/FormGroup';
 import NavigationButtons from './../../navigation/NavigationButtons';
 import EmployeeRow from './EmployeeRow';

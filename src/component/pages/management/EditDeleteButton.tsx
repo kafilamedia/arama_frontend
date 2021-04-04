@@ -6,8 +6,8 @@ import { mapCommonUserStateToProps } from './../../../constant/stores';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 import BaseEntity from './../../../models/BaseEntity';
 import MasterDataService from './../../../services/MasterDataService';
-import WebRequest from './../../../models/WebRequest';
-import WebResponse from './../../../models/WebResponse';
+import WebRequest from '../../../models/commons/WebRequest';
+import WebResponse from '../../../models/commons/WebResponse';
 class EditDeleteButton extends BaseComponent
 {
     masterDataService:MasterDataService;

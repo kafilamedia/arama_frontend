@@ -8,7 +8,7 @@ import Employee from './../../../models/Employee';
 import { AuthorityType } from '../../../models/AuthorityType';
 import MusyrifManagementService from './../../../services/MusyrifManagementService';
 import ToggleButton from './../../navigation/ToggleButton';
-import WebResponse from './../../../models/WebResponse';
+import WebResponse from '../../../models/commons/WebResponse';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 class EmployeeRow extends BaseComponent {
     musyrifManagementService:MusyrifManagementService;

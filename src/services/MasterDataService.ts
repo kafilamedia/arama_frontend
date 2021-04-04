@@ -1,6 +1,6 @@
 
-import Filter from './../models/Filter';
-import WebRequest from './../models/WebRequest';
+import Filter from '../models/commons/Filter';
+import WebRequest from '../models/commons/WebRequest';
 import { contextPath } from './../constant/Url';
 import { commonAjaxPostCalls, commonAjaxPostCallsWithBlob } from './Promises';
 import ApplicationProfile from './../models/ApplicationProfile';

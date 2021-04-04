@@ -1,10 +1,10 @@
 import { Component } from 'react';
-import WebResponse from './../models/WebResponse';
+import WebResponse from '../models/commons/WebResponse';
 import ApplicationProfile from './../models/ApplicationProfile';
 import User from './../models/User';
 import Services from './../services/Services';
 import { AuthorityType } from '../models/AuthorityType';
-import WebRequest from './../models/WebRequest';
+import WebRequest from '../models/commons/WebRequest';
 import { sendToWebsocket } from './../utils/websockets';
 
 export default class BaseComponent extends Component<any, any> {

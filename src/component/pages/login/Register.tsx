@@ -9,7 +9,7 @@ import './Login.css';
 import Spinner from '../../loader/Spinner';
 import UserService from './../../../services/UserService';
 import UserModel from './../../../models/User';
-import WebResponse from './../../../models/WebResponse'; 
+import WebResponse from '../../../models/commons/WebResponse'; 
 class IState {
     loading: boolean = false; displayName: string = "";
     username: string = "";

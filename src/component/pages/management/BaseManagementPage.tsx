@@ -2,8 +2,8 @@ import React, { ChangeEvent } from 'react'
 import BaseComponent from './../../BaseComponent';
 import Modal from './../../container/Modal';
 import MasterDataService from './../../../services/MasterDataService';
-import WebResponse from './../../../models/WebResponse';
-import WebRequest from './../../../models/WebRequest';
+import WebResponse from '../../../models/commons/WebResponse';
+import WebRequest from '../../../models/commons/WebRequest';
 
 export default class BaseManagementPage extends BaseComponent {
     protected masterDataService: MasterDataService;

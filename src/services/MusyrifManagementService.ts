@@ -1,9 +1,9 @@
 
 import { commonAjaxPostCalls } from './Promises';
 import { contextPath } from './../constant/Url';
-import Filter from './../models/Filter';
+import Filter from '../models/commons/Filter';
 import Employee from '../models/Employee';
-import WebRequest from './../models/WebRequest';
+import WebRequest from '../models/commons/WebRequest';
 export default class MusyrifManagementService {
 
     private static instance?: MusyrifManagementService;

@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import Filter from './../../models/Filter';
+import Filter from '../../models/commons/Filter';
 import { MONTHS } from './../../utils/DateUtil';
 
 const days = (): number[] => {

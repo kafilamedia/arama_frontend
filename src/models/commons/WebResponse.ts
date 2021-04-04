@@ -1,6 +1,6 @@
 
-import ApplicationProfile from './ApplicationProfile';
-import User from './User';
+import ApplicationProfile from '../ApplicationProfile';
+import User from '../User';
 import Filter from './Filter';
 
 export default class WebResponse{
