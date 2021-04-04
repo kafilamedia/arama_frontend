@@ -17,7 +17,7 @@ import ManagementMain from '../pages/management/ManagementMain';
 import CategoryManagement from '../pages/management/CategoryManagement';
 import RulePointManagement from '../pages/management/RulePointManagement';
 import StudentList from '../pages/dormitoryactivity/StudentList';
-import InputPoint from '../pages/dormitoryactivity/InputPoint';
+import InputPointForm from '../pages/dormitoryactivity/InputPointForm';
 import PointRecordsManagement from '../pages/dormitoryactivity/PointRecordsManagement';
 import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
 import AboutUs from './../pages/home/AboutUs';
@@ -112,7 +112,7 @@ const StudentsRoute = (proos) => {
                 (props:any) => <StudentList />
             } />
              <Route exact path="/dormitoryactivity/inputpoint" render={
-                (props:any) => <InputPoint/>
+                (props:any) => <InputPointForm/>
             } />
              <Route exact path="/dormitoryactivity/pointsummary" render={
                 (props:any) => <PointRecordsManagement/>

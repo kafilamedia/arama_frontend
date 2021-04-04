@@ -18,15 +18,18 @@ import PointRecord from '../../../models/PointRecord';
 import StudentService from '../../../services/StudentService';
 import WebResponse from '../../../models/commons/WebResponse';
 import FormGroup from '../../form/FormGroup';
-import { parseDate } from '../../../utils/DateUtil';
+import { doItLater } from '../../../utils/EventUtil';
+import AttachmentInfo from './../../../models/settings/AttachmentInfo';
+import { contextPath } from './../../../constant/Url';
 class State {
     student?: Student
     category?: Category;
     rulePoint?: RulePoint;
-    formStep: number = 1;
-    savedRecord?: PointRecord
+    formStep: number = 0;
+    savedRecord?: PointRecord;
+    attachmentInfo?:AttachmentInfo;
 }
-class InputPoint extends BaseComponent {
+class InputPointForm extends BaseComponent {
     state: State = new State();
     studentService: StudentService;
     totalStep: number = 4;
@@ -39,7 +42,6 @@ class InputPoint extends BaseComponent {
             return;
         }
         const student = this.props.location.state.student;
-
         if (student) {
             this.setState({ student: Object.assign(new Student(), student) });
         }
@@ -47,6 +49,15 @@ class InputPoint extends BaseComponent {
     componentDidMount() {
         super.componentDidMount();
         this.validateStudentData();
+        doItLater(()=>{
+            this.nextStep(1);
+        }, 200);
+    }
+    setAttachment = (attachmentInfo:AttachmentInfo|undefined) => {
+        this.setState({attachmentInfo:attachmentInfo});
+    }
+    removeAttachment = () => {
+        this.setAttachment(undefined);
     }
     setCategory = (c: Category) => {
         this.setState({ category: c });
@@ -58,7 +69,7 @@ class InputPoint extends BaseComponent {
         this.setState({ formStep: step });
     }
     submitRecord = (record: PointRecord) => {
-        console.debug("RECORD: ", record);
+        
         if (!this.state.student || !this.state.rulePoint) {
             alert("ERROR: student or rulePoint missing!");
             return;
@@ -69,7 +80,7 @@ class InputPoint extends BaseComponent {
             this.studentService.submitPointRecord,
             this.recordSubmitted,
             this.showCommonErrorAlert,
-            record
+            record, this.state.attachmentInfo
         )
     }
     recordSubmitted = (response: WebResponse) => {
@@ -97,8 +108,10 @@ class InputPoint extends BaseComponent {
                             category={this.state.category} onBack={() => this.nextStep(1)} onSubmit={() => { this.nextStep(3) }}
                         /> : null}
                     {this.state.formStep == 3 && this.state.category && this.state.rulePoint ?
-                        <FormStepThree
-                            submit={this.submitRecord}
+                        <FormStepThree submit={this.submitRecord}
+                            attachmentInfo={this.state.attachmentInfo}
+                            setAttachment={this.setAttachment}
+                            removeAttachment={this.removeAttachment} 
                             rulePoint={this.state.rulePoint}
                             onBack={() => this.nextStep(2)}
                         /> : null}
@@ -106,6 +119,7 @@ class InputPoint extends BaseComponent {
                         <Detail back={() => this.setState({ student: null })} record={this.state.savedRecord} />
                         : null
                     }
+                    
                 </Modal>
             </div>
         )
@@ -114,8 +128,8 @@ class InputPoint extends BaseComponent {
 
 const Progress = (props: { step: number, totalStep: number }) => {
     return (
-        <div className="progress" style={{ height:'5px', marginBottom: 10}}>
-            <div className="bg-success" style={{transitionDuration: '500ms', width: (props.step / props.totalStep * 100) + '%' }}  ></div>
+        <div className="progress" style={{ height:'5px', marginBottom: 15}}>
+            <div className="bg-info" style={{transitionDuration: '500ms', width: (props.step / props.totalStep * 100) + '%' }}  ></div>
         </div>
     )
 }
@@ -132,6 +146,11 @@ const Detail = (props: { record: PointRecord, back(): any }) => {
             <FormGroup label="Name">{record.rule_point?.name}</FormGroup>
             <FormGroup label="Point">{record.rule_point?.point}</FormGroup>
             <FormGroup label="Location">{record.location}</FormGroup>
+            {record.getPicture()?
+            <FormGroup label="Picture">
+                <img src={record.getPicture()??""} width={200} height={200} />
+            </FormGroup>
+            :null}
             <hr />
             <FormGroup><a onClick={props.back} className="btn btn-dark">Ok</a></FormGroup>
         </div>
@@ -153,5 +172,5 @@ const Warning = () => {
 export default withRouter(
     connect(
         mapCommonUserStateToProps
-    )(InputPoint)
+    )(InputPointForm)
 )

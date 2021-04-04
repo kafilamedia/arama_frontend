@@ -67,7 +67,7 @@ class FormStepOne extends BaseComponent {
         }
         return (
             <form onSubmit={(e) => { e.preventDefault(); this.onSubmit() }}>
-                <FormGroup label="Select Category">
+                <FormGroup label="Category">
                     <select className="form-control" onChange={(e)=>e.preventDefault()} value={category ? category.id??"" : ""} >
                         {categories.map((c) => {
                             return <option key={"select-cat-" + c.id}

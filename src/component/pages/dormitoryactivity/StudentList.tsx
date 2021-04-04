@@ -138,9 +138,11 @@ class StudentList extends BaseManagementPage {
                                 </div>
                             </React.Fragment> : null}
                     </FormGroup>
-                    <FormGroup label="Period">
-                        {filter.day} {MONTHS[(filter.month ?? 1) - 1]} {filter.year} - {filter.dayTo} {MONTHS[(filter.monthTo ?? 1) - 1]} {filter.yearTo}
-                    </FormGroup>
+                    {showPointRecord?
+                        <FormGroup label="Period">
+                            {filter.day} {MONTHS[(filter.month ?? 1) - 1]} {filter.year} - {filter.dayTo} {MONTHS[(filter.monthTo ?? 1) - 1]} {filter.yearTo}
+                        </FormGroup>
+                    :null}
                     <FormGroup>
                         <input type="submit" className="btn btn-primary" value="Submit" />
                     </FormGroup>

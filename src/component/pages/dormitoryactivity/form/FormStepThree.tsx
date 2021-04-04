@@ -9,8 +9,10 @@ import FormGroup from '../../../form/FormGroup';
 import PointRecord from '../../../../models/PointRecord';
 import { parseDate } from '../../../../utils/DateUtil';
 import InputTime from '../../../form/InputTime';
+import { getAttachmentInfo } from '../../../../utils/ComponentUtil';
+import AttachmentInfo from '../../../../models/settings/AttachmentInfo';
 class State {
-    pointRecord:PointRecord = new PointRecord();
+    pointRecord: PointRecord = new PointRecord();
 }
 class FormStepThree extends BaseComponent {
     state: State = new State();
@@ -20,56 +22,75 @@ class FormStepThree extends BaseComponent {
 
     onSubmit = () => {
         this.showConfirmation("Submit Data?")
-        .then(ok=>{
-            if (!ok) {
-                return;
-            }
-            this.props.submit(this.state.pointRecord);
-        })
+            .then(ok => {
+                if (ok) {  
+                    this.props.submit(this.state.pointRecord);
+                }
+            })
     }
-    rulePoint = () :RulePoint => {
+    rulePoint = (): RulePoint => {
         return this.props.rulePoint;
     }
-    updatePointRecord = (e:ChangeEvent) => {
+    updatePointRecord = (e: ChangeEvent) => {
         const target = e.target as any;
-        const pointRecord= this.state.pointRecord;
+        const pointRecord = this.state.pointRecord;
         pointRecord[target.name] = target.value;
-        this.setState({pointRecord: pointRecord});
-        
+        this.setState({ pointRecord: pointRecord });
+
     }
-    updateDate = (e:ChangeEvent) => {
-        const date:Date = parseDate((e.target as HTMLInputElement).value);
-        const pointRecord= this.state.pointRecord;
+    updateDate = (e: ChangeEvent) => {
+        const date: Date = parseDate((e.target as HTMLInputElement).value);
+        const pointRecord = this.state.pointRecord;
         pointRecord.setDate(date);
-        this.setState({pointRecord: pointRecord});
+        this.setState({ pointRecord: pointRecord });
     }
-    updateTime = (h:number, m:number, s:number) => {
-        const pointRecord= this.state.pointRecord;
+    updateTime = (h: number, m: number, s: number) => {
+        const pointRecord = this.state.pointRecord;
         pointRecord.setTime(h, m, s);
-        this.setState({pointRecord: pointRecord});
+        this.setState({ pointRecord: pointRecord });
+    }
+    setAttachment = (e: ChangeEvent) => {
+        const target = e.target as HTMLInputElement;
+        getAttachmentInfo(target).then((attachment: AttachmentInfo) => {
+            this.props.setAttachment(attachment);
+        });
+    }
+    removeAttachment = () => {
+        this.props.removeAttachment();
+    }
+    getAttachment = (): AttachmentInfo | undefined => {
+        return this.props.attachmentInfo;
     }
     render() {
-        const rulePoint:RulePoint = this.rulePoint();
-        const pointRecord:PointRecord = this.state.pointRecord;
+        const rulePoint: RulePoint = this.rulePoint();
+        const pointRecord: PointRecord = this.state.pointRecord;
+        const attachment = this.getAttachment();
         return (
-            <form onSubmit={(e)=>{e.preventDefault();this.onSubmit()}}>
-                <FormGroup label="Category">{rulePoint.category?.name}</FormGroup>
-                <FormGroup label="Name">{rulePoint.name}</FormGroup>
-                <FormGroup label="Point">{rulePoint.point}</FormGroup>
+            <form onSubmit={(e) => { e.preventDefault(); this.onSubmit() }}>
+                <FormGroup label="Category">{rulePoint.category?.name} - {rulePoint.name} <span className="badge badge-dark">{rulePoint.point}</span></FormGroup>
                 <FormGroup label="Date">
                     <input type="date" className="form-control" onChange={this.updateDate} name="date" value={pointRecord.dateString()} />
                 </FormGroup>
                 <FormGroup label="Time">
-                    <InputTime onChange={this.updateTime} value={pointRecord.time}/>
+                    <InputTime onChange={this.updateTime} value={pointRecord.time} />
                 </FormGroup>
                 <FormGroup label="Location">
-                    <input className="form-control" onChange={this.updatePointRecord} name="location" value={pointRecord.location??""} />
+                    <input className="form-control" onChange={this.updatePointRecord} name="location" value={pointRecord.location ?? ""} />
+                </FormGroup>
+                <FormGroup label="Picture">
+                    {attachment ?
+                        <>
+                            <img style={{marginRight:10}} className="border border-dark" src={attachment.url} width={100} height={100} />
+                            <AnchorWithIcon iconClassName="fas fa-times" className="btn btn-danger" onClick={this.removeAttachment}></AnchorWithIcon>
+                        </>
+                        : <input type="file" accept={"image/*"} className="form-control" onChange={this.setAttachment} name="attachment" value={pointRecord.location ?? ""} />
+                    }
                 </FormGroup>
                 <FormGroup label="Description">
-                    <textarea value={pointRecord.description??""} onChange={this.updatePointRecord} name="description" className="form-control"></textarea>
+                    <textarea value={pointRecord.description ?? ""} onChange={this.updatePointRecord} name="description" className="form-control"></textarea>
                 </FormGroup>
                 <AnchorWithIcon className="btn btn-secondary float-left" iconClassName="fas fa-arrow-left" onClick={this.props.onBack} >Back</AnchorWithIcon>
-                <button className="btn btn-info float-right" >Submit</button>
+                <button className="btn btn-success float-right" >Submit</button>
             </form>
         )
     }

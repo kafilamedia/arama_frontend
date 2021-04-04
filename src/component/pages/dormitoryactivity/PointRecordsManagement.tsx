@@ -98,13 +98,13 @@ const ItemsList = (props: {  loading: boolean, startingNumber: number, items: Po
         <div style={{ overflow: 'scroll' }}>
 
             <table className="table table-striped">
-                {tableHeader("No", "Student", "Date", "Point Name", "Point", "Dropped", "Option")}
+                {tableHeader("No", "Student", "Date", "Point Name", "Point", "Picture", "Dropped", "Option")}
                 <tbody>
 
                     {props.loading ?
                         <tr><td colSpan={7}><Spinner /></td></tr>
                         : props.items.map((item, i) => {
-                            item = Object.assign(new PointRecord, item);
+                            item = PointRecord.clone(item);
                             return (
                                 <tr key={"PointRecord-" + i}>
                                     <td>{i + 1 + props.startingNumber}</td>
@@ -112,6 +112,9 @@ const ItemsList = (props: {  loading: boolean, startingNumber: number, items: Po
                                     <td>{item.location} {item.getDate().toDateString()} {item.time}</td>
                                     <td>{item.rule_point?.name} ({item.rule_point?.category?.name})</td>
                                     <td>{item.rule_point?.point}</td>
+                                    <td>{item.getPicture()?
+                                        <img src={item.getPicture()??""} width={50} height={50}/>
+                                        :null}</td>
                                     <td>{item.dropped_at ?? "-"}</td>
                                     <td>
                                         <div style={{width:'200px'}}>

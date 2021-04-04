@@ -5,6 +5,7 @@ import Filter from './Filter';
 import Category from '../Category';
 import RulePoint from '../RulePoint';
 import PointRecord from '../PointRecord';
+import AttachmentInfo from './../settings/AttachmentInfo';
 
 export default class WebRequest{
 	 employee_id?:any;
@@ -18,4 +19,6 @@ export default class WebRequest{
 	 pointRecord?:PointRecord;
 	 modelName?:string;
 	 record_id?:any;
+
+	 attachmentInfo?:AttachmentInfo;
 }

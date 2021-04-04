@@ -3,6 +3,8 @@ import { commonAjaxPostCalls } from './Promises';
 import { contextPath } from '../constant/Url';
 import Filter from '../models/commons/Filter';
 import PointRecord from './../models/PointRecord';
+import AttachmentInfo from './../models/settings/AttachmentInfo';
+import WebRequest from './../models/commons/WebRequest';
 export default class StudentService {
     
 
@@ -14,10 +16,15 @@ export default class StudentService {
         }
         return this.instance;
     }
-    public submitPointRecord(pointRecord: PointRecord) {
-        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/submitpointrecord", {
-            pointRecord: pointRecord
-        });
+    public submitPointRecord(pointRecord: PointRecord, attachmentInfo?:AttachmentInfo) {
+        if (attachmentInfo) {
+            attachmentInfo.data = "";
+        }
+        const req:WebRequest = {
+            pointRecord: pointRecord,
+            attachmentInfo: attachmentInfo
+        }
+        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/submitpointrecord", req);
     }
     public getClasses(filter: Filter) {
         return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/classes", {});

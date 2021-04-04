@@ -4,6 +4,8 @@ import { parseDate } from './../utils/DateUtil';
 import { twoDigits } from './../utils/StringUtil';
 import RulePoint from './RulePoint';
 import Student from './Student';
+import Pictures from './Pictures';
+import { contextPath } from './../constant/Url';
 export default class PointRecord extends BaseEntity
 {
     setTime(h: number, m: number, s: number) {
@@ -29,6 +31,15 @@ export default class PointRecord extends BaseEntity
     rule_point?:RulePoint;
     student?:Student;
     dropped_at?:Date;
+
+    pictures:Pictures[] = [];
+
+    getPicture = () :string|null => {
+        if (this.pictures.length == 0) {
+            return null;
+        }
+        return  contextPath()+'upload/POINT_RECORD/'+this.pictures[0].name;
+    }
 
     getDate = ():Date => {
         return parseDate(this.dateString());
