@@ -21,7 +21,7 @@ class EmployeeRow extends BaseComponent {
         return this.props.employee;
     }
     activeStatusUpdate = (response:WebResponse) => {
-        this.showInfo("Success");
+        // this.showInfo("Success");
         if (this.props.onUpdated) {
             this.props.onUpdated();
         }
@@ -29,16 +29,16 @@ class EmployeeRow extends BaseComponent {
     activateMusyrif = (active:boolean) => {
         const emp = this.getEmployee();
 
-        this.showConfirmation((active?"Activate " : "Deactivate ")+emp.user?.name+"?").then(
-            ok => {
-                if (!ok) return;
+        // this.showConfirmation((active?"Activate " : "Deactivate ")+emp.user?.name+"?").then(
+        //     ok => {
+        //         if (!ok) return;
                 this.commonAjax(
                     this.musyrifManagementService.activate,
                     this.activeStatusUpdate,
                     this.showCommonErrorAlert,
                     emp, active);
-            }
-        )
+        //     }
+        // )
        
     }
     render() {
