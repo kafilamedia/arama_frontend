@@ -83,7 +83,7 @@ class FormStepThree extends BaseComponent {
                             <img style={{marginRight:10}} className="border border-dark" src={attachment.url} width={100} height={100} />
                             <AnchorWithIcon iconClassName="fas fa-times" className="btn btn-danger" onClick={this.removeAttachment}></AnchorWithIcon>
                         </>
-                        : <input type="file" accept={"image/*"} className="form-control" onChange={this.setAttachment} name="attachment" value={pointRecord.location ?? ""} />
+                        : <input type="file" accept={"image/*"} className="form-control" onChange={this.setAttachment} name="attachment" />
                     }
                 </FormGroup>
                 <FormGroup label="Description">
