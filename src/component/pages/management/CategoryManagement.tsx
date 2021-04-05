@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
 import Filter from '../../../models/commons/Filter';
 import Category from './../../../models/Category';
-import MasterDataService from './../../../services/MasterDataService';
-import WebResponse from '../../../models/commons/WebResponse';
 import WebRequest from '../../../models/commons/WebRequest';
 import FormGroup from './../../form/FormGroup';
 import NavigationButtons from './../../navigation/NavigationButtons';

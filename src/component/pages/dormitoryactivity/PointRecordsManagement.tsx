@@ -12,36 +12,50 @@ import { tableHeader } from './../../../utils/CollectionUtil';
 import DropPointButtons from './DropPointButtons';
 import Spinner from './../../loader/Spinner';
 import { MONTHS } from './../../../utils/DateUtil';
-import FilterPeriod from './../../form/FilterPeriod'; 
+import FilterPeriod from './../../form/FilterPeriod';
+import PointRecordDetail from './PointRecordDetail';
 class State {
     items: PointRecord[] = [];
     filter: Filter = new Filter();
     totalData: number = 0;
-    record: PointRecord = new PointRecord();
+    record?: PointRecord;
     loading: boolean = false;
 
 }
 
 
 class PointRecordManagement extends BaseManagementPage {
-    state: State = new State(); 
-    
+    state: State = new State();
+
     constructor(props) {
-        super(props, 'pointrecord', false); 
+        super(props, 'pointrecord', false);
         if (!this.state.filter.fieldsFilter) {
             this.state.filter.fieldsFilter = {};
         }
-        
+
         this.state.filter.limit = 10;
         this.state.filter.day = this.state.filter.dayTo = new Date().getDate();
         this.state.filter.month = this.state.filter.monthTo = new Date().getMonth() + 1;
         this.state.filter.year = this.state.filter.yearTo = new Date().getFullYear();
         this.state.filter.fieldsFilter['dropped'] = 'ALL';
     }
-    
+
+    // oneRecordLoaded = (item:any) => {
+    //     window.scrollTo(0, 0);
+    //     super.oneRecordLoaded(item);
+    // }
+
     render() {
         const filter: Filter = this.state.filter;
         const fieldsFilter = filter.fieldsFilter;
+        if (this.state.record) {
+            return (
+                <div className="container-fluid section-body">
+                    <h2>Point Record Management</h2>
+                    <PointRecordDetail record={this.state.record} close={() => this.oneRecordLoaded(undefined)} />
+                </div>
+            )
+        }
         return (
             <div className="container-fluid section-body">
                 <h2>Point Record Management</h2>
@@ -57,7 +71,7 @@ class PointRecordManagement extends BaseManagementPage {
                             <input name="location" placeholder="location" className="form-control" value={fieldsFilter ? fieldsFilter['location'] : ""} onChange={this.updateFieldsFilter} />
                         </div>
                         <div className="input-group">
-                            <FilterPeriod   filter={filter} onChange={this.updateFilter} />
+                            <FilterPeriod filter={filter} onChange={this.updateFilter} />
                         </div>
                         <div className="input-group">
                             <FilterPeriod mode={"to"} filter={filter} onChange={this.updateFilter} />
@@ -84,7 +98,7 @@ class PointRecordManagement extends BaseManagementPage {
                     onClick={this.loadAtPage} />
                 <ItemsList startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} loading={this.state.loading}
                     recordLoaded={this.oneRecordLoaded}
-                    recordUpdated={this.loadItems}  
+                    recordUpdated={this.loadItems}
                     items={this.state.items} />
             </div>
         )
@@ -92,7 +106,7 @@ class PointRecordManagement extends BaseManagementPage {
 
 }
 
-const ItemsList = (props: {  loading: boolean, startingNumber: number, items: PointRecord[], recordLoaded(item: any), recordUpdated() }) => {
+const ItemsList = (props: { loading: boolean, startingNumber: number, items: PointRecord[], recordLoaded(item: PointRecord), recordUpdated() }) => {
 
     return (
         <div style={{ overflow: 'scroll' }}>
@@ -112,17 +126,17 @@ const ItemsList = (props: {  loading: boolean, startingNumber: number, items: Po
                                     <td>{item.location} {item.getDate().toDateString()} {item.time}</td>
                                     <td>{item.rule_point?.name} ({item.rule_point?.category?.name})</td>
                                     <td>{item.rule_point?.point}</td>
-                                    <td>{item.getPicture()?
-                                        <img src={item.getPicture()??""} width={50} height={50}/>
-                                        :null}</td>
+                                    <td>{item.getPicture() ?
+                                        <img src={item.getPicture() ?? ""} width={50} height={50} />
+                                        : null}</td>
                                     <td>{item.dropped_at ?? "-"}</td>
                                     <td>
-                                        <div style={{width:'200px'}}>
-                                       <DropPointButtons record={item} onUpdated={props.recordUpdated} />
-                                        <EditDeleteButton record={item}  hideEdit
-                                            recordLoaded={props.recordLoaded}
-                                            recordDeleted={props.recordUpdated}
-                                            modelName={'pointrecord'} />
+                                        <div style={{ width: '200px' }}>
+                                            <DropPointButtons record={item} onUpdated={props.recordUpdated} />
+                                            <EditDeleteButton record={item}
+                                                recordLoaded={props.recordLoaded}
+                                                recordDeleted={props.recordUpdated}
+                                                modelName={'pointrecord'} />
                                         </div>
                                     </td>
                                 </tr>

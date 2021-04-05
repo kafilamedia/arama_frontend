@@ -6,6 +6,7 @@ import Services from './../services/Services';
 import { AuthorityType } from '../models/AuthorityType';
 import WebRequest from '../models/commons/WebRequest';
 import { sendToWebsocket } from './../utils/websockets';
+import { doItLater } from './../utils/EventUtil';
 
 export default class BaseComponent extends Component<any, any> {
     parentApp: any;
@@ -13,26 +14,28 @@ export default class BaseComponent extends Component<any, any> {
     state: any = { updated: new Date() };
     constructor(props: any, authenticated = false) {
         super(props);
-        
+
         this.authenticated = authenticated
         this.state = {
             ...this.state
         }
         this.parentApp = props.mainApp;
     }
-    
+
     validateLoginStatus = () => {
-        if (this.authenticated == false) return;
-        if (this.isLoggedUserNull()) {
+        if (this.authenticated == false) return true;
+        if (this.isUserLoggedIn() == false) {
             this.backToLogin();
+            return false;
         }
+        return true;
     }
 
-    protected sendWebSocket = (url:string, payload:WebRequest) => {
+    protected sendWebSocket = (url: string, payload: WebRequest) => {
         sendToWebsocket(url, payload);
     }
 
-    protected setWsUpdateHandler =(handler:Function | undefined) => {
+    protected setWsUpdateHandler = (handler: Function | undefined) => {
         if (this.parentApp) {
             this.parentApp.setWsUpdateHandler(handler);
         }
@@ -43,18 +46,18 @@ export default class BaseComponent extends Component<any, any> {
         }
     }
 
-    getApplicationProfile = ():ApplicationProfile => {
+    getApplicationProfile = (): ApplicationProfile => {
         return this.props.applicationProfile == null ? new ApplicationProfile() : this.props.applicationProfile;
     }
 
-    handleInputChange=(event: any) =>{
+    handleInputChange = (event: any) => {
         const target = event.target;
         const value = target.type == 'checkbox' ? target.checked : target.value;
         this.setState({ [target.name]: value });
         console.debug("input changed: ", target.name, value);
     }
 
-   
+
     /**
      * 
      * @param {boolean} withProgress 
@@ -74,10 +77,10 @@ export default class BaseComponent extends Component<any, any> {
      * @param errorCallback 
      * @param params 
      */
-    doAjax(method: Function, withProgress: boolean, successCallback: Function, errorCallback?: Function, ...params: any ) {
+    doAjax = (method: Function, withProgress: boolean, successCallback: Function, errorCallback?: Function, ...params: any) => {
         this.startLoading(withProgress);
 
-        method(...params).then(function (response:WebResponse) {
+        method(...params).then(function (response: WebResponse) {
             if (successCallback) {
                 successCallback(response);
             }
@@ -95,34 +98,38 @@ export default class BaseComponent extends Component<any, any> {
         })
     }
 
-    commonAjax(method: Function, successCallback: Function, errorCallback: Function, ...params:any) {
+    commonAjax = (method: Function, successCallback: Function, errorCallback: Function, ...params: any) => {
         this.doAjax(method, false, successCallback, errorCallback, ...params);
     }
-    commonAjaxWithProgress(method: Function, successCallback: Function, errorCallback: Function, ...params:any) {
+    commonAjaxWithProgress = (method: Function, successCallback: Function, errorCallback: Function, ...params: any) => {
         this.doAjax(method, true, successCallback, errorCallback, ...params);
     }
-    getLoggedUser():User|undefined {
-        const user:User|undefined = this.props.loggedUser;
+    getLoggedUser = (): User | undefined => {
+        const user: User | undefined = this.props.loggedUser;
         if (!user) return undefined;
         user.password = "^_^";
         return Object.assign(new User(), user);
     }
-    isAdmin = () : boolean => {
+    isAdmin = (): boolean => {
         const user = this.getLoggedUser();
         if (!user) return false;
         return user.hasRole(AuthorityType.admin_asrama);
     }
-    isLoggedUserNull(): boolean {
-        return false == this.props.loginStatus || null == this.props.loggedUser;
+    scrollTop = () => {
+        console.info("SCROLL TOP");
+        const opt:ScrollToOptions = { top:0,  behavior: 'smooth' };
+        doItLater(()=>{
+        window.scrollTo(opt);
+        }, 100);
     }
-    isUserLoggedIn(): boolean {
+    isUserLoggedIn = (): boolean => {
         const loggedIn = true == this.props.loginStatus && null != this.props.loggedUser;
         console.debug("LOgged in: ", loggedIn);
         return loggedIn;
     }
-    showConfirmation(body:any): Promise<boolean> {
+    showConfirmation = (body: any): Promise<boolean> => {
         const app = this;
-        return new Promise(function(resolve, reject){
+        return new Promise(function (resolve, reject) {
             const onYes = function (e) {
                 resolve(true);
             }
@@ -131,11 +138,11 @@ export default class BaseComponent extends Component<any, any> {
             }
             app.parentApp.showAlert("Confirmation", body, false, onYes, onNo);
         });
-  
+
     }
-    showConfirmationDanger(body: any): Promise<any> {
+    showConfirmationDanger = (body: any): Promise<any> => {
         const app = this;
-        return new Promise(function(resolve, reject){
+        return new Promise(function (resolve, reject) {
             const onYes = function (e) {
                 resolve(true);
             }
@@ -146,11 +153,11 @@ export default class BaseComponent extends Component<any, any> {
         });
 
     }
-    showInfo(body: any) {
+    showInfo = (body: any) => {
         this.parentApp.showAlert("Info", body, true, function () { });
     }
-    showError(body: any) {
-       
+    showError = (body: any) => {
+
         this.parentApp.showAlertError("Error", body, true, function () { });
     }
 
@@ -164,28 +171,29 @@ export default class BaseComponent extends Component<any, any> {
         this.setState({ updated: new Date() });
     }
 
-    showCommonErrorAlert = (e:any) => {
+    showCommonErrorAlert = (e: any) => {
         console.error(e);
-        
+
         let message;
-        if (e.response && e.response.data ) {
+        if (e.response && e.response.data) {
             message = e.response.data.message;
         } else {
             message = e;
-        } 
-        this.showError("Operation Failed: "+message);
+        }
+        this.showError("Operation Failed: " + message);
     }
     componentDidMount() {
-        this.validateLoginStatus();
+        if (this.validateLoginStatus()) {
+        }
     }
     componentDidUpdate() {
-        if (this.authenticated == true && this.isLoggedUserNull()) {
-            console.debug(typeof this , "BACK TO LOGIN");
+        if (this.authenticated == true && this.isUserLoggedIn() == false) {
+            console.debug(typeof this, "BACK TO LOGIN");
             this.validateLoginStatus();
         }
     }
 
-    getServices = () : Services => {
+    getServices = (): Services => {
         return this.props.services;
     }
 }

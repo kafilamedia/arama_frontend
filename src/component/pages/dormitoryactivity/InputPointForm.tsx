@@ -49,9 +49,11 @@ class InputPointForm extends BaseComponent {
     componentDidMount() {
         super.componentDidMount();
         this.validateStudentData();
+        this.scrollTop();
         doItLater(()=>{
             this.nextStep(1);
         }, 200);
+        
     }
     setAttachment = (attachmentInfo:AttachmentInfo|undefined) => {
         this.setState({attachmentInfo:attachmentInfo});

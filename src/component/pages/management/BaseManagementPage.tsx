@@ -17,6 +17,7 @@ export default class BaseManagementPage extends BaseComponent {
         }
         this.overrideLoading = overrideLoading;
         this.masterDataService = this.getServices().masterDataService;
+         
     }
     startLoading = (withProgress: boolean = false) => {
         if (this.overrideLoading) {
@@ -97,15 +98,17 @@ export default class BaseManagementPage extends BaseComponent {
     resetForm = (callback?: () => any) => {
         this.setState({ record: this.emptyRecord() }, callback);
     }
-    oneRecordLoaded = (item: any) => {
+    oneRecordLoaded =  (item: any) => {
         this.setState({ record: item }, () => {
             if (this.formRef.current) {
                 this.formRef.current.showModal();
             }
-        })
+            this.scrollTop();
+        });
     }
     componentDidMount() {
         super.componentDidMount();
+        this.scrollTop();
         this.loadItems();
     }
     recordUpdated = (response: WebResponse) => {

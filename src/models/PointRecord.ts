@@ -34,6 +34,9 @@ export default class PointRecord extends BaseEntity
 
     pictures:Pictures[] = [];
 
+    /**
+     * get picture URL
+     */
     getPicture = () :string|null => {
         if (this.pictures.length == 0) {
             return null;
