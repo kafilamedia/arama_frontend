@@ -123,7 +123,7 @@ const ItemsList = (props: { loading: boolean, startingNumber: number, items: Poi
                                 <tr key={"PointRecord-" + i}>
                                     <td>{i + 1 + props.startingNumber}</td>
                                     <td>{item.student?.user?.name}</td>
-                                    <td>{item.location} {item.getDate().toDateString()} {item.time}</td>
+                                    <td>{item.getTimestamp()}</td>
                                     <td>{item.rule_point?.name} ({item.rule_point?.category?.name})</td>
                                     <td>{item.rule_point?.point}</td>
                                     <td>{item.getPicture() ?

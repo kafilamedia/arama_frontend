@@ -116,7 +116,7 @@ export default class BaseComponent extends Component<any, any> {
         return user.hasRole(AuthorityType.admin_asrama);
     }
     scrollTop = () => {
-        console.info("SCROLL TOP");
+        // console.info("SCROLL TOP");
         const opt:ScrollToOptions = { top:0,  behavior: 'smooth' };
         doItLater(()=>{
         window.scrollTo(opt);

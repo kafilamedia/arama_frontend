@@ -15,7 +15,7 @@ export default class PointRecordDetail extends Component<IProps, any> {
     render() {
         const record = PointRecord.clone(this.props.record);
         const pictureUrl = record.getPicture();
-        const timeStamp = record.getDate().toLocaleDateString() + " "+ record.time;
+        const timeStamp = record.getTimestamp();
         return <Card title={"Record Detail - "+timeStamp} footerContent={<AnchorWithIcon className="btn btn-dark" onClick={this.props.close} >Ok</AnchorWithIcon>}>
             <FormGroup label="Name">{record.student?.user?.name} - {record.student?.kelas?.level} {record.student?.kelas?.rombel}</FormGroup>
             <FormGroup label="Item">

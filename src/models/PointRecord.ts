@@ -48,7 +48,20 @@ export default class PointRecord extends BaseEntity
         return parseDate(this.dateString());
     }
 
+    getTimestamp = () :string => {
+
+        const date = this.getDate();
+        const day = DAYS[date.getDay()];
+        return day+", "+[
+            twoDigits(date.getDate()), twoDigits(date.getMonth()+1), date.getFullYear()
+        ].join("/")+" "+this.time;
+    }
+
     public static clone = (object:PointRecord) => {
         return Object.assign(new PointRecord(), object);
     }
 }
+
+const DAYS = [
+    "Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
+]

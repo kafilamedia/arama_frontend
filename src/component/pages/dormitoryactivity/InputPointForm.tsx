@@ -20,7 +20,7 @@ import WebResponse from '../../../models/commons/WebResponse';
 import FormGroup from '../../form/FormGroup';
 import { doItLater } from '../../../utils/EventUtil';
 import AttachmentInfo from './../../../models/settings/AttachmentInfo';
-import { contextPath } from './../../../constant/Url';
+
 class State {
     student?: Student
     category?: Category;
