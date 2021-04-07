@@ -22,11 +22,18 @@ export default class BaseComponent extends Component<any, any> {
         this.parentApp = props.mainApp;
     }
 
-    validateLoginStatus = () => {
-        if (this.authenticated == false) return true;
+    validateLoginStatus = (callback ?:() => any) => {
+        if (this.authenticated == false) { 
+            if (callback) {
+                callback();
+            }
+            return true; }
         if (this.isUserLoggedIn() == false) {
             this.backToLogin();
             return false;
+        }
+        if (callback) {
+            callback();
         }
         return true;
     }

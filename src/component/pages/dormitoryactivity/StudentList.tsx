@@ -72,8 +72,10 @@ class StudentList extends BaseManagementPage {
         )
     }
     componentDidMount() {
-        super.componentDidMount();
-        this.loadClasses();
+        this.validateLoginStatus(()=>{
+            this.scrollTop();
+            this.loadClasses();
+        })
     }
     updateSelectedClass = (e: ChangeEvent) => {
         const target = e.target as HTMLSelectElement;

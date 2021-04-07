@@ -78,6 +78,8 @@ class FormStepOne extends BaseComponent {
 
                 </FormGroup>
                 <hr/>
+                <AnchorWithIcon className="btn btn-secondary float-left" iconClassName="fas fa-arrow-left" onClick={this.props.onBack} >Back</AnchorWithIcon>
+                
                 <AnchorWithIcon className="btn btn-info float-right" iconClassName="fas fa-arrow-right" onClick={this.onSubmit}>Next</AnchorWithIcon>
             </form >
 

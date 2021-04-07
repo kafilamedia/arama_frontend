@@ -47,8 +47,16 @@ class RulePointManagement extends BaseManagementPage
                 this.callApiSubmit(request);
             })
     }
+    componentDidMount() {
+        this.validateLoginStatus(()=>{
+            this.scrollTop();
+            this.loadCategories();
+        });
+        
+        
+    }
     categoriesLoaded = (response: WebResponse) => {
-        this.setState({categories:response.items, categoriesLoaded: true}, this.resetForm);
+        this.setState({categories:response.items, categoriesLoaded: true}, ()=>{ this.resetForm(); this.loadItems() });
     }
     categoriesNotLoaded = (response: WebResponse) => {
         this.setState({categories: [], categoriesLoaded: true}, this.resetForm);
@@ -67,10 +75,7 @@ class RulePointManagement extends BaseManagementPage
             req
         )
     }
-    componentDidMount = () => {
-        super.componentDidMount();
-        this.loadCategories();
-    }
+    
     emptyRecord = ():any => {
         const record = new RulePoint();
         if (this.state.categories.length > 0) {

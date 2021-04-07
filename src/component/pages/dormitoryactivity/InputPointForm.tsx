@@ -58,6 +58,13 @@ class InputPointForm extends BaseComponent {
     setAttachment = (attachmentInfo:AttachmentInfo|undefined) => {
         this.setState({attachmentInfo:attachmentInfo});
     }
+    removeStudent = () => {
+       this.setState({formStep: 0}, ()=>{
+           doItLater(()=>{
+               this.setState({student:undefined})
+           }, 500);
+       })
+    }
     removeAttachment = () => {
         this.setAttachment(undefined);
     }
@@ -100,12 +107,16 @@ class InputPointForm extends BaseComponent {
                 <Modal title={student.user?.name + " - " + student.kelas?.level + student.kelas?.rombel + " " + student.kelas?.sekolah?.nama}>
 
                     <Progress step={this.state.formStep} totalStep={this.totalStep} />
-                    {this.state.formStep == 1 ? <FormStepOne category={this.state.category} setSelectedCategory={this.setCategory}
-                        onSubmit={() => { this.nextStep(2) }} />
+                    {this.state.formStep == 1 ?
+                         <FormStepOne category={this.state.category} 
+                            onBack={this.removeStudent}
+                            setSelectedCategory={this.setCategory}
+                            onSubmit={() => { this.nextStep(2) }} />
                         : null}
                     {this.state.formStep == 2 && this.state.category ?
                         <FormStepTwo
                             rulePoint={this.state.rulePoint}
+                            
                             setRulePoint={this.setRulePoint}
                             category={this.state.category} onBack={() => this.nextStep(1)} onSubmit={() => { this.nextStep(3) }}
                         /> : null}
