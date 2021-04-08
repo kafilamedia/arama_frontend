@@ -32,21 +32,31 @@ class MedicalRecordForm extends BaseComponent {
         this.studentService = this.getServices().studentService;
     }
     setStudent = (student: Student | undefined) => {
+        if (student) {
+            student = Object.assign(new Student(), student);
+        }
         this.setState({ student: student }, this.reset);
     }
+    validateStudentData = () => {
+        const student = this.props.location.state?this.props.location.state.student : undefined;
+        if (student) {
+            this.setStudent(student);
+        }
+    }
+    
     reset = () => {
         doItLater(() => {
+            if (this.state.student)
             this.inputRefs.forEach((ref: any, day: number) => {
                 if (ref) {
-                    ref.setRecord( MedicalRecord.instance(day, this.state.month, this.state.year));
+                    ref.reset();
                 }
             })
-        }, 500);
+        }, 100);
     }
     recordsLoaded = (response: WebResponse) => {
 
         let mappedItems = new Map();
-
         if (response.items) {
             mappedItems = this.toMap(response.items);
         }
@@ -56,16 +66,15 @@ class MedicalRecordForm extends BaseComponent {
                 this.inputRefs.forEach((ref: any, day: number) => {
                     let record = this.state.mappedItems.get(day);
                     if (!record) {
-                        record = MedicalRecord.instance(day, this.state.month, this.state.year);
+                        record = MedicalRecord.instance(this.state.student?.id,day, this.state.month, this.state.year);
                     } else {
                         record = MedicalRecord.clone(record);
                     }
-                    console.info("WILL set recod: ", day, record);
                     if (ref) {
                         ref.setRecord(record);
                     }
                 })
-            }, 500);
+            }, 100);
         });
     }
 
@@ -92,7 +101,10 @@ class MedicalRecordForm extends BaseComponent {
     }
 
     componentDidMount() {
-        this.scrollTop();
+        this.validateLoginStatus(()=>{
+            this.scrollTop();
+            this.validateStudentData();
+        });
     }
     dayCount = () => {
         return getMonthDays(this.state.month, this.state.year);
@@ -106,7 +118,7 @@ class MedicalRecordForm extends BaseComponent {
         for (let i = 1; i <= dayCount; i++) {
             days.push(i);
         }
-        const gridTemplateColumns = ('70px ').repeat(dayCount);
+        const gridTemplateColumns = ('150px ').repeat(dayCount);
 
         return (
             <div className="container-fluid section-body">

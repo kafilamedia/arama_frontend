@@ -148,19 +148,20 @@ const _menus: Menu[] = [
                 role: [ AuthorityType.musyrif_asrama],
             },
             {
-                code: 'pointsummary',
-                name: 'Summary Point',
-                url: 'pointsummary',
-                menuClass: 'fas fa-list',
-                role: [ AuthorityType.musyrif_asrama],
-            },
-            {
                 code: 'medicalrecord',
                 name: 'Medical Record',
                 url: 'medicalrecord',
                 menuClass: 'fas fa-briefcase-medical',
                 role: [ AuthorityType.musyrif_asrama],
             },
+            {
+                code: 'pointsummary',
+                name: 'Summary Point',
+                url: 'pointsummary',
+                menuClass: 'fas fa-list',
+                role: [ AuthorityType.musyrif_asrama],
+            },
+           
             // {
             //     code: 'dashboard_productsales',
             //     name: 'Product Sales',

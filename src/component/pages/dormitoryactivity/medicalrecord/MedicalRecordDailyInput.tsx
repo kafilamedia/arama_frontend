@@ -14,11 +14,11 @@ class MedicalRecordDailyInput extends BaseComponent {
     constructor(props) {
         super(props, true);
         this.studentService = this.getServices().studentService;
-        this.state.record = MedicalRecord.instance(props.day, props.month, props.year);
+        this.state.record = MedicalRecord.instance(props.student.id, props.day, props.month, props.year);
     }
     reset = () => {
         const props = this.props;
-        this.setState({record:  MedicalRecord.instance(props.day, props.month, props.year)});
+        this.setState({record:  MedicalRecord.instance(props.student.id, props.day, props.month, props.year)});
     }
     setRecord = (record:MedicalRecord) => {
         this.setState({record: MedicalRecord.clone(record)});
@@ -56,10 +56,10 @@ class MedicalRecordDailyInput extends BaseComponent {
                     <tbody>
                         <SingleRow><p className='text-center'> {record.day}/{record.month}</p></SingleRow>
                         <SingleRow>
-                            <input onChange={this.onChange} className="form-control" name="temperature_morning" value={record.temperature_morning ?? ""} />
+                            <input type='number' onChange={this.onChange} className="form-control" name="temperature_morning" value={record.temperature_morning ?? ""} />
                         </SingleRow>
                         <SingleRow>
-                            <input onChange={this.onChange} className="form-control" name="temperature_afternoon" value={record.temperature_afternoon ?? ""} />
+                            <input type='number' onChange={this.onChange} className="form-control" name="temperature_afternoon" value={record.temperature_afternoon ?? ""} />
                         </SingleRow>
                         <SingleRow>
                             <input style={{ marginRight: 5 }} onChange={this.onChange} type="checkbox" name="breakfast" checked={record.breakfast ?? false} />
@@ -110,7 +110,7 @@ class MedicalRecordDailyInput extends BaseComponent {
 const SingleRow = (props: { children: any }) => {
     return (
         <tr><td>
-            <div style={{minHeight:40}}>{props.children}</div></td></tr>
+            <div className="text-center" style={{minHeight:40}}>{props.children}</div></td></tr>
     )
 }
 

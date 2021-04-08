@@ -53,10 +53,7 @@ class StudentList extends BaseManagementPage {
             this.masterDataService.list,
             this.itemsLoaded,
             this.showCommonErrorAlert,
-            {
-                modelName: 'student',
-                filter: this.state.filter
-            }
+            { modelName: 'student', ilter: this.state.filter }
         )
     }
     loadAtPage = (page: number) => {
@@ -72,7 +69,7 @@ class StudentList extends BaseManagementPage {
         )
     }
     componentDidMount() {
-        this.validateLoginStatus(()=>{
+        this.validateLoginStatus(() => {
             this.scrollTop();
             this.loadClasses();
         })
@@ -86,9 +83,27 @@ class StudentList extends BaseManagementPage {
         filter.fieldsFilter['class_id'] = target.value;
         this.setState({ filter: filter });
     }
+    inputPage = (type: string, s: Student) => {
+        switch (type) {
+            case 'pointrecord':
+                this.inputPoint(s);
+                break;
+            case 'medicalrecord':
+                this.inputMedicalRecord(s);
+                break;
+            default:
+                break;
+        }
+    }
     inputPoint = (student: Student) => {
         this.props.history.push({
             pathname: "/dormitoryactivity/inputpoint",
+            state: { student: student }
+        })
+    }
+    inputMedicalRecord = (student: Student) => {
+        this.props.history.push({
+            pathname: "/dormitoryactivity/medicalrecord",
             state: { student: student }
         })
     }
@@ -140,11 +155,11 @@ class StudentList extends BaseManagementPage {
                                 </div>
                             </React.Fragment> : null}
                     </FormGroup>
-                    {showPointRecord?
+                    {showPointRecord ?
                         <FormGroup label="Period">
                             {filter.day} {MONTHS[(filter.month ?? 1) - 1]} {filter.year} - {filter.dayTo} {MONTHS[(filter.monthTo ?? 1) - 1]} {filter.yearTo}
                         </FormGroup>
-                    :null}
+                        : null}
                     <FormGroup>
                         <input type="submit" className="btn btn-primary" value="Submit" />
                     </FormGroup>
@@ -152,36 +167,37 @@ class StudentList extends BaseManagementPage {
                 </form>
                 <p />
                 <NavigationButtons onClick={this.loadAtPage} activePage={filter.page ?? 0} limit={filter.limit ?? 10} totalData={this.state.totalData} />
-                <ItemsList showPointRecord={showPointRecord} loading={this.state.loading} inputPoint={this.inputPoint} startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} items={this.state.items} />
+                <ItemsList showPointRecord={showPointRecord} loading={this.state.loading} inputPage={this.inputPage} startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} items={this.state.items} />
             </div>
         )
     }
 }
 
-const ItemsList = (props: { showPointRecord:boolean, loading: boolean, startingNumber: number, inputPoint(s: Student): any, items: Student[] }) => {
+const ItemsList = (props: { showPointRecord: boolean, loading: boolean, startingNumber: number, inputPage(type: string, s: Student): any, items: Student[] }) => {
 
     return (
         <div style={{ overflow: 'scroll' }}>
             <table className="table table-striped">
-                {props.showPointRecord?tableHeader("No", "", "Name", "Kelas", "Point"):tableHeader("No", "", "Name", "Kelas")}
+                {props.showPointRecord ? tableHeader("No", "", "Name", "Kelas", "Point") : tableHeader("No", "", "Name", "Kelas")}
                 <tbody>
                     {props.loading ?
-                        <tr>
-                            <td colSpan={5}>
-                                <Spinner />
-                            </td>
-                        </tr>
+                        <tr><td colSpan={5}><Spinner /></td></tr>
 
                         : props.items.map((student, i) => {
 
                             return (
                                 <tr key={"student-" + i}>
                                     <td>{i + 1 + props.startingNumber}</td>
-                                    <td><AnchorWithIcon className="btn" onClick={(e) => props.inputPoint(student)} iconClassName="far fa-edit" /></td>
+                                    <td>
+                                        <div style={{ width: '100px' }}>
+                                            <AnchorWithIcon className="btn" onClick={(e) => props.inputPage('pointrecord', student)} iconClassName="far fa-edit" />
+                                            <AnchorWithIcon className="btn" onClick={(e) => props.inputPage('medicalrecord', student)} iconClassName="fas fa-notes-medical" />
+                                        </div>
+                                    </td>
                                     <td>
                                         {student.user?.name}</td>
                                     <td>{student.kelas?.level} {student.kelas?.rombel} {student.kelas?.sekolah?.nama}</td>
-                                    {props.showPointRecord? <td>{student.point}</td> : null}
+                                    {props.showPointRecord ? <td>{student.point}</td> : null}
                                 </tr>
                             )
                         })}

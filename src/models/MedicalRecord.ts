@@ -21,11 +21,12 @@ export default class MedicalRecord extends BaseEntity {
       public static clone = (obj:MedicalRecord) : MedicalRecord => {
             return Object.assign(new MedicalRecord(), obj);
       }
-      public static instance = (d: number, m: number, y: number): MedicalRecord => {
+      public static instance = (student_id:string, d: number, m: number, y: number): MedicalRecord => {
             const obj = new MedicalRecord();
             obj.day = d;
             obj.month = m;
             obj.year = y;
+            obj.student_id = student_id;
             return obj;
       }
 }
