@@ -14,24 +14,21 @@ class MedicalRecordDailyInput extends BaseComponent {
     constructor(props) {
         super(props, true);
         this.studentService = this.getServices().studentService;
+        this.state.record = MedicalRecord.instance(props.day, props.month, props.year);
     }
-
+    reset = () => {
+        const props = this.props;
+        this.setState({record:  MedicalRecord.instance(props.day, props.month, props.year)});
+    }
     setRecord = (record:MedicalRecord) => {
-        
-        this.setState({record: record});
-    }
-
-    componentDidMount() {
-        this.validateLoginStatus(() => {
-             
-        })
+        this.setState({record: MedicalRecord.clone(record)});
     }
 
     onChange = (e: ChangeEvent) => {
         const record = this.state.record;
         const target = e.target as HTMLInputElement;
         record[target.name] = target.type == 'checkbox' ? target.checked : target.value;
-        this.setState({ record: record });
+        this.setState({ record: MedicalRecord.clone(record) });
     }
 
     recordSubmitted = (response:WebResponse) => {
@@ -42,10 +39,6 @@ class MedicalRecordDailyInput extends BaseComponent {
         e.preventDefault();
         const record:MedicalRecord =  this.state.record;
         record.student_id = this.props.student.id;
-        record.month = this.props.month;
-        record.year = this.props.year;
-        record.day = this.props.day;
-
         this.commonAjax(
             this.studentService.submitMedicalRecord,
             this.recordSubmitted,
@@ -59,9 +52,9 @@ class MedicalRecordDailyInput extends BaseComponent {
         const record = this.state.record;
         return (
             <form onSubmit={this.onSubmit}>
-                <table className="table table-bordered table-striped" style={{ fontSize: '0.7em' }}>
+                <table className="table table-bordered table-striped" style={{ fontSize: '0.8em' }}>
                     <tbody>
-                        <SingleRow><span className='text-center'>{props.day} {record.day}</span></SingleRow>
+                        <SingleRow><p className='text-center'> {record.day}/{record.month}</p></SingleRow>
                         <SingleRow>
                             <input onChange={this.onChange} className="form-control" name="temperature_morning" value={record.temperature_morning ?? ""} />
                         </SingleRow>
@@ -90,11 +83,11 @@ class MedicalRecordDailyInput extends BaseComponent {
                         </SingleRow>
                         <SingleRow>
                             <input style={{ marginRight: 5 }} onChange={this.onChange} type="checkbox" name="antigen_test" checked={record.antigen_test ?? false} />
-                            {record.pcr_test ? "yes" : "no"}
+                            {record.antigen_test ? "yes" : "no"}
                         </SingleRow>
                         <SingleRow>
                             <input style={{ marginRight: 5 }} onChange={this.onChange} type="checkbox" name="pcr_test" checked={record.pcr_test ?? false} />
-                            {record.dinner ? "yes" : "no"}
+                            {record.pcr_test ? "yes" : "no"}
                         </SingleRow>
                         <SingleRow>
                             <input onChange={this.onChange} type="text" name="description" value={record.description ?? ""} className="form-control" />
@@ -103,6 +96,8 @@ class MedicalRecordDailyInput extends BaseComponent {
                             <button className="btn btn-success" type="submit">
                                 <i className="fas fa-save" />
                             </button>
+                            <br/>
+                            <p className='text-center'> {record.day}/{record.month}</p>
                         </SingleRow>
                     </tbody>
                 </table>
