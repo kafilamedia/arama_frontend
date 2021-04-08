@@ -1,0 +1,201 @@
+import React from 'react'
+import BaseComponent from '../../../BaseComponent';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import StudentForm from './StudentForm';
+import Student from './../../../../models/Student';
+import FilterPeriod from './../../../form/FilterPeriod';
+import Filter from './../../../../models/commons/Filter';
+import FormGroup from './../../../form/FormGroup';
+import { getMonthDays, MONTHS } from './../../../../utils/DateUtil';
+import Card from './../../../container/Card';
+import MedicalRecord from './../../../../models/MedicalRecord';
+import MedicalRecordDailyInput from './MedicalRecordDailyInput';
+import StudentService from './../../../../services/StudentService';
+import WebResponse from './../../../../models/commons/WebResponse';
+import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
+import { doItLater } from './../../../../utils/EventUtil';
+import { compose } from 'redux';
+class State {
+    student?: Student;
+    month: number = new Date().getMonth() + 1;
+    year: number = new Date().getFullYear();
+    mappedItems: Map<number, MedicalRecord> = new Map()
+}
+class MedicalRecordForm extends BaseComponent {
+    state: State = new State();
+    studentService: StudentService;
+    inputRefs: Map<number, any> = new Map();
+    constructor(props) {
+        super(props, true);
+        this.studentService = this.getServices().studentService;
+    }
+    setStudent = (student: Student | undefined) => {
+        this.setState({ student: student });
+    }
+    recordsLoaded = (response: WebResponse) => {
+        
+        let mappedItems = new Map();
+
+        if (response.items) {
+            mappedItems = this.toMap(response.items);
+        }
+
+        this.setState({ mappedItems: mappedItems }, () => {
+            doItLater(() => {
+                this.inputRefs.forEach((ref: any , day: number) => {
+                    let record = this.state.mappedItems.get(day);
+                    if (! record) {
+                        record = new MedicalRecord();
+                        record.day = day;
+                        record.month = this.state.month;
+                        record.year = this.state.year;
+                    }
+                    console.info("WILL set recod: ", day, record);
+                    if (ref  ) {
+                        ref.setRecord(record  );
+                    }
+                })
+            }, 500);
+        });
+    }
+     
+
+    toMap = (items: MedicalRecord[]): Map<number, MedicalRecord> => {
+        const map: Map<number, MedicalRecord> = new Map();
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            map.set(item.day, item);
+        }
+        return map;
+    }
+
+    loadMonthlyRecord = () => {
+        this.commonAjax(
+            this.studentService.loadMonthlyMedicalRecord,
+            this.recordsLoaded, this.showCommonErrorAlert,
+            this.state.student?.id, this.state.month, this.state.year
+        )
+    }
+
+    getFilter = (): Filter => {
+        return { month: this.state.month, year: this.state.year }
+    }
+
+    componentDidMount() {
+        this.scrollTop();
+    }
+    dayCount = () => {
+        return getMonthDays(this.state.month, this.state.year);
+    }
+    render() {
+        const student = this.state.student;
+        const filter = this.getFilter();
+        const mappedRecord = this.state.mappedItems;
+        const dayCount = this.dayCount();
+        const days: number[] = [];
+        for (let i = 1; i <= dayCount; i++) {
+            days.push(i);
+        }
+        const gridTemplateColumns = ('70px ').repeat(dayCount);
+
+        return (
+            <div className="container-fluid section-body">
+                <h2>Medical Record Form {student ? student.user?.name : ""}</h2>
+                <StudentForm setItem={this.setStudent} />
+                <p />
+                {student ?
+                    <Card>
+                        <FormGroup label={"Period (" + MONTHS[(filter.month ?? 1) - 1] + " " + filter.year + ")"}>
+                            <div className="input-group">
+                                <FilterPeriod filter={filter} hideDay onChange={this.handleInputChange} />
+                            </div>
+                        </FormGroup>
+                        <FormGroup>
+                            <AnchorWithIcon iconClassName="fas fa-redo" onClick={this.loadMonthlyRecord}>Load Data</AnchorWithIcon>
+                        </FormGroup>
+
+                        <div className="container-fluid  row">
+                            <div className="col-md-3">
+                                <LeftLabel />
+                            </div>
+                            <div className="col-md-9" style={{ overflow: 'scroll' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: gridTemplateColumns }}>
+
+                                    {days.map(day => 
+                                        <MedicalRecordDailyInput key={"record-input-" + day} 
+                                        
+                                        ref={ ref => {
+                                            console.debug("SET ref: ", day);
+                                             this.inputRefs.set(day, ref)
+                                            
+                                        }} student={student}
+                                            record={mappedRecord.get(day)} year={this.state.year} month={this.state.month} day={day} />)}
+                                </div>
+                            </div>
+                        </div>
+                    </Card>
+                    : null}
+            </div>
+        )
+    }
+
+}
+
+const Input = (props: { records: Map<number, MedicalRecord>, student: Student, month: number, year: number }) => {
+    const dayCount = getMonthDays(props.month, props.year);
+    const days: number[] = [];
+    for (let i = 1; i <= dayCount; i++) {
+        days.push(i);
+    }
+    const gridTemplateColumns = ('70px ').repeat(dayCount);
+    return (
+        <div className="container-fluid  row">
+            <div className="col-md-3">
+                <LeftLabel />
+            </div>
+            <div className="col-md-9" style={{ overflow: 'scroll' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: gridTemplateColumns }}>
+
+                    {days.map(day => <MedicalRecordDailyInput student={props.student}
+                        record={props.records.get(day)} year={props.year} month={props.month} day={day} />)}
+                </div>
+            </div>
+        </div>
+
+    )
+}
+const LeftLabel = (props: {}) => {
+    const labels = [
+        "Pengukuran suhu badan pagi hari",
+        "Pengukuran suhu badan sore hari",
+        "Makan pagi",
+        "Makan siang",
+        "Makan malam",
+        "Konsumsi vitamin / Obat pribadi",
+        "Genose test",
+        "Swab antigen",
+        "PCR test",
+        "Kesimpulan sementara"
+    ]
+
+    return (
+        <table className="table table-bordered table-striped" style={{ fontSize: '0.7em' }}>
+            <tbody>
+                <tr><td><div style={{ minHeight: 40 }}>Pengukuran</div></td></tr>
+                {labels.map((label, i) => {
+                    return (<tr key={"label-" + i}>
+                        <td><div style={{ minHeight: 40 }}>{i + 1}. {label}</div></td>
+                    </tr>)
+                })}
+            </tbody>
+        </table>
+    )
+}
+
+export default withRouter(
+    connect(
+        mapCommonUserStateToProps
+    )(MedicalRecordForm)
+)

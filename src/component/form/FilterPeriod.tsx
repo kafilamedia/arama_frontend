@@ -9,17 +9,18 @@ const days = (): number[] => {
     }
     return arr;
 }
-const  FilterPeriod = (props: { mode?: string, filter: Filter, onChange(e: ChangeEvent): any, }) => {
+const  FilterPeriod = (props: { hideDay?:boolean, mode?: string, filter: Filter, onChange(e: ChangeEvent): any, }) => {
     const filter: Filter = props.filter;
     if (props.mode == "to") {
         return (
             <React.Fragment>
                 <input className="form-control" value="Date To" disabled />
+                {props.hideDay != true?
                 <select data-type="number" className="form-control" name="dayTo" value={filter.dayTo ?? 0} onChange={props.onChange}>
                     {days().map((d) => {
                         return <option key={"f-d-" + d} value={d}>{d == 0 ? 'day' : d}</option>
                     })}
-                </select>
+                </select> :null}
                 <select data-type="number" className="form-control" name="monthTo" value={filter.monthTo ?? 0} onChange={props.onChange}>
                     {MONTHS.map((m, i) => {
                         return <option key={"f-m-" + i} value={(i + 1)}>{m}</option>
@@ -33,11 +34,11 @@ const  FilterPeriod = (props: { mode?: string, filter: Filter, onChange(e: Chang
     return (
         <React.Fragment>
             <input className="form-control" value="Date From" disabled />
-            <select data-type="number" className="form-control" name="day" value={filter.day ?? 0} onChange={props.onChange}>
+            {props.hideDay != true?<select data-type="number" className="form-control" name="day" value={filter.day ?? 0} onChange={props.onChange}>
                 {days().map((d) => {
                     return <option key={"f-d-" + d} value={d}>{d == 0 ? 'day' : d}</option>
                 })}
-            </select>
+            </select>: null}
             <select data-type="number" className="form-control" name="month" value={filter.month ?? 0} onChange={props.onChange}>
                 {MONTHS.map((m, i) => {
                     return <option key={"f-m-" + i} value={(i + 1)}>{m}</option>

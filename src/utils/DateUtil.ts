@@ -22,13 +22,13 @@ const regularMonths = [ 31, (  28  ), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
  * 
  * @param {Number} month starts at 0
  */
-export const getMonthDays = (month:number) : number=> {
-    if(new Date().getFullYear() % 4 == 0){
+export const getMonthDays = (month:number, year:number = new Date().getFullYear()) : number=> {
+    if(year % 4 == 0){
         return leapMonths[month];
     }
     return regularMonths[month];
 }
-  
+
 export const getInputReadableDate = (date:Date) :string => {
     const year = date.getFullYear();
 

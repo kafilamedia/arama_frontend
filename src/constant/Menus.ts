@@ -154,6 +154,13 @@ const _menus: Menu[] = [
                 menuClass: 'fas fa-list',
                 role: [ AuthorityType.musyrif_asrama],
             },
+            {
+                code: 'medicalrecord',
+                name: 'Medical Record',
+                url: 'medicalrecord',
+                menuClass: 'fas fa-briefcase-medical',
+                role: [ AuthorityType.musyrif_asrama],
+            },
             // {
             //     code: 'dashboard_productsales',
             //     name: 'Product Sales',

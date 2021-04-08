@@ -5,6 +5,7 @@ import Filter from '../models/commons/Filter';
 import PointRecord from './../models/PointRecord';
 import AttachmentInfo from './../models/settings/AttachmentInfo';
 import WebRequest from './../models/commons/WebRequest';
+import MedicalRecord from './../models/MedicalRecord';
 export default class StudentService {
     
 
@@ -30,7 +31,23 @@ export default class StudentService {
         return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/classes", {});
     }
 
-    setPointDropped = (id: number, dropped: boolean) => {
+    public submitMedicalRecord = (record:MedicalRecord) => {
+        const req:WebRequest = {
+            medicalRecord: record
+        }
+        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/submitmedicalrecord", req)
+    }
+    public loadMonthlyMedicalRecord = (studentId:number, month:number, year:number) => {
+        const req:WebRequest = {
+            filter: {
+                year:year, month:month,
+                fieldsFilter: {student_id:studentId}
+            }
+        }
+        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/monthlymedicalrecord", req)
+    }
+
+    public setPointDropped = (id: number, dropped: boolean) => {
         return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/droppoint", { 
             pointRecord : {
                 id: id,

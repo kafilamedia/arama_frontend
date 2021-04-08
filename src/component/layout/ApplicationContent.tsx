@@ -19,6 +19,7 @@ import RulePointManagement from '../pages/management/RulePointManagement';
 import StudentList from '../pages/dormitoryactivity/StudentList';
 import InputPointForm from '../pages/dormitoryactivity/InputPointForm';
 import PointRecordsManagement from '../pages/dormitoryactivity/PointRecordsManagement';
+import MedicalRecordForm from '../pages/dormitoryactivity/medicalrecord/MedicalRecordForm';
 import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
 import AboutUs from './../pages/home/AboutUs';
 import Register from '../pages/login/Register';
@@ -116,6 +117,9 @@ const StudentsRoute = (proos) => {
             } />
              <Route exact path="/dormitoryactivity/pointsummary" render={
                 (props:any) => <PointRecordsManagement/>
+            } />
+             <Route exact path="/dormitoryactivity/medicalrecord" render={
+                (props:any) => <MedicalRecordForm/>
             } />
             
         </Switch>

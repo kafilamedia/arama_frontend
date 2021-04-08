@@ -62,7 +62,7 @@ class InputPointForm extends BaseComponent {
        this.setState({formStep: 0}, ()=>{
            doItLater(()=>{
                this.setState({student:undefined})
-           }, 500);
+           }, 500); 
        })
     }
     removeAttachment = () => {
@@ -93,7 +93,7 @@ class InputPointForm extends BaseComponent {
         )
     }
     recordSubmitted = (response: WebResponse) => {
-        this.setState({ savedRecord: response.item, formStep: 4 });
+        this.setState({ savedRecord: response.item, formStep: 4 }, this.scrollTop);
     }
     render() {
         const student: Student | undefined = this.state.student;

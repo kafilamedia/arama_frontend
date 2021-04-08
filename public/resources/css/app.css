@@ -36,3 +36,9 @@
   .page-link:hover{
     cursor: pointer;
   }
+
+  .option-item:hover{
+    cursor: pointer;
+    background-color: rgb(50,50,50);
+    color: #ccc;
+  }
