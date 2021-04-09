@@ -53,7 +53,7 @@ class StudentList extends BaseManagementPage {
             this.masterDataService.list,
             this.itemsLoaded,
             this.showCommonErrorAlert,
-            { modelName: 'student', ilter: this.state.filter }
+            { modelName: 'student', filter: this.state.filter }
         )
     }
     loadAtPage = (page: number) => {

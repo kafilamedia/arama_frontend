@@ -13,7 +13,7 @@ export const commonHeader = () => {
     }
 };
 
-const LOGIN_KEY:string = "dormitory-app-login-key";
+const LOGIN_KEY:string = "dormitory-app-login-key-2";
  
 export const getAssetsPath = () :string => {
     const store = getStore(); 
