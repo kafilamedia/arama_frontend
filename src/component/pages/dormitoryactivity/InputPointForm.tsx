@@ -19,6 +19,7 @@ import WebResponse from '../../../models/commons/WebResponse';
 import FormGroup from '../../form/FormGroup';
 import { doItLater } from '../../../utils/EventUtil';
 import AttachmentInfo from './../../../models/settings/AttachmentInfo';
+import BasePage from './../BasePage';
 
 class State {
     student?: Student
@@ -28,12 +29,12 @@ class State {
     savedRecord?: PointRecord;
     attachmentInfo?:AttachmentInfo;
 }
-class InputPointForm extends BaseComponent {
+class InputPointForm extends BasePage {
     state: State = new State();
     studentService: StudentService;
     totalStep: number = 4;
     constructor(props) {
-        super(props, true);
+        super(props, "Input Point Record", true);
         this.studentService = this.getServices().studentService;
     }
     validateStudentData = () => {

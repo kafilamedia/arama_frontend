@@ -16,9 +16,6 @@ export default class BaseComponent extends Component<any, any> {
         super(props);
 
         this.authenticated = authenticated
-        this.state = {
-            ...this.state
-        }
         this.parentApp = props.mainApp;
     }
 

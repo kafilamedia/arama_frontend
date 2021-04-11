@@ -3,10 +3,11 @@ import BaseComponent from './../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
-class ManagementMain extends BaseComponent
+import BasePage from './../BasePage';
+class ManagementMain extends BasePage
 {
     constructor(props) {
-        super(props, true);
+        super(props, "Management", true);
     }
     render() {
 

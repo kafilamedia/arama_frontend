@@ -11,35 +11,29 @@ import ToggleButton from './../../navigation/ToggleButton';
 import WebResponse from '../../../models/commons/WebResponse';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 class EmployeeRow extends BaseComponent {
-    musyrifManagementService:MusyrifManagementService;
+    musyrifManagementService: MusyrifManagementService;
     constructor(props) {
-        super(props,true);
+        super(props, true);
         this.musyrifManagementService = this.getServices().musyrifManagementService;
     }
 
     getEmployee = (): Employee => {
         return this.props.employee;
     }
-    activeStatusUpdate = (response:WebResponse) => {
+    activeStatusUpdate = (response: WebResponse) => {
         // this.showInfo("Success");
         if (this.props.onUpdated) {
             this.props.onUpdated();
         }
     }
-    activateMusyrif = (active:boolean) => {
+    activateMusyrif = (active: boolean) => {
         const emp = this.getEmployee();
+        this.commonAjax(
+            this.musyrifManagementService.activate,
+            this.activeStatusUpdate,
+            this.showCommonErrorAlert,
+            emp, active);
 
-        // this.showConfirmation((active?"Activate " : "Deactivate ")+emp.user?.name+"?").then(
-        //     ok => {
-        //         if (!ok) return;
-                this.commonAjax(
-                    this.musyrifManagementService.activate,
-                    this.activeStatusUpdate,
-                    this.showCommonErrorAlert,
-                    emp, active);
-        //     }
-        // )
-       
     }
     render() {
         const props = this.props;
@@ -52,13 +46,13 @@ class EmployeeRow extends BaseComponent {
                 <td>{emp.user?.email}</td>
                 <td>{emp.user?.nip}</td>
                 <td><i className={isMusyrif ? "fas fa-check text-success" : "fas fa-times"} /></td>
-                <td> {isMusyrif == true?
-                <AnchorWithIcon className="btn btn-danger btn-sm" onClick={(e)=>this.activateMusyrif(false)} >
-                    Deactivate
-                </AnchorWithIcon>:
-                <AnchorWithIcon className="btn btn-success btn-sm" onClick={(e)=>this.activateMusyrif(true)} >
-                    Activate
-                </AnchorWithIcon>
+                <td> {isMusyrif == true ?
+                    <AnchorWithIcon className="btn btn-danger btn-sm" onClick={(e) => this.activateMusyrif(false)} >
+                        Deactivate
+                    </AnchorWithIcon> :
+                    <AnchorWithIcon className="btn btn-success btn-sm" onClick={(e) => this.activateMusyrif(true)} >
+                        Activate
+                    </AnchorWithIcon>
                 }
                 </td>
             </tr>

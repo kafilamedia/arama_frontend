@@ -12,6 +12,7 @@ import WebResponse from '../../../models/commons/WebResponse';
 import { toBase64v2 } from '../../../utils/ComponentUtil';
 import { EditField, EditImage } from './settingHelper';
 import MasterDataService from './../../../services/MasterDataService';
+import BasePage from './../BasePage';
 class EditFields {
     name: boolean = false; pageIcon: boolean = false;
     welcomingMessage: boolean = false;
@@ -31,12 +32,12 @@ class IState {
         return false;
     }
 }
-class EditApplicationProfile extends BaseComponent {
+class EditApplicationProfile extends BasePage {
 
     masterDataService: MasterDataService;
     state: IState = new IState();
     constructor(props: any) {
-        super(props, true);
+        super(props, "Edit Application Profile", true);
         this.masterDataService = this.getServices().masterDataService;
         this.state.applicationProfile = Object.assign(new ApplicationProfile(), this.getApplicationProfile());
     }

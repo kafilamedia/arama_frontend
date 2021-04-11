@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import Login from '../pages/login/Login';
 import DashboardMain from '../pages/dashboard/main/DashboardMain';
 import HomeMain from '../pages/home/HomeMain';
-import BaseMainMenus from './BaseMainMenus';
 import Menu from '../../models/settings/Menu';
 import SettingsMain from '../pages/settings/SettingsMain';
 import UserProfile from '../pages/settings/UserProfile';
@@ -22,11 +21,10 @@ import PointRecordsManagement from '../pages/dormitoryactivity/PointRecordsManag
 import MedicalRecordForm from '../pages/dormitoryactivity/medicalrecord/MedicalRecordForm';
 import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
 import AboutUs from './../pages/home/AboutUs';
-import Register from '../pages/login/Register';
+import Register from '../pages/login/Register'; 
 
 class ApplicationContent extends BaseComponent {
-
-    ref: React.RefObject<BaseMainMenus> = React.createRef();
+ 
     constructor(props: any) {
         super(props, false);
     }

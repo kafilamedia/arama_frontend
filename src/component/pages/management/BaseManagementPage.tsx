@@ -4,14 +4,15 @@ import Modal from './../../container/Modal';
 import MasterDataService from './../../../services/MasterDataService';
 import WebResponse from '../../../models/commons/WebResponse';
 import WebRequest from '../../../models/commons/WebRequest';
+import BasePage from './../BasePage';
 
-export default class BaseManagementPage extends BaseComponent {
+export default class BaseManagementPage extends BasePage {
     protected masterDataService: MasterDataService;
     protected modelName: string = "undefined";
     protected formRef: React.RefObject<Modal> = React.createRef();
     protected overrideLoading: boolean;
     constructor(props, modelName?: string, overrideLoading: boolean = false) {
-        super(props, true);
+        super(props, "Asrama KIIS", true);
         if (modelName) {
             this.modelName = modelName;
         }
