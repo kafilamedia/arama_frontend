@@ -1,6 +1,5 @@
 
 import React from 'react'
-import BaseComponent from '../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';

@@ -5,6 +5,8 @@ export default class BasePage extends BaseComponent{
         super(props, authenticated);
         if (title !== undefined && title !== null) {
             document.title = title;
+        } else {
+            document.title = "Asrama KIIS";
         }
     }
 
@@ -13,7 +15,7 @@ export default class BasePage extends BaseComponent{
             this.scrollTop();
         })
     }
-    componentWillUnmount() {
-        document.title = "Asrama KIIS";
-    }
+    // componentWillUnmount() {
+    //     document.title = "Asrama KIIS";
+    // }
 }

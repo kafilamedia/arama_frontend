@@ -17,18 +17,19 @@ import WebResponse from './../../../../models/commons/WebResponse';
 import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
 import { doItLater } from './../../../../utils/EventUtil';
 import { compose } from 'redux';
+import BasePage from './../../BasePage';
 class State {
     student?: Student;
     month: number = new Date().getMonth() + 1;
     year: number = new Date().getFullYear();
     mappedItems: Map<number, MedicalRecord> = new Map()
 }
-class MedicalRecordForm extends BaseComponent {
+class MedicalRecordForm extends BasePage {
     state: State = new State();
     studentService: StudentService;
     inputRefs: Map<number, any> = new Map();
     constructor(props) {
-        super(props, true);
+        super(props, "Medical Record", true);
         this.studentService = this.getServices().studentService;
     }
     setStudent = (student: Student | undefined) => {

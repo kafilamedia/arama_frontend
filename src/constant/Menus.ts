@@ -158,7 +158,7 @@ const _menus: Menu[] = [
                 code: 'pointsummary',
                 name: 'Summary Point',
                 url: 'pointsummary',
-                menuClass: 'fas fa-list',
+                menuClass: 'fas fa-clipboard',
                 role: [ AuthorityType.musyrif_asrama],
             },
            
