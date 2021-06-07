@@ -3,18 +3,18 @@ import ApplicationProfile from '../ApplicationProfile';
 import User from '../User';
 import Filter from './Filter';
 
-export default class WebResponse{
+export default interface WebResponse{
 	
-	code?:string;
-    message?:string;
-    items?:any[];
-    totalData?:number = 0;
-    item?:any;
-    percentage?:number;
-    filter?:Filter;
-    user?:User;
-    profile?:ApplicationProfile;
-    loggedIn?:boolean;
+	code:string;
+    message:string;
+    items:any[];
+    totalData:number;
+    item:any;
+    percentage:number;
+    filter:Filter;
+    user:User;
+    profile:ApplicationProfile;
+    loggedIn:boolean;
 	//
-	rawAxiosResponse?:any;
+	rawAxiosResponse:any;
 }

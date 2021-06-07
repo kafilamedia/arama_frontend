@@ -25,7 +25,7 @@ class FormStepOne extends BaseComponent {
     }
     categoriesLoaded = (response: WebResponse) => {
         this.setState({ categories: response.items, categoriesLoaded: true }, () => {
-            if (response.items && response.items?.length > 0) {
+            if (response.items.length > 0) {
                 if (!this.props.category) {
                     this.setCategory(response.items[0]);
                 }

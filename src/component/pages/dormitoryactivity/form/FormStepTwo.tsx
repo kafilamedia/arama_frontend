@@ -28,7 +28,7 @@ class FormStepTwo extends BaseComponent {
     endLoading = () => this.setState({loading:false});
     rulePointsLoaded = (response: WebResponse) => {
         this.setState({ rulePoints: response.items }, () => {
-            if (response.items && response.items?.length > 0) {
+            if (response.items.length > 0) {
                 if (!this.props.rulePoint) {
                     this.setRulePoint(response.items[0]);
                 }

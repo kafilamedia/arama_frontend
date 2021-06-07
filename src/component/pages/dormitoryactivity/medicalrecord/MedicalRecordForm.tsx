@@ -57,10 +57,7 @@ class MedicalRecordForm extends BasePage {
     }
     recordsLoaded = (response: WebResponse) => {
 
-        let mappedItems = new Map();
-        if (response.items) {
-            mappedItems = this.toMap(response.items);
-        }
+        let mappedItems = this.toMap(response.items);
 
         this.setState({ mappedItems: mappedItems }, () => {
             doItLater(() => {

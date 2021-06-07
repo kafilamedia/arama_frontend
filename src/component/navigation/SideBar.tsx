@@ -10,7 +10,7 @@ import Menu from '../../models/settings/Menu';
 import './SideBar.css'
 
 class SideBar extends BaseComponent {
-    constructor(props: { brand: any, sidebarMenus?: Menu[] }) {
+    constructor(props: { sidebarMenus?: Menu[] }) {
         super(props, false);
     }
     isSidebarActive = (menu: Menu) => {
