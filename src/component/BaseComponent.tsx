@@ -58,7 +58,6 @@ export default class BaseComponent extends Component<any, any> {
         const target = event.target;
         const value = target.type == 'checkbox' ? target.checked : target.value;
         this.setState({ [target.name]: value });
-        console.debug("input changed: ", target.name, value);
     }
 
 
@@ -128,7 +127,6 @@ export default class BaseComponent extends Component<any, any> {
     }
     isUserLoggedIn = (): boolean => {
         const loggedIn = true == this.props.loginStatus && null != this.props.loggedUser;
-        console.debug("LOgged in: ", loggedIn);
         return loggedIn;
     }
     showConfirmation = (body: any): Promise<boolean> => {

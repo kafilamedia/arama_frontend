@@ -15,7 +15,7 @@ export const performLoginMiddleware = store => next => action => {
        
         if (responseJson.code != null && responseJson.code == "00") {
             loginKey = axiosResponse.headers['api_token'];
-            console.log("api_token: ", loginKey);
+            // console.log("api_token: ", loginKey);
             loginSuccess = true;
         } else {
         }

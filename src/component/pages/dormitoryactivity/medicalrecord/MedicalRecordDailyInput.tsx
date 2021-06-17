@@ -5,6 +5,8 @@ import { mapCommonUserStateToProps } from './../../../../constant/stores';
 import MedicalRecord from './../../../../models/MedicalRecord';
 import StudentService from './../../../../services/StudentService';
 import WebResponse from './../../../../models/commons/WebResponse';
+import {twoDigits, monthName} from '../../../../utils/StringUtil';
+
 class State {
     record: MedicalRecord = new MedicalRecord();
 }
@@ -50,54 +52,49 @@ class MedicalRecordDailyInput extends BaseComponent {
     render() {
         const props = this.props;
         const record = this.state.record;
+        const period = twoDigits(record.day)+" "+monthName(record.month-1);
         return (
             <form onSubmit={this.onSubmit}>
                 <table className="table table-bordered table-striped" style={{ fontSize: '0.8em' }}>
                     <tbody>
-                        <SingleRow><p className='text-center'> {record.day}/{record.month}</p></SingleRow>
+                        <SingleRow><h5 className='text-center'> {period}</h5></SingleRow>
                         <SingleRow>
-                            <input type='number' onChange={this.onChange} className="form-control" name="temperature_morning" value={record.temperature_morning ?? ""} />
+                            <input type='number' onChange={this.onChange} placeholder="Suhu Pagi" className="form-control" name="temperature_morning" value={record.temperature_morning ?? ""} />
                         </SingleRow>
                         <SingleRow>
-                            <input type='number' onChange={this.onChange} className="form-control" name="temperature_afternoon" value={record.temperature_afternoon ?? ""} />
+                            <input type='number' onChange={this.onChange} placeholder="Suhu Sore" className="form-control" name="temperature_afternoon" value={record.temperature_afternoon ?? ""} />
                         </SingleRow>
                         <SingleRow>
-                            <input style={{ marginRight: 5 }} onChange={this.onChange} type="checkbox" name="breakfast" checked={record.breakfast ?? false} />
-                            {record.breakfast ? "yes" : "no"}
+                            <Checkbox label="Sarapan" onChange={this.onChange}  name="breakfast" checked={record.breakfast ?? false} />
                         </SingleRow>
                         <SingleRow>
-                            <input style={{ marginRight: 5 }} onChange={this.onChange} type="checkbox" name="lunch" checked={record.lunch ?? false} />
-                            {record.lunch ? "yes" : "no"}
+                            <Checkbox label="Makan Siang"onChange={this.onChange}  name="lunch" checked={record.lunch ?? false} />
                         </SingleRow>
                         <SingleRow>
-                            <input style={{ marginRight: 5 }} onChange={this.onChange} type="checkbox" name="dinner" checked={record.dinner ?? false} />
-                            {record.dinner ? "yes" : "no"}
+                            <Checkbox label="Makan Malam"onChange={this.onChange} name="dinner" checked={record.dinner ?? false} />
                         </SingleRow>
                         <SingleRow>
-                            <input style={{ marginRight: 5 }} onChange={this.onChange} type="checkbox" name="medicine_consumption" checked={record.medicine_consumption ?? false} />
-                            {record.medicine_consumption ? "yes" : "no"}
+                            <Checkbox label="Konsumsi Obat"onChange={this.onChange}  name="medicine_consumption" checked={record.medicine_consumption ?? false} />
                         </SingleRow>
                         <SingleRow>
-                            <input style={{ marginRight: 5 }} onChange={this.onChange} type="checkbox" name="genose_test" checked={record.genose_test ?? false} />
-                            {record.genose_test ? "yes" : "no"}
+                            <Checkbox label="Tes Genose"onChange={this.onChange} name="genose_test" checked={record.genose_test ?? false} />
                         </SingleRow>
                         <SingleRow>
-                            <input style={{ marginRight: 5 }} onChange={this.onChange} type="checkbox" name="antigen_test" checked={record.antigen_test ?? false} />
-                            {record.antigen_test ? "yes" : "no"}
+                            <Checkbox label="Tes Antigen"onChange={this.onChange} name="antigen_test" checked={record.antigen_test ?? false} />
                         </SingleRow>
                         <SingleRow>
-                            <input style={{ marginRight: 5 }} onChange={this.onChange} type="checkbox" name="pcr_test" checked={record.pcr_test ?? false} />
-                            {record.pcr_test ? "yes" : "no"}
+                            <Checkbox label="Tes PCR"onChange={this.onChange}  name="pcr_test" checked={record.pcr_test ?? false} />
                         </SingleRow>
                         <SingleRow>
-                            <input onChange={this.onChange} type="text" name="description" value={record.description ?? ""} className="form-control" />
+                            <textarea placeholder="Catatan" onChange={this.onChange} style={{fontSize:'0.9em'}} name="description" value={record.description ?? ""} 
+                                className="form-control" rows={3} />
                         </SingleRow>
                         <SingleRow>
                             <button className="btn btn-success" type="submit">
                                 <i className="fas fa-save" />
                             </button>
                             <br/>
-                            <p className='text-center'> {record.day}/{record.month}</p>
+                            <p className='text-center'> {period}</p>
                         </SingleRow>
                     </tbody>
                 </table>
@@ -106,7 +103,17 @@ class MedicalRecordDailyInput extends BaseComponent {
     }
 }
 
+const Checkbox = (props:{onChange(e:ChangeEvent):any, label:string, name:string, checked:boolean}) => {
 
+    return (
+        <>{props.label}
+        <input type="checkbox" style={{ marginRight: 5 }} className="form-control" 
+            onChange={props.onChange} 
+            name={props.name} 
+            checked={props.checked} />
+        </>
+    )
+}
 const SingleRow = (props: { children: any }) => {
     return (
         <tr><td>

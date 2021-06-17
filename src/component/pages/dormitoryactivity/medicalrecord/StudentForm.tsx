@@ -9,6 +9,7 @@ import Student from './../../../../models/Student';
 import MasterDataService from './../../../../services/MasterDataService';
 import WebRequest from './../../../../models/commons/WebRequest';
 import WebResponse from './../../../../models/commons/WebResponse';
+import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
 class State {
     studentName?:string;
     items:Student[] = [];
@@ -85,6 +86,7 @@ class StudentForm extends BaseComponent{
                     <div className="btn-group float-right">
                         <input type="submit" className="btn btn-dark" value="Search" />
                         <input type="reset" className="btn btn-secondary" value="Reset" />
+                        <AnchorWithIcon to={"/dormitoryactivity/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
                     </div>
                 </Card>
             </form>

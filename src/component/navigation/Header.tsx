@@ -94,7 +94,7 @@ const UserIcon = (props: { user: User | undefined, setMenuNull(): any, onLogout(
             <Fragment>
                 <Link onClick={props.setMenuNull} style={{ marginRight: "5px" }} className="btn btn-light btn-sm my-2 my-sm-0"
                     to='/settings/user-profile'>
-                    <img width="20" src={baseImageUrl() + props.user.profileImage} className="rounded rounded-circle" />
+                    <i className="fas fa-user-circle"/>
                         &nbsp;{props.user.name}
                 </Link>
                 <a style={{ marginRight: '5px' }} className="btn btn-danger btn-sm  my-2 my-sm-0"

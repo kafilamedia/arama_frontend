@@ -20,7 +20,6 @@ export const reducer = (state = initState, action) => {
     switch (action.type) { 
         case types.SET_REQUEST_ID:
             
-            console.debug("USER REDUCER:REQUEST_ID", action.payload.message);
             result = {
                 ...state, requestId: action.payload.message,
                 applicationProfile: action.payload.profile ?? {},
@@ -34,9 +33,9 @@ export const reducer = (state = initState, action) => {
                 result.loginStatus = false;
                 result.loggedUser = null;
             }
-            console.debug("result");
-            console.debug("action.payload.requestId: ",action.payload.message); 
-            console.debug("REQUEST_ID result.loginStatus:", result.loginStatus)
+            // console.debug("result");
+            // console.debug("action.payload.requestId: ",action.payload.message); 
+            // console.debug("REQUEST_ID result.loginStatus:", result.loginStatus)
             action.payload.referer.refresh();
 
             return result;

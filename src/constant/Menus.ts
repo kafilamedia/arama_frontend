@@ -171,31 +171,5 @@ const _menus: Menu[] = [
             // }
         ]
     }, 
-    {
-        code: 'settings',
-        name: "Setting",
-        url: "/settings",
-        menuClass: "fas fa-cogs",
-        active: false,
-        authenticated: true,
-        showSidebar: true,
-        role: [AuthorityType.admin_asrama ,AuthorityType.musyrif_asrama],
-        subMenus: [
-            {
-                code: 'user_profile',
-                name: 'Profile',
-                menuClass: 'fas fa-user-cog',
-                url: 'user-profile',
-                role: [AuthorityType.admin_asrama, AuthorityType.musyrif_asrama],
-            },
-            {
-                code: 'app_profile',
-                name: 'Application Setting',
-                menuClass: 'fas fa-cog',
-                url: 'app-profile',
-                role: [AuthorityType.admin_asrama ],
-            },
-            
-        ]
-    },
+    
 ];

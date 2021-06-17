@@ -8,9 +8,7 @@ import { connect } from 'react-redux';
 import Login from '../pages/login/Login';
 import DashboardMain from '../pages/dashboard/main/DashboardMain';
 import HomeMain from '../pages/home/HomeMain';
-import Menu from '../../models/settings/Menu';
-import SettingsMain from '../pages/settings/SettingsMain';
-import UserProfile from '../pages/settings/UserProfile';
+import Menu from '../../models/settings/Menu'; 
 import MusyrifManagement from '../pages/management/MusyrifManagement';
 import ManagementMain from '../pages/management/ManagementMain';
 import CategoryManagement from '../pages/management/CategoryManagement';
@@ -19,7 +17,6 @@ import StudentList from '../pages/dormitoryactivity/StudentList';
 import InputPointForm from '../pages/dormitoryactivity/InputPointForm';
 import PointRecordsManagement from '../pages/dormitoryactivity/PointRecordsManagement';
 import MedicalRecordForm from '../pages/dormitoryactivity/medicalrecord/MedicalRecordForm';
-import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
 import AboutUs from './../pages/home/AboutUs';
 import Register from '../pages/login/Register'; 
 
@@ -39,7 +36,6 @@ class ApplicationContent extends BaseComponent {
                     {/* -------- home -------- */}
                     <Route exact path="/home" render={
                         (props: any) => {
-                            console.debug("Home path")
                             return <HomeMain />
                         }
                     } />
@@ -70,7 +66,6 @@ class ApplicationContent extends BaseComponent {
 
                 </Switch>
                 <LoginRoute />
-                <Settings />
                 <StudentsRoute />
                 <MusyrifManagementRoute/>
                 <Dashboard />
@@ -159,28 +154,7 @@ const Dashboard = (props) => {
         </Switch>
     )
 }
-
-const Settings = (props) => {
-    return (
-        <Switch>
-            {/* -------- settings --------- */}
-            <Route exact path="/settings" render={
-                (props: any) =>
-                    <SettingsMain />
-            } />
-            <Route exact path="/settings/user-profile" render={
-                (props: any) =>
-                    <UserProfile />
-            } />
-            <Route exact path="/settings/app-profile" render={
-                (props: any) =>
-                    <EditApplicationProfile />
-            } />
-        </Switch>
-    )
-}
  
-
 
 const mapDispatchToProps = (dispatch: Function) => ({})
 

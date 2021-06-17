@@ -26,14 +26,12 @@ class MainLayout extends BaseComponent {
         }
     }
     setMenuNull = () => {
-        console.warn("SET MENU NULL");
         this.setState({ menu: undefined, showSidebar: false, activeMenuCode: null, sidebarMenus: null });
     }
     setMenu = (menu: Menu) => {
         if (menu == null) {
             return;
         }
-        console.debug("SET MENU: ", menu.code);
         this.setState({ menu: menu, sidebarMenus: null, showSidebar: menu.showSidebar, activeMenuCode: menu.code });
     }
     setSidebarMenus = (menus: Menu[]) => {

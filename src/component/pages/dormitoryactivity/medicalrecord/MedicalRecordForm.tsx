@@ -134,18 +134,13 @@ class MedicalRecordForm extends BasePage {
                             <AnchorWithIcon iconClassName="fas fa-redo" onClick={this.loadMonthlyRecord}>Load Data</AnchorWithIcon>
                         </FormGroup>
 
-                        <div className="container-fluid  row">
-                            <div className="col-md-3">
-                                <LeftLabel />
-                            </div>
-                            <div className="col-md-9" style={{ overflow: 'scroll' }}>
+                        <div className="container-fluid  row"> 
+                            <div className="col-12" style={{ overflow: 'scroll' }}>
                                 <div style={{ display: 'grid', gridTemplateColumns: gridTemplateColumns }}>
 
                                     {days.map(day =>
                                         <MedicalRecordDailyInput key={"record-input-" + day} student={student}
-                                            ref={ref => {
-                                                this.inputRefs.set(day, ref)
-                                            }}
+                                            ref={ref => {this.inputRefs.set(day, ref)}}
                                             year={this.state.year}
                                             month={this.state.month} day={day} />)}
                                 </div>

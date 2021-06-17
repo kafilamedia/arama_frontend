@@ -44,9 +44,13 @@ export function beautifyNominal(val:any) {
  
 
 const months = [
-	"January", "Ferbuary", "March", "April", "May", "June",
-	"July", "August", "September", "October", "November", "December"
+	"Januari", "Ferbuari", "Maret", "April", "Mei", "Juni",
+	"Juli", "Agustus", "September", "Oktober", "November", "Desember"
 ]
+
+export const monthName = (index:number) => {
+	return months[index];
+}
 
 export const monthYearString = function (m, y) {
 	if (m == null || y == null) {

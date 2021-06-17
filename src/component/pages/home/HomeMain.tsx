@@ -19,7 +19,6 @@ class HomeMain extends BaseComponent {
     render() {
         const applicationProfile: ApplicationProfile = this.getApplicationProfile();
         const imageUrl: string = baseImageUrl() + applicationProfile.backgroundUrl;
-        console.debug("applicationProfile: ", applicationProfile)
         return (
             <div className="section-body container-fluid" style={{padding:0}}>
                 <div className="jumbotron"
@@ -28,7 +27,7 @@ class HomeMain extends BaseComponent {
                         marginTop: '20px',
                         backgroundImage: 'url("' + imageUrl + '")',
                         backgroundSize: 'cover',
-                        color: applicationProfile.fontColor
+                        color: applicationProfile.fontColor??"rgb(0,0,0)"
                     }}
                 >
                     <h1 className="display-4">{applicationProfile.name}</h1>

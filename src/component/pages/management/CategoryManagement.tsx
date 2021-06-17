@@ -28,7 +28,7 @@ class CategoryManagement extends BaseManagementPage {
     }
     
     onSubmit = () => {
-        console.debug("RECORD: ", this.state.record);
+        // console.debug("RECORD: ", this.state.record);
         this.showConfirmation("Submit Data?")
             .then(ok => {
                 if (!ok) return;
