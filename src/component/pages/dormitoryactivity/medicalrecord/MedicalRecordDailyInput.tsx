@@ -91,10 +91,8 @@ class MedicalRecordDailyInput extends BaseComponent {
                         </SingleRow>
                         <SingleRow>
                             <button className="btn btn-success" type="submit">
-                                <i className="fas fa-save" />
+                                <i className="fas fa-save" /> {period}
                             </button>
-                            <br/>
-                            <p className='text-center'> {period}</p>
                         </SingleRow>
                     </tbody>
                 </table>
