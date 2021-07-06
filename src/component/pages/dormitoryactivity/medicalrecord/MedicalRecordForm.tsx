@@ -34,7 +34,7 @@ class MedicalRecordForm extends BasePage {
         if (student) {
             student = Object.assign(new Student(), student);
         }
-        this.setState({ student: student }, this.reset);
+        this.setState({ student: student }, this.loadMonthlyRecord);
     }
     validateStudentData = () => {
         const student = this.props.location.state?this.props.location.state.student : undefined;
@@ -47,22 +47,20 @@ class MedicalRecordForm extends BasePage {
         doItLater(() => {
             if (this.state.student)
             this.inputRefs.forEach((ref: any, day: number) => {
-                if (ref) {
-                    ref.reset();
-                }
+                if (ref) { ref.reset(); }
             })
         }, 100);
     }
     recordsLoaded = (response: WebResponse) => {
 
-        let mappedItems = this.toMap(response.items);
-
+        const mappedItems:Map<String, MedicalRecord> = this.toMap(response.items);
+        
         this.setState({ mappedItems: mappedItems }, () => {
             doItLater(() => {
                 this.inputRefs.forEach((ref: any, day: number) => {
-                    let record = this.state.mappedItems.get(day);
+                    let record = mappedItems.get(day.toString());
                     if (!record) {
-                        record = MedicalRecord.instance(this.state.student?.id,day, this.state.month, this.state.year);
+                        record = MedicalRecord.instance(this.state.student?.id, day, this.state.month, this.state.year);
                     } else {
                         record = MedicalRecord.clone(record);
                     }
@@ -75,11 +73,11 @@ class MedicalRecordForm extends BasePage {
     }
 
 
-    toMap = (items: MedicalRecord[]): Map<number, MedicalRecord> => {
-        const map: Map<number, MedicalRecord> = new Map();
+    toMap = (items: MedicalRecord[]): Map<String, MedicalRecord> => {
+        const map: Map<String, MedicalRecord> = new Map();
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
-            map.set(item.day, item);
+            map.set(item.day.toString(), item);
         }
         return map;
     }
@@ -117,7 +115,8 @@ class MedicalRecordForm extends BasePage {
 
         return (
             <div className="container-fluid section-body">
-                <h2>Medical Record Form <small>{student ? student.user?.name : ""}</small></h2>
+                <h2> {student ? student.user?.name: this.title}</h2> 
+                <hr/>
                 <StudentForm setItem={this.setStudent} />
                 <p />
                 {student ?
