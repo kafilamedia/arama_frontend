@@ -1,5 +1,4 @@
 import React from 'react'
-import BaseComponent from '../../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
@@ -7,8 +6,7 @@ import StudentForm from './StudentForm';
 import Student from './../../../../models/Student';
 import FilterPeriod from './../../../form/FilterPeriod';
 import Filter from './../../../../models/commons/Filter';
-import FormGroup from './../../../form/FormGroup';
-import { getMonthDays, MONTHS } from './../../../../utils/DateUtil';
+import { getMonthDays } from './../../../../utils/DateUtil';
 import Card from './../../../container/Card';
 import MedicalRecord from './../../../../models/MedicalRecord';
 import MedicalRecordDailyInput from './MedicalRecordDailyInput';
@@ -16,8 +14,8 @@ import StudentService from './../../../../services/StudentService';
 import WebResponse from './../../../../models/commons/WebResponse';
 import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
 import { doItLater } from './../../../../utils/EventUtil';
-import { compose } from 'redux';
 import BasePage from './../../BasePage';
+import SimpleError from './../../../alert/SimpleError';
 class State {
     student?: Student;
     month: number = new Date().getMonth() + 1;
@@ -110,7 +108,6 @@ class MedicalRecordForm extends BasePage {
     render() {
         const student = this.state.student;
         const filter = this.getFilter();
-        const mappedRecord = this.state.mappedItems;
         const dayCount = this.dayCount();
         const days: number[] = [];
         for (let i = 1; i <= dayCount; i++) {
@@ -120,20 +117,18 @@ class MedicalRecordForm extends BasePage {
 
         return (
             <div className="container-fluid section-body">
-                <h2>Medical Record Form {student ? student.user?.name : ""}</h2>
+                <h2>Medical Record Form <small>{student ? student.user?.name : ""}</small></h2>
                 <StudentForm setItem={this.setStudent} />
                 <p />
                 {student ?
                     <Card>
-                        <FormGroup label={"Period (" + MONTHS[(filter.month ?? 1) - 1] + " " + filter.year + ")"}>
-                            <div className="input-group">
-                                <FilterPeriod filter={filter} hideDay onChange={this.handleInputChange} />
-                            </div>
-                        </FormGroup>
-                        <FormGroup>
+                        <div className="input-group">
+                            <FilterPeriod filter={filter} hideDay onChange={this.handleInputChange} />
+                            <div className="input-group-append">
                             <AnchorWithIcon iconClassName="fas fa-redo" onClick={this.loadMonthlyRecord}>Load Data</AnchorWithIcon>
-                        </FormGroup>
-
+                            </div>
+                        </div>
+                        <hr/>
                         <div className="container-fluid  row"> 
                             <div className="col-12" style={{ overflow: 'scroll' }}>
                                 <div style={{ display: 'grid', gridTemplateColumns: gridTemplateColumns }}>
@@ -147,38 +142,19 @@ class MedicalRecordForm extends BasePage {
                             </div>
                         </div>
                     </Card>
-                    : null}
+                    : <Warning/>}
             </div>
         )
     }
 
 }
 
-const LeftLabel = (props: {}) => {
-    const labels = [
-        //temp
-        "Pengukuran suhu badan pagi hari", "Pengukuran suhu badan sore hari",
-        // constumption
-        "Makan pagi", "Makan siang", "Makan malam",
-        "Konsumsi vitamin / Obat pribadi",
-        //test
-        "Genose test", "Swab antigen", "PCR test",
-        //
-        "Kesimpulan sementara"
-    ]
 
-    return (
-        <table className="table table-bordered table-striped" style={{ fontSize: '0.7em' }}>
-            <tbody>
-                <tr><td><div style={{ minHeight: 40 }}>Pengukuran</div></td></tr>
-                {labels.map((label, i) => {
-                    return (<tr key={"label-" + i}>
-                        <td><div style={{ minHeight: 40 }}>{i + 1}. {label}</div></td>
-                    </tr>)
-                })}
-            </tbody>
-        </table>
-    )
+const Warning = () => {
+    return (<SimpleError>
+                <i className="fas fa-exclamation-circle" />&nbsp;Please select student <hr />
+                <AnchorWithIcon to={"/dormitoryactivity/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
+            </SimpleError> )
 }
 
 export default withRouter(
