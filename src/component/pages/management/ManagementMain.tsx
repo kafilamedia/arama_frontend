@@ -13,7 +13,7 @@ class ManagementMain extends BasePage
 
         return (
             <div className="container-fluid section-body">
-                <h2>Management Page</h2>
+                <h2>Halaman Manajemen</h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.name}</strong>
                     <hr/>

@@ -15,7 +15,7 @@ import CategoryManagement from '../pages/management/CategoryManagement';
 import RulePointManagement from '../pages/management/RulePointManagement';
 import StudentList from '../pages/dormitoryactivity/StudentList';
 import InputPointForm from '../pages/dormitoryactivity/InputPointForm';
-import PointRecordsManagement from '../pages/dormitoryactivity/PointRecordsManagement';
+import PointRecordsManagement from '../pages/management/PointRecordsSummary';
 import MedicalRecordForm from '../pages/dormitoryactivity/medicalrecord/MedicalRecordForm';
 import AboutUs from './../pages/home/AboutUs';
 import Register from '../pages/login/Register'; 

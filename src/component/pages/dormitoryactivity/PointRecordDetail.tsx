@@ -4,6 +4,7 @@ import PointRecord from './../../../models/PointRecord';
 import Card from './../../container/Card';
 import FormGroup from './../../form/FormGroup';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
+import Class from './../../../models/Class';
 
 interface IProps {
     record:PointRecord;
@@ -17,7 +18,7 @@ export default class PointRecordDetail extends Component<IProps, any> {
         const pictureUrl = record.getPicture();
         const timeStamp = record.getTimestamp();
         return <Card title={"Record Detail - "+timeStamp} footerContent={<AnchorWithIcon className="btn btn-dark" onClick={this.props.close} >Ok</AnchorWithIcon>}>
-            <FormGroup label="Name">{record.student?.user?.name} - {record.student?.kelas?.level} {record.student?.kelas?.rombel}</FormGroup>
+            <FormGroup label="Name">{record.student?.user?.name} - {Class.studentClassString(record.student)}</FormGroup>
             <FormGroup label="Item">
                 <strong>{record.rule_point?.category?.name}</strong> - {record.rule_point?.name} <span className="badge badge-dark">{record.rule_point?.point}</span>
             </FormGroup>

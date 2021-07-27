@@ -91,7 +91,10 @@ class MedicalRecordForm extends BasePage {
     }
 
     getFilter = (): Filter => {
-        return { month: this.state.month, year: this.state.year }
+        const f = new Filter();
+        f.month = this.state.month;
+        f.year = this.state.year;
+        return f;
     }
 
     componentDidMount() {

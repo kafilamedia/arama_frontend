@@ -95,21 +95,21 @@ const _menus: Menu[] = [
         subMenus: [
             {
                 code: 'musyrifmanagement',
-                name: 'Musyrif Management',
+                name: 'Musyrif',
                 url: 'musyrifmanagement',
                 menuClass: 'fas fa-users',
                 role: [AuthorityType.admin_asrama],
             },
             {
                 code: 'rule_category',
-                name: 'Rule Category',
+                name: 'Kategori Pelanggaran',
                 url: 'rule_category',
                 menuClass: 'fas fa-tags',
                 role: [AuthorityType.admin_asrama],
             },
             {
                 code: 'rule_point',
-                name: 'Rule Point',
+                name: 'Poin Pelanggaran',
                 url: 'rule_point',
                 menuClass: 'fas fa-puzzle-piece',
                 role: [AuthorityType.admin_asrama],
@@ -125,7 +125,7 @@ const _menus: Menu[] = [
     }, 
     {
         code: 'dormitoryactivity',
-        name: "Dormitory",
+        name: "Asrama",
         url: "/dormitoryactivity",
         menuClass: "fas fa-school",
         active: false,
@@ -135,28 +135,28 @@ const _menus: Menu[] = [
         subMenus: [
             {
                 code: 'studentlist',
-                name: 'Student List',
+                name: 'Siswa',
                 url: 'studentlist',
                 menuClass: 'fas fa-users',
                 role: [ AuthorityType.musyrif_asrama],
             },
             {
                 code: 'input_point',
-                name: 'Input Point',
+                name: 'Input Pelanggaran',
                 url: 'inputpoint',
                 menuClass: 'fas fa-pen-square',
                 role: [ AuthorityType.musyrif_asrama],
             },
-            {
-                code: 'medicalrecord',
-                name: 'Medical Record',
-                url: 'medicalrecord',
-                menuClass: 'fas fa-briefcase-medical',
-                role: [ AuthorityType.musyrif_asrama],
-            },
+            // {
+            //     code: 'medicalrecord',
+            //     name: 'Medical Record',
+            //     url: 'medicalrecord',
+            //     menuClass: 'fas fa-briefcase-medical',
+            //     role: [ AuthorityType.musyrif_asrama],
+            // },
             {
                 code: 'pointsummary',
-                name: 'Summary Point',
+                name: 'Rekap Pelanggaran',
                 url: 'pointsummary',
                 menuClass: 'fas fa-clipboard',
                 role: [ AuthorityType.musyrif_asrama],

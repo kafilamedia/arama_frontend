@@ -10,6 +10,7 @@ import MasterDataService from './../../../../services/MasterDataService';
 import WebRequest from './../../../../models/commons/WebRequest';
 import WebResponse from './../../../../models/commons/WebResponse';
 import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
+import Class from './../../../../models/Class';
 class State {
     studentName?:string;
     items:Student[] = [];
@@ -99,7 +100,7 @@ const ItemDetail = (props:{item:Student}) => {
     return (
         <>
             <FormGroup label="Name">{props.item.user?.name}</FormGroup>
-            <FormGroup label="Kelas">{props.item.kelas?.level}{props.item.kelas?.rombel} - {props.item.kelas?.sekolah?.nama}</FormGroup>
+            <FormGroup label="Kelas">{Class.studentClassString(props.item)}</FormGroup>
             
         </>
     )

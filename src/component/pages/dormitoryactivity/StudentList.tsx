@@ -114,35 +114,35 @@ class StudentList extends BaseManagementPage {
         }
         this.setState({ filter: filter });
     }
+    onSubmit = (e) => { e.preventDefault(); this.loadAtPage(0) }
     render() {
 
         const filter = this.state.filter;
         const classes = this.state.classes;
-        const classAll: Class = { id: "ALL", level: "ALL", sekolah: {} };
+        const defaultClass: Class = { id: "ALL", level: "Semua Kelas", sekolah: {} };
         const selectedClassId = filter.fieldsFilter && filter.fieldsFilter['class_id'] ? filter.fieldsFilter['class_id'] : "ALL";
         const showPointRecord = filter.fieldsFilter && filter.fieldsFilter['with_point_record'] && filter.fieldsFilter['with_point_record'] == true;
         return (
             <div className="container-fluid section-body">
-                <h2>Student List</h2>
+                <h2>Siswa</h2>
                 <hr />
-                <form onSubmit={(e) => { e.preventDefault(); this.loadAtPage(0) }}>
-
-                    <FormGroup label="Search">
-                        <input name="name" placeholder="Search by name" className="form-control" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
+                <form onSubmit={this.onSubmit}>
+                    <FormGroup label="Cari">
+                        <div className="input-group">
+                            <input name="name" placeholder="Nama" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
+                            <select value={selectedClassId} onChange={this.updateFieldsFilter} className="form-control-sm" name="class_id">
+                                {[defaultClass, ...classes].map((c) => {
+                                    return <option key={'class_' + c.id} value={c.id}>{c.level}{c.rombel} - {c.sekolah?.nama}</option>
+                                })}
+                            </select>
+                        </div>
                     </FormGroup>
-                    <FormGroup label="Record Count">
-                        <input name="limit" className="form-control" value={filter.limit ?? 5} onChange={this.updateFilter} />
+                    <FormGroup label="Jumlah Tampilan">
+                        <input name="limit" type="number" className="form-control-sm" value={filter.limit ?? 5} onChange={this.updateFilter} />
                     </FormGroup>
-                    <FormGroup label="Kelas" >
-                        <select value={selectedClassId} onChange={this.updateFieldsFilter} className="form-control" name="class_id">
-                            {[classAll, ...classes].map((_class) => {
-                                return <option key={'class_' + _class.id} value={_class.id}>{_class.level}{_class.rombel} - {_class.sekolah?.nama}</option>
-                            })}
-                        </select>
-                    </FormGroup>
-                    <FormGroup label="Period">
+                    <FormGroup label="Periode">
                         <ToggleButton active={showPointRecord}
-                            yesLabel={"Show Point Record"} noLabel="Hide Point Record"
+                            yesLabel={"tampilkan poin"} noLabel="tanpa poin"
                             onClick={this.updateWithPointRecord}
                         />
                         {showPointRecord ?
@@ -156,12 +156,12 @@ class StudentList extends BaseManagementPage {
                             </React.Fragment> : null}
                     </FormGroup>
                     {showPointRecord ?
-                        <FormGroup label="Period">
+                        <FormGroup label="Periode">
                             {filter.day} {MONTHS[(filter.month ?? 1) - 1]} {filter.year} - {filter.dayTo} {MONTHS[(filter.monthTo ?? 1) - 1]} {filter.yearTo}
                         </FormGroup>
                         : null}
                     <FormGroup>
-                        <input type="submit" className="btn btn-primary" value="Submit" />
+                        <input type="submit" className="btn btn-primary btn-sm" value="Submit" />
                     </FormGroup>
 
                 </form>

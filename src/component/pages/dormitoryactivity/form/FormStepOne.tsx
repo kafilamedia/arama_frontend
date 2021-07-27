@@ -12,6 +12,7 @@ import FormGroup from '../../../form/FormGroup';
 import SimpleError from '../../../alert/SimpleError';
 import Spinner from '../../../loader/Spinner';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import Filter from '../../../../models/commons/Filter';
 class State {
     categories: Category[] = [];
     loading: boolean = false;
@@ -39,7 +40,7 @@ class FormStepOne extends BaseComponent {
     }
     loadCategories = () => {
         const req: WebRequest = {
-            filter: { limit: 0 },
+            filter: Filter.withLimit(0),
             modelName: 'category'
         }
         this.commonAjax(

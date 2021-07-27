@@ -52,8 +52,6 @@ class RulePointManagement extends BaseManagementPage
             this.scrollTop();
             this.loadCategories();
         });
-        
-        
     }
     categoriesLoaded = (response: WebResponse) => {
         this.setState({categories:response.items, categoriesLoaded: true}, ()=>{ this.resetForm(); this.loadItems() });
@@ -90,38 +88,38 @@ class RulePointManagement extends BaseManagementPage
         if (this.state.categoriesLoaded && categories.length == 0) {
             return (
                 <div className="container-fluid section-body">
-                    <h2>Please insert categories record</h2>
+                    <h2>Kategori pelanggaran belum ada</h2>
                 </div>
             )
         }
         const selectedCategoryId = filter.fieldsFilter && filter.fieldsFilter['category_id'] ? filter.fieldsFilter['category_id'] : "ALL";
         return (
             <div className="container-fluid section-body">
-                <h2>Rule Point Management</h2>
+                <h2>Poin Pelanggaran</h2>
                 <hr />
                 <RecordForm categories={categories} reloadCategories={this.loadCategories} formRef={this.formRef} resetForm={this.resetForm} onSubmit={this.onSubmit} record={this.state.record} updateRecordProp={this.updateRecordProp} />
-                <form onSubmit={(e) => { e.preventDefault(); this.loadAtPage(0) }}>
-                    <FormGroup label="Search">
-                        <input name="name" placeholder="Search by name" className="form-control" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
+                <form onSubmit={this.reload}>
+                    <FormGroup label="Cari">
+                        <input name="name" placeholder="nama" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
                     </FormGroup>
                     <FormGroup label="Category">
                     <div className="input-group">
-                        <select value={selectedCategoryId} className="form-control" name="category_id" onChange={this.updateFieldsFilter} >
-                            {[{id:"ALL", name:"ALL"},...categories].map((c)=>{
+                        <select value={selectedCategoryId} className="form-control-sm" name="category_id" onChange={this.updateFieldsFilter} >
+                            {[{id:"ALL", name:"Semua"},...categories].map((c)=>{
 
                                 return <option key={"filter-cat-"+c.id} value={c.id}>{c.name}</option>
                             })}
                         </select>
                         <div className="input-group-append">
-                        <AnchorWithIcon iconClassName="fas fa-redo" onClick={this.loadCategories}>Reload</AnchorWithIcon>
+                            <AnchorWithIcon className="btn btn-sm" iconClassName="fas fa-redo" onClick={this.loadCategories}>Reload</AnchorWithIcon>
                         </div>
                     </div>
                 </FormGroup>
-                    <FormGroup label="Record Count">
-                        <input name="limit" className="form-control" value={filter.limit ?? 5} onChange={this.updateFilter} />
+                    <FormGroup label="Jumlah Tampilan">
+                        <input type="number" name="limit" className="form-control-sm" value={filter.limit ?? 5} onChange={this.updateFilter} />
                     </FormGroup>
                     <FormGroup>
-                        <input className="btn btn-primary" type="submit" value="Submit" />
+                        <input className="btn btn-primary btn-sm" type="submit" value="Submit" />
                     </FormGroup>
                 </form>
                 <NavigationButtons activePage={filter.page ?? 0} limit={filter.limit ?? 5} totalData={this.state.totalData}
@@ -140,10 +138,9 @@ const ItemsList = (props: {startingNumber:number, items:RulePoint[], recordLoade
     return (
         <div style={{overflow:'scroll'}}>
         <table className="table table-striped">
-            {tableHeader("No", "Name", "Point", "Description", "Category", "Droppable", "Option")}
+            {tableHeader("No", "Nama", "Poin", "Deskripsi", "Kategori", "Dapat diputihkan", "Opsi")}
             <tbody>
                     {props.items.map((item, i)=>{
-
                         return (
                             <tr key={"RulePoint-"+i}>
                                 <td>{i+1+props.startingNumber}</td>
@@ -151,7 +148,7 @@ const ItemsList = (props: {startingNumber:number, items:RulePoint[], recordLoade
                                 <td>{item.point}</td>
                                 <td>{item.description}</td>
                                 <td>{item.category?.name}</td>
-                                <td>{item.droppable ? "Yes" : "No"}</td>
+                                <td>{item.droppable ? "Ya" : "TIdak"}</td>
                                 <td><EditDeleteButton 
                                     recordLoaded={props.recordLoaded}
                                     recordDeleted={props.recordDeleted}
@@ -170,43 +167,41 @@ const RecordForm = (props: { categories:Category[], formRef:React.RefObject<Moda
     onSubmit(): any, record: RulePoint, reloadCategories():any }) => {
 
     return (
-        <form onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
+        <form className="record-form mb-3" onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
             <Modal show={false} ref={props.formRef} toggleable={true} title="Record Form" >
-                <FormGroup label="Name"><input value={props.record.name ?? ""} onChange={props.updateRecordProp} className="form-control" name="name" /></FormGroup>
-                <FormGroup label="Point"><input type="number" value={props.record.point} onChange={props.updateRecordProp} className="form-control" name="point" /></FormGroup>
-                <FormGroup label="Description">
-                    <textarea className="form-control" name="description" onChange={props.updateRecordProp} value={props.record.description ?? ""} />
+                <FormGroup label="Nama"><input value={props.record.name ?? ""} onChange={props.updateRecordProp} className="form-control-sm" name="name" required/></FormGroup>
+                <FormGroup label="Poin"><input type="number" value={props.record.point} onChange={props.updateRecordProp} className="form-control-sm" name="point" required/></FormGroup>
+                <FormGroup label="Deskripsi">
+                    <textarea className="form-control" name="description" onChange={props.updateRecordProp} value={props.record.description ?? ""}  />
                 </FormGroup>
-                <FormGroup label="Droppable">
-                    <select className="form-control" data-type="boolean" name="droppable" onChange={props.updateRecordProp} value={props.record.droppable == true ? "true":"false"} >
-                        <option value={"true"} >Yes</option>
-                        <option value={"false"}>No</option>
+                <FormGroup label="Dapat diputihkan">
+                    <select className="form-control-sm" data-type="boolean" name="droppable" onChange={props.updateRecordProp} value={props.record.droppable == true ? "true":"false"} required>
+                        <option value={"true"} >Ya</option>
+                        <option value={"false"}>Tidak</option>
                     </select>
                 </FormGroup>
                 <FormGroup label="Category">
                     <div className="input-group">
-                        <select value={props.record.category_id} className="form-control" name="category_id" onChange={props.updateRecordProp} >
+                        <select required value={props.record.category_id} className="form-control-sm" name="category_id" onChange={props.updateRecordProp} >
                             {props.categories.map((c)=>{
 
                                 return <option key={"cat-"+c.id} value={c.id}>{c.name}</option>
                             })}
                         </select>
                         <div className="input-group-append">
-                        <AnchorWithIcon iconClassName="fas fa-redo" onClick={props.reloadCategories}>Reload</AnchorWithIcon>
+                        <AnchorWithIcon className="btn btn-sm" iconClassName="fas fa-redo" onClick={props.reloadCategories}>Reload</AnchorWithIcon>
                         </div>
                     </div>
                 </FormGroup>
                 <FormGroup>
-                    <input type="submit" className="btn btn-primary" />
+                    <input type="submit" value="Submit" className="btn btn-primary btn-sm" />
                     &nbsp;
-                    <input value="Reset" type="reset" className="btn btn-secondary" onClick={(e)=>props.resetForm()} />
+                    <input value="Reset" type="reset" className="btn btn-secondary btn-sm" onClick={(e)=>props.resetForm()} />
                 </FormGroup>
             </Modal>
         </form>
     )
 }
-
-
 
 export default withRouter(
     connect(

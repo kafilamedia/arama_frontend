@@ -41,21 +41,21 @@ class MusyrifManagement extends BaseManagementPage{
         const musyrifOnly :boolean = filter.fieldsFilter && filter.fieldsFilter['musyrif_only']&&filter.fieldsFilter['musyrif_only'] == true;
         return (
             <div  className="section-body container-fluid">
-                <h2>Musyrif Management</h2>
+                <h2>Musyrif</h2>
                 <hr/>
                
-                <form onSubmit={(e)=>{e.preventDefault(); this.loadAtPage(0)}}>
-                    <FormGroup label="Search">
-                        <input name="name" placeholder="Search by name or email" className="form-control" value={filter.fieldsFilter?filter.fieldsFilter['name']:""} onChange={this.updateFieldsFilter} />
+                <form onSubmit={this.reload}>
+                    <FormGroup label="Cari">
+                        <input name="name" placeholder="Nama atau email" className="form-control-sm" value={filter.fieldsFilter?filter.fieldsFilter['name']:""} onChange={this.updateFieldsFilter} />
                     </FormGroup>
-                    <FormGroup label="Record Count">
-                        <input name="limit" className="form-control" value={filter.limit??5} onChange={this.updateFilter} />
+                    <FormGroup label="Jumlah Tampilan">
+                        <input name="limit" type="number" className="form-control-sm" value={filter.limit??5} onChange={this.updateFilter} />
                     </FormGroup>
-                    <FormGroup label="Show Option">
-                        <ToggleButton active={musyrifOnly} onClick={this.setMusyrifOnly} noLabel="All Employee" yesLabel="Musyrif Only" />
+                    <FormGroup label="Opsi">
+                        <ToggleButton active={musyrifOnly} onClick={this.setMusyrifOnly} noLabel="Semua pegawai" yesLabel="Hanya musyrif" />
                     </FormGroup>
                     <FormGroup>
-                        <input className="btn btn-primary" type="submit" value="Submit"/>
+                        <input className="btn btn-primary btn-sm" type="submit" value="Submit"/>
                     </FormGroup>
                 </form>
                 <NavigationButtons activePage={filter.page??0} limit={filter.limit??5} totalData={this.state.totalData}
@@ -71,7 +71,7 @@ const EmployeeList = (props:{onUpdated:()=>void,startingNumber:number, items:Emp
     return (
         <div className="container-fluid" style={{overflow:'scroll'}}>
         <table className="table table-striped" >
-            {tableHeader("No", "Name", "Email", "NIP", "Role: Musyrif", "Opsi")}
+            {tableHeader("No", "Nama", "Email", "NIP", "Role: Musyrif", "Opsi")}
             <tbody>
                 {items.map((emp,i)=>{
                     if (emp.user) {

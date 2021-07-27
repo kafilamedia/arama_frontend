@@ -71,8 +71,10 @@ class EditDeleteButton extends BaseComponent
 
         return (
             <div className="btn-group">
-                {this.props.hideEdit == true? null: <AnchorWithIcon onClick={this.loadRecord} iconClassName="fas fa-edit" className="btn btn-warning btn-sm"/>}
-                <AnchorWithIcon onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger btn-sm"/>
+                {this.props.hideEdit == true? null: 
+                    <AnchorWithIcon onClick={this.loadRecord} iconClassName="fas fa-edit" className="btn btn-warning btn-sm"/>}
+                {this.props.hideDelete == true? null: 
+                    <AnchorWithIcon onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger btn-sm"/>}
             </div>
         )
     }

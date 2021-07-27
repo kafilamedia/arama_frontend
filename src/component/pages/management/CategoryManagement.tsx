@@ -48,26 +48,26 @@ class CategoryManagement extends BaseManagementPage {
         const filter: Filter = this.state.filter;
         return (
             <div className="container-fluid section-body">
-                <h2>Category Management</h2>
+                <h2>Kategori Pelanggaran</h2>
                 <hr />
                 <RecordForm formRef={this.formRef} resetForm={this.resetForm} onSubmit={this.onSubmit} record={this.state.record} updateRecordProp={this.updateRecordProp} />
-                <form onSubmit={(e) => { e.preventDefault(); this.loadAtPage(0) }}>
-                    <FormGroup label="Search">
-                        <input name="name" placeholder="Search by name" className="form-control" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
+                <form onSubmit={this.reload}>
+                    <FormGroup label="Cari">
+                        <input name="name" placeholder="nama" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
                     </FormGroup>
-                    <FormGroup label="Record Count">
-                        <input name="limit" className="form-control" value={filter.limit ?? 5} onChange={this.updateFilter} />
+                    <FormGroup label="Jumlah Tampilan">
+                        <input name="limit" type="number" className="form-control-sm" value={filter.limit ?? 5} onChange={this.updateFilter} />
                     </FormGroup>
                     <FormGroup>
-                        <input className="btn btn-primary" type="submit" value="Submit" />
+                        <input className="btn btn-primary btn-sm" type="submit" value="Submit" />
                     </FormGroup>
                 </form>
                 <NavigationButtons activePage={filter.page ?? 0} limit={filter.limit ?? 5} totalData={this.state.totalData}
                     onClick={this.loadAtPage} />
                 <ItemsList 
-                recordLoaded={this.oneRecordLoaded}
-                recordDeleted={this.loadItems}
-                startingNumber={(filter.page??0)*(filter.limit??10)} items={this.state.items} />
+                    recordLoaded={this.oneRecordLoaded}
+                    recordDeleted={this.loadItems}
+                    startingNumber={(filter.page??0)*(filter.limit??10)} items={this.state.items} />
             </div>
         )
     }
@@ -78,7 +78,7 @@ const ItemsList = (props: {startingNumber:number, items:Category[], recordLoaded
     return (
         <div style={{overflow:'scroll'}}>
         <table className="table table-striped">
-            {tableHeader("No", "Name", "Description", "Option")}
+            {tableHeader("No", "Nama", "Deskripsi", "Opsi")}
             <tbody>
                     {props.items.map((item, i)=>{
 
@@ -102,16 +102,16 @@ const ItemsList = (props: {startingNumber:number, items:Category[], recordLoaded
 const RecordForm = (props: { formRef:React.RefObject<Modal>, updateRecordProp(e: ChangeEvent): any, resetForm():any, onSubmit(): any, record: Category }) => {
 
     return (
-        <form onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
+        <form className="record-form mb-3" onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
             <Modal show={false} ref={props.formRef} toggleable={true} title="Record Form" >
-                <FormGroup label="Name"><input value={props.record.name ?? ""} onChange={props.updateRecordProp} className="form-control" name="name" /></FormGroup>
-                <FormGroup label="Description">
-                    <textarea className="form-control" name="description" onChange={props.updateRecordProp} value={props.record.description ?? ""} />
+                <FormGroup label="Nama"><input required value={props.record.name ?? ""} onChange={props.updateRecordProp} className="form-control-sm" name="name" /></FormGroup>
+                <FormGroup label="Deskripsi">
+                    <textarea required className="form-control" name="description" onChange={props.updateRecordProp} value={props.record.description ?? ""} />
                 </FormGroup>
                 <FormGroup>
-                    <input type="submit" value="Submit" className="btn btn-primary" />
+                    <input type="submit" value="Submit" className="btn btn-primary btn-sm" />
                     &nbsp;
-                    <input type="reset"   className="btn btn-secondary" onClick={(e)=>props.resetForm()} />
+                    <input type="reset"   className="btn btn-secondary btn-sm" onClick={(e)=>props.resetForm()} />
                 </FormGroup>
             </Modal>
         </form>

@@ -6,6 +6,7 @@ import PointRecord from './../models/PointRecord';
 import AttachmentInfo from './../models/settings/AttachmentInfo';
 import WebRequest from './../models/commons/WebRequest';
 import MedicalRecord from './../models/MedicalRecord';
+import WebResponse from '../models/commons/WebResponse';
 export default class StudentService {
     
 
@@ -27,8 +28,11 @@ export default class StudentService {
         }
         return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/submitpointrecord", req);
     }
-    public getClasses(filter: Filter) {
+    public getClasses() :Promise<WebResponse> {
         return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/classes", {});
+    }
+    public getCategories() :Promise<WebResponse> {
+        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/rulecategories", {});
     }
 
     public submitMedicalRecord = (record:MedicalRecord) => {

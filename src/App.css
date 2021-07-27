@@ -59,3 +59,7 @@ a {
 .inline-buttons-parent > * {
   margin-right: 10px;
 }
+
+.form-control-sm {
+  /* width: 80% */
+}

@@ -74,7 +74,7 @@ export default class BaseComponent extends Component<any, any> {
     }
     /**
      * api response must be instance of WebResponse
-     * @param method 
+     * @param method returning Promise
      * @param withProgress 
      * @param successCallback 
      * @param errorCallback 

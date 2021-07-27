@@ -1,0 +1,10 @@
+.filter-sticky {
+    position: fixed;
+    z-index: 10;
+    right: 0;
+    transition-duration: 300ms;
+    width: 500px;
+}
+.form-filter {
+    /* position: absolute; */
+}

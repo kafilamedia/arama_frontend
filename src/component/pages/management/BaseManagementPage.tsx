@@ -5,7 +5,7 @@ import MasterDataService from './../../../services/MasterDataService';
 import WebResponse from '../../../models/commons/WebResponse';
 import WebRequest from '../../../models/commons/WebRequest';
 import BasePage from './../BasePage';
-
+import './Management.css'
 export default class BaseManagementPage extends BasePage {
     protected masterDataService: MasterDataService;
     protected modelName: string = "undefined";
@@ -128,5 +128,12 @@ export default class BaseManagementPage extends BasePage {
             this.showCommonErrorAlert,
             request
         )
+    }
+
+    reload = (e:any) => {
+        if (e) {
+            e.preventDefault();
+        }
+        this.loadAtPage(0);
     }
 }
