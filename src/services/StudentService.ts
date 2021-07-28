@@ -18,7 +18,7 @@ export default class StudentService {
         }
         return this.instance;
     }
-    public submitPointRecord(pointRecord: PointRecord, attachmentInfo?:AttachmentInfo) {
+    public submitPointRecord(pointRecord: PointRecord, attachmentInfo?:AttachmentInfo|undefined) {
         if (attachmentInfo) {
             attachmentInfo.data = "";
         }

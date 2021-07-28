@@ -82,7 +82,7 @@ class Alert extends Component  {
                         <div className="modal-content" style={{marginTop:'5px',}} >
                             <Header fontClassName={headerFontClassName} className={headerClassName} title={title} onClose={this.onClose} />
                             <div className="modal-body" > {this.props.children} </div>
-                            < Footer noButtonRef={this.noButtonRef} yesButtonRef={this.yesButtonRef} yesOnly={yesOnly} onYes={this.onYes} onNo={this.onNo} />
+                            <Footer noButtonRef={this.noButtonRef} yesButtonRef={this.yesButtonRef} yesOnly={yesOnly} onYes={this.onYes} onNo={this.onNo} />
                         </div>
                     </div>
                 </div>
@@ -103,9 +103,12 @@ function Footer(props) {
         <div className={"modal-footer " + props.className} >
             <button ref={props.yesButtonRef} type="button"
                 onClick={props.onYes} className="btn btn-outline-primary" > Yes </button>
-            {
-                props.yesOnly ? null : <button ref={props.noButtonRef} type="button"
-                    onClick={props.onNo} className="btn btn-outline-secondary" > No </button>}
+            {props.yesOnly ? 
+                null : 
+                <button ref={props.noButtonRef} type="button"
+                    onClick={props.onNo} className="btn btn-outline-secondary" > No 
+                </button>
+            }
         </div>
     )
 }

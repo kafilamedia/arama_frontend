@@ -14,6 +14,9 @@ import RulePoint from './../../../../models/RulePoint';
 import MasterDataService from './../../../../services/MasterDataService';
 import InputTime from './../../../form/InputTime';
 import { parseDate } from '../../../../utils/DateUtil';
+import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
+import AttachmentInfo from './../../../../models/settings/AttachmentInfo';
+import { getAttachmentInfoFromFile } from '../../../../utils/ComponentUtil';
 class State {
     record : PointRecord  = new PointRecord();
     categories:Category[] = [];
@@ -21,6 +24,8 @@ class State {
 
     selectedCategoryId:string = "";
     selectedPointId:string = "";
+
+    attachment:AttachmentInfo|undefined;
 }
 class PointRecordEdit extends BasePage{
     
@@ -76,10 +81,15 @@ class PointRecordEdit extends BasePage{
         }
     }
     updateInput = () => {
+        /**
+         * time
+         */
         if (this.inputTimeRef.current) {
-            console.debug("Update time input")
             this.inputTimeRef.current.updateFromProps();
         }
+        /**
+         * etc
+         */
     }
 
     updateRecordField =(e:ChangeEvent) => {
@@ -113,20 +123,18 @@ class PointRecordEdit extends BasePage{
             this.studentService.submitPointRecord,
             this.recordSubmitted,
             this.showCommonErrorAlert,
-            this.state.record
+            this.state.record, this.state.attachment
         )
     }
     recordSubmitted = (r:WebResponse) => {
-        this.setState({record : new PointRecord()}, ()=> {
+        this.setState({record : new PointRecord(), attachment: undefined}, ()=> {
             this.showInfo("Data berhasil disimpan")
         })
     }
 
     validateInput = () => {
         const rec = this.state.record;
-        return (
-            rec.student_id && rec.point_id 
-        )
+        return ( rec.student_id && rec.point_id  )
     }
 
     onSubmit = (e:FormEvent) => {
@@ -142,11 +150,29 @@ class PointRecordEdit extends BasePage{
             }
         })
     }
+    removeImage = () => {
+        this.showConfirmationDanger("Hapus gambar?")
+        .then(ok=>{
+            if (ok) {
+                const record = this.state.record;
+                record.pictures = [];
+                this.setState({record: record});
+            }
+        })
+    }
+    updatePicture = (e:ChangeEvent) => {
+        getAttachmentInfoFromFile(e.target as HTMLInputElement)
+        .then(attachment=>{ 
+            this.setState({attachment:attachment});
+        }).catch(console.error)
+    }
     render() {
 
         const record = this.state.record;
         const categoryID = this.state.selectedCategoryId;
         const pointsMap = this.state.pointsMap;
+        const pictureUrl = this.state.attachment?this.state.attachment.url : record.getPicture();
+
         return (
             <div className="section-body container-fluid">
                 <h2>Edit Pelanggaran</h2>
@@ -192,6 +218,18 @@ class PointRecordEdit extends BasePage{
                     </FormGroup>
                     <FormGroup label="Deskripsi">
                         <textarea className="form-control" name="description" onChange={this.updateRecordField} value={record.description??""} />
+                    </FormGroup>
+                    <FormGroup label="Gambar">
+                        {pictureUrl?
+                            <>
+                                <img src={pictureUrl} width={200} height={200} className="border border-dark" />
+                                <p/> 
+                                <AnchorWithIcon className="btn btn-danger btn-sm"  onClick={this.removeImage} iconClassName="fas fa-times"  >Hapus Gambar</AnchorWithIcon>
+                            </>:
+                            <div>
+                                <input onChange={this.updatePicture} type="file" accept="image/*" className="form-control" />
+                            </div>
+                        }
                     </FormGroup>
                     <FormGroup>
                         <Link className="btn btn-dark" to="/dormitoryactivity/pointsummary">Kembali</Link>

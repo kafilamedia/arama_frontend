@@ -9,7 +9,7 @@ import FormGroup from '../../../form/FormGroup';
 import PointRecord from '../../../../models/PointRecord';
 import { parseDate } from '../../../../utils/DateUtil';
 import InputTime from '../../../form/InputTime';
-import { getAttachmentInfo } from '../../../../utils/ComponentUtil';
+import { getAttachmentInfoFromFile } from '../../../../utils/ComponentUtil';
 import AttachmentInfo from '../../../../models/settings/AttachmentInfo';
 class State {
     pointRecord: PointRecord = new PointRecord();
@@ -51,7 +51,7 @@ class FormStepThree extends BaseComponent {
     }
     setAttachment = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;
-        getAttachmentInfo(target).then((attachment: AttachmentInfo) => {
+        getAttachmentInfoFromFile(target).then((attachment: AttachmentInfo) => {
             this.props.setAttachment(attachment);
         });
     }

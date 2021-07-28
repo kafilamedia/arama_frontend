@@ -138,7 +138,7 @@ export default class BaseComponent extends Component<any, any> {
             const onNo = function (e) {
                 resolve(false);
             }
-            app.parentApp.showAlert("Confirmation", body, false, onYes, onNo);
+            app.parentApp.showAlert("Konfirmasi", body, false, onYes, onNo);
         });
 
     }
@@ -151,7 +151,7 @@ export default class BaseComponent extends Component<any, any> {
             const onNo = function (e) {
                 resolve(false);
             }
-            app.parentApp.showAlertError("Confirmation", body, false, onYes, onNo);
+            app.parentApp.showAlertError("Konfirmasi", body, false, onYes, onNo);
         });
 
     }
@@ -182,7 +182,7 @@ export default class BaseComponent extends Component<any, any> {
         } else {
             message = e;
         }
-        this.showError("Operation Failed: " + message);
+        this.showError("Operasi Gagal: " + message);
     }
     componentDidMount() {
         if (this.validateLoginStatus()) {

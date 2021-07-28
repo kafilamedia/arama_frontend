@@ -1,15 +1,7 @@
 import AttachmentInfo from '../models/settings/AttachmentInfo';
  
-export function toBase64(file, referer, callback) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file.files[0]);
-    reader.onload = () => callback(reader.result, referer);
-    reader.onerror = error => {
-        alert("Error Loading File");
-    }
-}
   
-export const getAttachmentInfo = (fileInput:HTMLInputElement): Promise<AttachmentInfo> => {
+export const getAttachmentInfoFromFile = (fileInput:HTMLInputElement): Promise<AttachmentInfo> => {
     return new Promise<AttachmentInfo>((resolve, reject) =>{
         if (null == fileInput.files || !fileInput.files[0]) {
             reject(new Error("No file"));
@@ -36,40 +28,7 @@ export const getAttachmentInfo = (fileInput:HTMLInputElement): Promise<Attachmen
     });
 
 }
-
-export const toBase64v2 = (fileInput): Promise<string> => {
-    return new Promise<string>((resolve, reject) =>{
-        try {
-            const reader = new FileReader();
-            reader.readAsDataURL(fileInput.files[0]);
-            console.debug("fileInput.files[0]: ", fileInput.files[0]);
-            reader.onload = function () { resolve(new String(reader.result).toString()); }
-            reader.onerror = function (error) {
-                reject(error);
-            }
-        } catch (e) {
-            reject(e);
-        }
-    });
-
-}
  
-
-export function toBase64FromFile(file) {
-    return new Promise(function (resolve, reject) {
-        try {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function () { resolve(reader.result); }
-            reader.onerror = function (error) {
-                reject(error);
-            }
-        } catch (e) {
-            reject(e);
-        }
-    });
-
-} 
 
 /**
  * 

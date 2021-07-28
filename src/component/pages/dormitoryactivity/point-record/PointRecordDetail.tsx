@@ -29,15 +29,12 @@ export default class PointRecordDetail extends Component<IProps, any> {
             <FormGroup label="Pelanggaran">
                 <strong>{record.rule_point?.category?.name}</strong> - {record.rule_point?.name} <span className="badge badge-dark">{record.rule_point?.point}</span>
             </FormGroup>
-            <FormGroup label="Lokasi">
-                {record.location??"-"}
-            </FormGroup>
-            <FormGroup label="Deskripsi">
-                {record.description??"-"}
-            </FormGroup>
-            <FormGroup label="Diputihkan">
-                {record.dropped_at??"-"}
-            </FormGroup>
+            <FormGroup label="Lokasi">{record.location??"-"}</FormGroup>
+
+            <FormGroup label="Deskripsi">{record.description??"-"}</FormGroup>
+
+            <FormGroup label="Diputihkan">{record.dropped_at??"-"}</FormGroup>
+            
             <FormGroup label="Gambar">
                 {pictureUrl?
                 <img src={pictureUrl} width={200} height={200} className="border border-dark" />:null}
