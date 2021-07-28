@@ -82,11 +82,10 @@ class PointRecordSummary extends BaseManagementPage {
     showFilterDetail = () =>  this.setState({showFilterDetail: true}); 
     hideFilterDetail = () =>  this.setState({showFilterDetail: false}); 
     
-    openEditPage = (item:PointRecord) => {
+    openEditPage = (p:PointRecord) => {
         this.props.history.push({
             pathname: '/dormitoryactivity/pointrecordedit',
-              state: {record: item // your data array of objects
-              }
+              state: {record: p }
          })
         
     }
@@ -222,7 +221,7 @@ const ItemsList = (props: {
                                     <td>
                                              
                                             {/* <DropPointButtons record={item} onUpdated={props.recordUpdated} /> */}
-                                            <EditDeleteButton record={item} types={['edit', 'detail']}
+                                            <EditDeleteButton record={item} types={[ item.dropped_at?null:'edit','detail']}
                                                 recordLoadedForDetail={props.recordLoadedForDetail}
                                                 recordLoaded={props.recordLoadedForEdit} 
                                                 modelName={'pointrecord'} />

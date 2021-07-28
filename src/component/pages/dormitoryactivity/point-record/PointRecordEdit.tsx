@@ -76,8 +76,11 @@ class PointRecordEdit extends BasePage{
     }
 
     checkPassedData = () => {
-        if ( this.props.location &&  this.props.location.state) { 
-            this.setState({record: PointRecord.clone(this.props.location.state.record) },this.updateInput);
+        if (this.props.location &&  this.props.location.state) { 
+            this.setState({
+                record: PointRecord.clone(this.props.location.state.record),
+                attachment: this.props.location.state.attachment
+             }, this.updateInput);
         }
     }
     updateInput = () => {
@@ -156,7 +159,7 @@ class PointRecordEdit extends BasePage{
             if (ok) {
                 const record = this.state.record;
                 record.pictures = [];
-                this.setState({record: record});
+                this.setState({record: record, attachment: undefined});
             }
         })
     }
