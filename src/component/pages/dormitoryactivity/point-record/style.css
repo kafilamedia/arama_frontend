@@ -1,0 +1,7 @@
+.option-item:hover {
+    cursor: pointer;
+    background-color: rgb(100,100,100);
+}
+.option-item {
+    padding: 3px;
+}

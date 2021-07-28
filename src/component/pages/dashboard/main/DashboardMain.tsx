@@ -21,6 +21,7 @@ class DashboardMain extends BasePage {
     addPointRecord = (e:FormEvent) => {
         e.preventDefault();
         if (!this.state.attachment) return;
+        
         this.props.history.push({
             pathname: '/dormitoryactivity/pointrecordedit',
               state: {attachment: this.state.attachment }
@@ -45,14 +46,15 @@ class DashboardMain extends BasePage {
                    
                 </div>
                 <form className="mt-10 text-center" onSubmit={this.addPointRecord}>
-                    <h3>Input Pelanggaran</h3>
-                    <input onChange={this.updateImage} type="file" accept="image/*" className="form-control" />
+                    <h1><i className="fas fa-camera" /></h1>
+                    <h3> Input Pelanggaran</h3>
+                    <input onChange={this.updateImage} type="file" accept="image/*" className="form-control mt-3" />
                     <p/>
                     {this.state.attachment?
                     <div>
-                        <img src={this.state.attachment.url} width={400} height={400} />
-                        <p/>
                         <input type="submit" className="btn btn-dark btn-large" value="Selanjutnya" />
+                        <img className="w-100 mt-5" src={this.state.attachment.url}/>
+                        
                     </div>
                     : null}
                 </form>
