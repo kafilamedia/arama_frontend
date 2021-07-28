@@ -29,7 +29,10 @@ export default class InputTime extends Component<Props, any> {
         this.minutes = minutesOrSeconds();
         this.seconds = minutesOrSeconds();
     }
-    setDefaultValue = () => {
+    componentDidMount() {
+        this.updateFromProps();
+    }
+    updateFromProps = () => {
         try {
             const val = this.props.value.split(":");
             this.setState({hour: parseInt(val[0]), minute: parseInt(val[1]), second: parseInt(val[2])});

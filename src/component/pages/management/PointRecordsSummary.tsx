@@ -9,10 +9,9 @@ import Filter from '../../../models/commons/Filter';
 import FormGroup from '../../form/FormGroup';
 import NavigationButtons from '../../navigation/NavigationButtons';
 import { tableHeader } from '../../../utils/CollectionUtil';
-import DropPointButtons from '../dormitoryactivity/DropPointButtons';
 import Spinner from '../../loader/Spinner';
 import FilterPeriod from '../../form/FilterPeriod';
-import PointRecordDetail from '../dormitoryactivity/PointRecordDetail';
+import PointRecordDetail from '../dormitoryactivity/point-record/PointRecordDetail';
 import StudentService from '../../../services/StudentService';
 import WebResponse from '../../../models/commons/WebResponse';
 import Category from '../../../models/Category';
@@ -35,30 +34,35 @@ class PointRecordSummary extends BaseManagementPage {
     private studentService:StudentService;
     constructor(props) {
         super(props, 'pointrecord', false);
-        if (!this.state.filter.fieldsFilter) {
-            this.state.filter.fieldsFilter = {};
-        }
+         
         this.studentService = this.getServices().studentService;
 
-        this.state.filter.limit = 10;
+        const f = new Filter();
         const d = new Date();
-        this.state.filter.day = this.state.filter.dayTo = d.getDate();
-        this.state.filter.month = this.state.filter.monthTo = d.getMonth() + 1;
-        this.state.filter.year = this.state.filter.yearTo = d.getFullYear();
-        this.state.filter.fieldsFilter =  {
-                                        dropped : 'ALL', 
-                                        class_id : 'ALL',
-                                        point_name : '',
-                                        category_name:'' 
-                                    };
+        
+        f.limit = 10;
+        f.day = f.dayTo = d.getDate();
+        f.month = 1; //January
+        f.monthTo = d.getMonth() + 1;
+        f.year = f.yearTo = d.getFullYear();
+        f.fieldsFilter =  {dropped : 'ALL',  class_id : 'ALL', point_name : '', category_name:''  };
+
+        this.state.filter = f;
+                                
     }
  
     componentDidMount() {
         super.componentDidMount();
-        this.commonAjax(this.studentService.getCategories,
-            this.categoriesLoaded, console.error);
+        this.loadCategories();
+        this.loadClasses();
+    }
+    loadClasses = () => {
         this.commonAjax(this.studentService.getClasses,
             this.classessLoaded, console.error)
+    }
+    loadCategories = () => {
+        this.commonAjax(this.studentService.getCategories,
+            this.categoriesLoaded, console.error);
     }
     categoriesLoaded = (response:WebResponse) => {
         this.setState({categories: response.items});
@@ -66,27 +70,36 @@ class PointRecordSummary extends BaseManagementPage {
     classessLoaded = (response:WebResponse) => {
         this.setState({classes: response.items});
     }
-    setSelectedCategory = (c:Category) => {
+    setSelectedCategory = (cat:Category) => {
         const filter = this.state.filter;
-        if (c.id == "") {
+        if (cat.id == "") {
             filter.fieldsFilter['point_name'] = '';
         }
-        this.setState({filter: filter, selectedCategory:c});
+        this.setState({filter: filter, selectedCategory:cat});
     }
-    showFilterDetail = () => {
-        this.setState({showFilterDetail: true});
+    showDetail = (item:PointRecord) => this.setState({record: item}); 
+    hideDetail = () => this.setState({record: undefined}, this.scrollTop);
+    showFilterDetail = () =>  this.setState({showFilterDetail: true}); 
+    hideFilterDetail = () =>  this.setState({showFilterDetail: false}); 
+    
+    openEditPage = (item:PointRecord) => {
+        this.props.history.push({
+            pathname: '/dormitoryactivity/pointrecordedit',
+              state: {record: item // your data array of objects
+              }
+         })
+        
     }
-    hideFilterDetail = () => {
-        this.setState({showFilterDetail: false});
-    }
+
     render() {
         const filter: Filter = this.state.filter;
         const fieldsFilter = filter.fieldsFilter;
+        const title = "Rekap Pelanggaran";
         if (this.state.record) {
             return (
                 <div className="container-fluid section-body">
-                    <h2>Rekap Pelanggaran</h2>
-                    <PointRecordDetail record={this.state.record} close={() => this.oneRecordLoaded(undefined)} />
+                    <h2>{title}</h2>
+                    <PointRecordDetail record={this.state.record} close={this.hideDetail} />
                 </div>
             )
         }
@@ -95,9 +108,9 @@ class PointRecordSummary extends BaseManagementPage {
 
         return (
             <div className="container-fluid section-body">
-                <h2>Rekap Pelanggaran</h2>
+                <h2>{title}</h2>
                 <hr />
-                <form className="form-filter" onSubmit={(e) => { e.preventDefault(); this.loadAtPage(0) }}>
+                <form className="form-filter" onSubmit={this.reload}>
                     <FormGroup label="Cari">
                         <div className="input-group">
                             <input name="name" placeholder="Nama siswa" className="form-control-sm" value={fieldsFilter ? fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
@@ -166,7 +179,8 @@ class PointRecordSummary extends BaseManagementPage {
                 <NavigationButtons activePage={filter.page ?? 0} limit={filter.limit ?? 10} totalData={this.state.totalData}
                     onClick={this.loadAtPage} />
                 <ItemsList startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} loading={this.state.loading}
-                    recordLoaded={this.oneRecordLoaded}
+                    recordLoadedForDetail={this.showDetail}
+                    recordLoadedForEdit={this.openEditPage}
                     recordUpdated={this.loadItems}
                     items={this.state.items} />
             </div>
@@ -174,23 +188,26 @@ class PointRecordSummary extends BaseManagementPage {
     }
 }
 
-const ItemsList = (props: { loading: boolean, startingNumber: number, items: PointRecord[], recordLoaded(item: PointRecord), recordUpdated() }) => {
+const ItemsList = (props: { 
+    loading: boolean, startingNumber: number, 
+    items: PointRecord[], recordLoadedForDetail(item: PointRecord):any,
+    recordLoadedForEdit(item: PointRecord):any, recordUpdated():any
+}) => {
 
     return (
         <div style={{ overflow: 'scroll' }}>
-
             <table className="table ">
                 {tableHeader("No", "Siswa", "Kelas", "Tanggal", "Pelanggaran", "Poin", "Lokasi", "Gambar", "Pemutihan", "Opsi")}
                 <tbody>
 
                     {props.loading ?
                         <tr><td colSpan={7}><Spinner /></td></tr>
-                        : props.items.map((item, i) => {
+                        : 
+                        props.items.map((item, i) => {
                             item = PointRecord.clone(item);
                             const student = item.student;
                             return (
-                                <React.Fragment  key={"PointRecord-" + i}>
-                                <tr className={item.dropped_at?"alert alert-success":"" }>
+                                <tr key={"PointRecord-" + i}  className={item.dropped_at?"alert alert-success":"" }>
                                     <td>{i + 1 + props.startingNumber}</td>
                                     <td>{item.student?.user?.name}</td>
                                     <td>{Class.studentClassString(student)}</td>
@@ -203,14 +220,14 @@ const ItemsList = (props: { loading: boolean, startingNumber: number, items: Poi
                                         : null}</td>
                                     <td>{item.dropped_at ? <i className="fas fa-check"/>  : "-"} </td>
                                     <td>
-                                         
+                                             
                                             {/* <DropPointButtons record={item} onUpdated={props.recordUpdated} /> */}
-                                            <EditDeleteButton record={item} hideDelete
-                                                recordLoaded={props.recordLoaded} 
+                                            <EditDeleteButton record={item} types={['edit', 'detail']}
+                                                recordLoadedForDetail={props.recordLoadedForDetail}
+                                                recordLoaded={props.recordLoadedForEdit} 
                                                 modelName={'pointrecord'} />
                                     </td>
                                 </tr>
-                                </React.Fragment>
                             )
                         })}
                 </tbody>

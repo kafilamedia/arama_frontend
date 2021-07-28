@@ -82,12 +82,12 @@ export default class BaseComponent extends Component<any, any> {
      */
     doAjax = (method: Function, withProgress: boolean, successCallback: Function, errorCallback?: Function, ...params: any) => {
         this.startLoading(withProgress);
-
-        method(...params).then(function (response: WebResponse) {
+        
+        method(...params).then( (response: WebResponse) => {
             if (successCallback) {
                 successCallback(response);
             }
-        }).catch(function (e) {
+        }).catch( (e) => {
             if (errorCallback) {
                 errorCallback(e);
             } else {

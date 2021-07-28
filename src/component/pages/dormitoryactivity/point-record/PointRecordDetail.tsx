@@ -1,10 +1,11 @@
 
 import React, { Component } from 'react'
-import PointRecord from './../../../models/PointRecord';
-import Card from './../../container/Card';
-import FormGroup from './../../form/FormGroup';
-import AnchorWithIcon from './../../navigation/AnchorWithIcon';
-import Class from './../../../models/Class';
+import PointRecord from '../../../../models/PointRecord';
+import Card from '../../../container/Card';
+import FormGroup from '../../../form/FormGroup';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import Class from '../../../../models/Class';
+import { doItLater } from './../../../../utils/EventUtil';
 
 interface IProps {
     record:PointRecord;
@@ -12,26 +13,32 @@ interface IProps {
 }
 export default class PointRecordDetail extends Component<IProps, any> {
 
+    componentDidMount() {
+        const opt:ScrollToOptions = { top:0,  behavior: 'smooth' };
+        doItLater(()=>{
+            window.scrollTo(opt);
+        }, 100);
+    }
 
     render() {
         const record = PointRecord.clone(this.props.record);
         const pictureUrl = record.getPicture();
         const timeStamp = record.getTimestamp();
         return <Card title={"Record Detail - "+timeStamp} footerContent={<AnchorWithIcon className="btn btn-dark" onClick={this.props.close} >Ok</AnchorWithIcon>}>
-            <FormGroup label="Name">{record.student?.user?.name} - {Class.studentClassString(record.student)}</FormGroup>
-            <FormGroup label="Item">
+            <FormGroup label="Nama">{record.student?.user?.name} - {Class.studentClassString(record.student)}</FormGroup>
+            <FormGroup label="Pelanggaran">
                 <strong>{record.rule_point?.category?.name}</strong> - {record.rule_point?.name} <span className="badge badge-dark">{record.rule_point?.point}</span>
             </FormGroup>
-            <FormGroup label="Location">
+            <FormGroup label="Lokasi">
                 {record.location??"-"}
             </FormGroup>
-            <FormGroup label="Description">
+            <FormGroup label="Deskripsi">
                 {record.description??"-"}
             </FormGroup>
-            <FormGroup label="Dropped">
+            <FormGroup label="Diputihkan">
                 {record.dropped_at??"-"}
             </FormGroup>
-            <FormGroup label="Picture">
+            <FormGroup label="Gambar">
                 {pictureUrl?
                 <img src={pictureUrl} width={200} height={200} className="border border-dark" />:null}
             </FormGroup>

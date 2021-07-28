@@ -13,7 +13,12 @@ export default class BasePage extends BaseComponent{
     componentDidMount() {
         this.validateLoginStatus(()=>{
             this.scrollTop();
+            this.componentReady();
         })
+    }
+
+    protected componentReady() {
+
     }
     // componentWillUnmount() {
     //     document.title = "Asrama KIIS";

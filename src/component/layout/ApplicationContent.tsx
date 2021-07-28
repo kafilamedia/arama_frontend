@@ -19,6 +19,7 @@ import PointRecordsManagement from '../pages/management/PointRecordsSummary';
 import MedicalRecordForm from '../pages/dormitoryactivity/medicalrecord/MedicalRecordForm';
 import AboutUs from './../pages/home/AboutUs';
 import Register from '../pages/login/Register'; 
+import PointRecordEdit from '../pages/dormitoryactivity/point-record/PointRecordEdit';
 
 class ApplicationContent extends BaseComponent {
  
@@ -110,6 +111,9 @@ const StudentsRoute = (proos) => {
             } />
              <Route exact path="/dormitoryactivity/pointsummary" render={
                 (props:any) => <PointRecordsManagement/>
+            } />
+             <Route exact path="/dormitoryactivity/pointrecordedit" render={
+                (props:any) => <PointRecordEdit/>
             } />
              <Route exact path="/dormitoryactivity/medicalrecord" render={
                 (props:any) => <MedicalRecordForm/>

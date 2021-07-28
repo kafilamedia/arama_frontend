@@ -9,14 +9,14 @@ import './Management.css'
 export default class BaseManagementPage extends BasePage {
     protected masterDataService: MasterDataService;
     protected modelName: string = "undefined";
-    protected formRef: React.RefObject<Modal> = React.createRef();
-    protected overrideLoading: boolean;
-    constructor(props, modelName?: string, overrideLoading: boolean = false) {
+    protected formRef: React.RefObject<Modal> = React.createRef(); 
+
+
+    constructor(props, modelName?: string, protected overrideLoading: boolean = false) {
         super(props, "Asrama KIIS", true);
         if (modelName) {
             this.modelName = modelName;
         }
-        this.overrideLoading = overrideLoading;
         this.masterDataService = this.getServices().masterDataService;
          
     }

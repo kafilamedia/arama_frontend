@@ -142,7 +142,7 @@ const ItemsList = (props: {startingNumber:number, items:RulePoint[], recordLoade
             <tbody>
                     {props.items.map((item, i)=>{
                         return (
-                            <tr key={"RulePoint-"+i}>
+                            <tr key={`RulePoint-${i}`}>
                                 <td>{i+1+props.startingNumber}</td>
                                 <td>{item.name}</td>
                                 <td>{item.point}</td>

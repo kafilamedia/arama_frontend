@@ -14,7 +14,11 @@ export default class MasterDataService {
         }
         return this.instance;
     }
-    getById = (request:WebRequest) => {
+    /**
+     * Get one by ID
+     * @param request 
+     */
+    getOne = (request:WebRequest) => {
         const endpoint: string = contextPath().concat("api/masterdata/getbyid");
         return commonAjaxPostCalls(endpoint, request);
     }

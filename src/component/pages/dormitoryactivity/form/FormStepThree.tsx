@@ -28,7 +28,7 @@ class FormStepThree extends BaseComponent {
                 }
             })
     }
-    rulePoint = (): RulePoint => {
+    get rulePoint (): RulePoint  {
         return this.props.rulePoint;
     }
     updatePointRecord = (e: ChangeEvent) => {
@@ -62,7 +62,7 @@ class FormStepThree extends BaseComponent {
         return this.props.attachmentInfo;
     }
     render() {
-        const rulePoint: RulePoint = this.rulePoint();
+        const rulePoint: RulePoint = this.rulePoint;
         const pointRecord: PointRecord = this.state.pointRecord;
         const attachment = this.getAttachment();
         return (

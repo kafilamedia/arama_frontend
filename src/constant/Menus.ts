@@ -146,7 +146,7 @@ const _menus: Menu[] = [
                 url: 'inputpoint',
                 menuClass: 'fas fa-pen-square',
                 role: [ AuthorityType.musyrif_asrama],
-            },
+            }, 
             // {
             //     code: 'medicalrecord',
             //     name: 'Medical Record',
@@ -162,13 +162,13 @@ const _menus: Menu[] = [
                 role: [ AuthorityType.musyrif_asrama],
             },
            
-            // {
-            //     code: 'dashboard_productsales',
-            //     name: 'Product Sales',
-            //     url: 'productsales',
-            //     menuClass: 'fas fa-chart-line',
-            //     role: [],
-            // }
+            {
+                code: 'pointrecordedit',
+                name: 'Edit Pelanggaran',
+                url: 'pointrecordedit',
+                menuClass: 'fas fa-edit',
+                role: [ AuthorityType.musyrif_asrama],
+            },
         ]
     }, 
     
