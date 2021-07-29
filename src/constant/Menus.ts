@@ -68,11 +68,11 @@ const _menus: Menu[] = [
         role: [AuthorityType.admin_asrama, AuthorityType.musyrif_asrama],
         subMenus: [
             {
-                code: 'menu1',
-                name: 'Menu #1',
-                url: 'menu1',
+                code: 'followup',
+                name: 'Follow Up',
+                url: 'followup',
                 menuClass: 'fas fa-history',
-                role: [AuthorityType.admin_asrama, AuthorityType.musyrif_asrama],
+                role: [ AuthorityType.musyrif_asrama],
             },
             // {
             //     code: 'dashboard_productsales',
@@ -85,7 +85,7 @@ const _menus: Menu[] = [
     }, 
     {
         code: 'management',
-        name: "Management",
+        name: "Manajemen",
         url: "/management",
         menuClass: "fas fa-mail-bulk",
         active: false,
@@ -113,14 +113,7 @@ const _menus: Menu[] = [
                 url: 'rule_point',
                 menuClass: 'fas fa-puzzle-piece',
                 role: [AuthorityType.admin_asrama],
-            },
-            // {
-            //     code: 'dashboard_productsales',
-            //     name: 'Product Sales',
-            //     url: 'productsales',
-            //     menuClass: 'fas fa-chart-line',
-            //     role: [],
-            // }
+            }, 
         ]
     }, 
     {

@@ -8,14 +8,17 @@ import User from './../../../../models/User';
 import BasePage from './../../BasePage';
 import AttachmentInfo from './../../../../models/settings/AttachmentInfo';
 import { getAttachmentInfoFromFile } from './../../../../utils/ComponentUtil';
+import StudentService from './../../../../services/StudentService';
 
 class State {
     attachment:AttachmentInfo | undefined;
 }
 class DashboardMain extends BasePage {
     state:State = new State();
+    studentService:StudentService;
     constructor(props: any) {
         super(props, "Dashboard", true);
+        this.studentService = this.getServices().studentService;
     }
 
     addPointRecord = (e:FormEvent) => {
@@ -45,19 +48,21 @@ class DashboardMain extends BasePage {
                     {/* <p className="badge badge-dark text-capitalize">{(user.roles).join(", ")}</p> */}
                    
                 </div>
-                <form className="mt-10 text-center" onSubmit={this.addPointRecord}>
-                    <h1><i className="fas fa-camera" /></h1>
-                    <h3> Input Pelanggaran</h3>
-                    <input onChange={this.updateImage} type="file" accept="image/*" className="form-control mt-3" />
-                    <p/>
-                    {this.state.attachment?
-                    <div>
-                        <input type="submit" className="btn btn-dark btn-large" value="Selanjutnya" />
-                        <img className="w-100 mt-5" src={this.state.attachment.url}/>
-                        
-                    </div>
-                    : null}
-                </form>
+                {this.isAdmin()? null :
+                    <form className="mt-10 text-center" onSubmit={this.addPointRecord}>
+                        <h1><i className="fas fa-camera" /></h1>
+                        <h3> Input Pelanggaran</h3>
+                        <input onChange={this.updateImage} type="file" accept="image/*" className="form-control mt-3" />
+                        <p/>
+                        {this.state.attachment?
+                        <div>
+                            <input type="submit" className="btn btn-dark btn-large" value="Selanjutnya" />
+                            <img className="w-100 mt-5" src={this.state.attachment.url}/>
+                            
+                        </div>
+                        : null}
+                    </form>
+                }
             </div>
         )
     }

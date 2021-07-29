@@ -40,10 +40,10 @@ class DropPointButtons extends BaseComponent {
         }
         return (
             item.dropped_at ?
-                <AnchorWithIcon onClick={(e) => this.setDropped(false)} className="btn btn-info btn-sm" iconClassName="fas fa-arrow-up">
+                <AnchorWithIcon onClick={(e) => this.setDropped(false)} className="btn btn-secondary btn-sm" iconClassName="fas fa-arrow-up">
                     Reset
                 </AnchorWithIcon> :
-                <AnchorWithIcon onClick={(e) => this.setDropped(true)} className="btn btn-info btn-sm" iconClassName="fas fa-arrow-down">
+                <AnchorWithIcon onClick={(e) => this.setDropped(true)} className="btn btn-success btn-sm" iconClassName="fas fa-arrow-down">
                     Putihkan
                 </AnchorWithIcon>
         )

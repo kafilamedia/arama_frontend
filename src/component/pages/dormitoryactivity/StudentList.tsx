@@ -37,7 +37,7 @@ class StudentList extends BaseManagementPage {
         this.state.filter.month = this.state.filter.monthTo = new Date().getMonth() + 1;
         this.state.filter.year = this.state.filter.yearTo = new Date().getFullYear();
         this.state.filter.fieldsFilter = {
-            'class_id': 'ALL',
+            'class_id': '',
             'with_point_record': false
         }
     }
@@ -119,8 +119,8 @@ class StudentList extends BaseManagementPage {
 
         const filter = this.state.filter;
         const classes = this.state.classes;
-        const defaultClass: Class = { id: "ALL", level: "Semua Kelas", sekolah: {} };
-        const selectedClassId = filter.fieldsFilter && filter.fieldsFilter['class_id'] ? filter.fieldsFilter['class_id'] : "ALL";
+        const defaultClass: Class = { id: "", level: "Semua Kelas", sekolah: {} };
+        const selectedClassId = filter.fieldsFilter && filter.fieldsFilter['class_id'] ? filter.fieldsFilter['class_id'] : "";
         const showPointRecord = filter.fieldsFilter && filter.fieldsFilter['with_point_record'] && filter.fieldsFilter['with_point_record'] == true;
         return (
             <div className="container-fluid section-body">

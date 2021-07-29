@@ -1,5 +1,11 @@
 
 export default class Filter{
+    static resetFieldsFilter = (f:Filter) : Filter => {
+        for (const key in f.fieldsFilter) {
+			f.fieldsFilter[key] = "";
+		}
+		return f;
+    }
     static withLimit = (arg0: number): Filter => {
 		const f =new Filter();
 		f.limit = arg0;
@@ -21,8 +27,6 @@ export default class Filter{
 	yearTo?:number;
 	maxValue?:number;
 	availabilityCheck?:boolean;
-	
-	//
-	useExistingFilterPage?:boolean = false; 
+	 
 
 }

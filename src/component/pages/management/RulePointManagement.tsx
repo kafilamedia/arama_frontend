@@ -99,14 +99,11 @@ class RulePointManagement extends BaseManagementPage
                 <hr />
                 <RecordForm categories={categories} reloadCategories={this.loadCategories} formRef={this.formRef} resetForm={this.resetForm} onSubmit={this.onSubmit} record={this.state.record} updateRecordProp={this.updateRecordProp} />
                 <form onSubmit={this.reload}>
-                    <FormGroup label="Cari">
-                        <input name="name" placeholder="nama" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
-                    </FormGroup>
-                    <FormGroup label="Category">
+                <FormGroup label="Cari">
                     <div className="input-group">
+                        <input name="name" placeholder="nama" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
                         <select value={selectedCategoryId} className="form-control-sm" name="category_id" onChange={this.updateFieldsFilter} >
-                            {[{id:"ALL", name:"Semua"},...categories].map((c)=>{
-
+                            {[{id:"", name:"Semua Kategori"},...categories].map((c)=>{
                                 return <option key={"filter-cat-"+c.id} value={c.id}>{c.name}</option>
                             })}
                         </select>

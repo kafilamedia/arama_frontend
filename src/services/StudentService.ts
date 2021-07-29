@@ -8,7 +8,7 @@ import WebRequest from './../models/commons/WebRequest';
 import MedicalRecord from './../models/MedicalRecord';
 import WebResponse from '../models/commons/WebResponse';
 export default class StudentService {
-    
+   
 
     private static instance?: StudentService;
 
@@ -34,6 +34,15 @@ export default class StudentService {
     public getCategories() :Promise<WebResponse> {
         return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/rulecategories", {});
     }
+    public followUp = (pointRecordId:number):Promise<WebResponse> => {
+        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/followup", {
+            record_id:pointRecordId
+        });
+    }
+    public getFollowUpReminders = ():Promise<WebResponse> => {
+        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/followupreminders", {});
+    }
+    
 
     public submitMedicalRecord = (record:MedicalRecord) => {
         const req:WebRequest = {

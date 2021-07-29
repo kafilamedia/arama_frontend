@@ -7,4 +7,8 @@ export default class Category extends BaseEntity
     description?:string;
 
     points:RulePoint[] | undefined;
+
+    static clone = (object:any) : Category => {
+        return Object.assign(new Category, object);
+    }
 }

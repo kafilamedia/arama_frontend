@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React  from 'react'
 import BaseManagementPage from './BaseManagementPage';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -9,7 +9,6 @@ import Filter from '../../../models/commons/Filter';
 import FormGroup from '../../form/FormGroup';
 import NavigationButtons from '../../navigation/NavigationButtons';
 import { tableHeader } from '../../../utils/CollectionUtil';
-import Spinner from '../../loader/Spinner';
 import FilterPeriod from '../../form/FilterPeriod';
 import PointRecordDetail from '../dormitoryactivity/point-record/PointRecordDetail';
 import StudentService from '../../../services/StudentService';
@@ -29,6 +28,7 @@ class State {
     selectedCategory:Category| undefined;
     showFilterDetail:boolean = false;
 }
+const defaultFieldsFilter = {name:'', dropped : '',  class_id : '', point_name : '', category_name:'',location: ''  }
 
 class PointRecordSummary extends BaseManagementPage {
     state: State = new State();
@@ -46,10 +46,9 @@ class PointRecordSummary extends BaseManagementPage {
         f.month = 1; //January
         f.monthTo = d.getMonth() + 1;
         f.year = f.yearTo = d.getFullYear();
-        f.fieldsFilter =  {dropped : 'ALL',  class_id : 'ALL', point_name : '', category_name:''  };
+        f.fieldsFilter =  defaultFieldsFilter;
 
-        this.state.filter = f;
-                                
+        this.state.filter = f;  
     }
  
     componentDidMount() {
@@ -65,12 +64,9 @@ class PointRecordSummary extends BaseManagementPage {
         this.commonAjax(this.studentService.getCategories,
             this.categoriesLoaded, console.error);
     }
-    categoriesLoaded = (response:WebResponse) => {
-        this.setState({categories: response.items});
-    }
-    classessLoaded = (response:WebResponse) => {
-        this.setState({classes: response.items});
-    }
+    categoriesLoaded = (response:WebResponse) => this.setState({categories: response.items}); 
+    classessLoaded = (response:WebResponse) =>  this.setState({classes: response.items}); 
+
     setSelectedCategory = (cat:Category) => {
         const filter = this.state.filter;
         if (cat.id == "") {
@@ -78,6 +74,7 @@ class PointRecordSummary extends BaseManagementPage {
         }
         this.setState({filter: filter, selectedCategory:cat});
     }
+
     showDetail = (item:PointRecord) => this.setState({record: item}); 
     hideDetail = () => this.setState({record: undefined}, this.scrollTop);
     showFilterDetail = () =>  this.setState({showFilterDetail: true}); 
@@ -88,12 +85,25 @@ class PointRecordSummary extends BaseManagementPage {
             pathname: '/dormitoryactivity/pointrecordedit',
               state: {record: p }
          })
-        
+    }
+
+    resetFilter = () => {
+        const f = this.state.filter;
+        this.setState({filter: Filter.resetFieldsFilter(f)});
+    }
+    followUp = (p:PointRecord) => {
+        this.commonAjax(
+            this.studentService.followUp,
+            this.showCommonSuccessAlert,
+            this.showCommonErrorAlert,
+            p.id
+        )
     }
 
     render() {
-        const filter: Filter = this.state.filter;
+        const filter = this.state.filter;
         const fieldsFilter = filter.fieldsFilter;
+        
         const title = "Rekap Pelanggaran";
         if (this.state.record) {
             return (
@@ -103,8 +113,8 @@ class PointRecordSummary extends BaseManagementPage {
                 </div>
             )
         }
-        const defaultClass: Class = { id: "ALL", level: "Semua Kelas", sekolah: {} };
-        const selectedClassId =  filter.fieldsFilter['class_id'] ? filter.fieldsFilter['class_id'] : "ALL";
+        const defaultClass: Class = { id: "", level: "Semua Kelas", sekolah: {} };
+        const selectedClassId =  filter.fieldsFilter['class_id'] ? filter.fieldsFilter['class_id'] : "";
 
         return (
             <div className="container-fluid section-body">
@@ -113,10 +123,10 @@ class PointRecordSummary extends BaseManagementPage {
                 <form className="form-filter" onSubmit={this.reload}>
                     <FormGroup label="Cari">
                         <div className="input-group">
-                            <input name="name" placeholder="Nama siswa" className="form-control-sm" value={fieldsFilter ? fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
+                            <input name="name" placeholder="Nama siswa" className="form-control-sm" value={fieldsFilter['name'] ?? ""} onChange={this.updateFieldsFilter} />
                             <select value={selectedClassId} onChange={this.updateFieldsFilter} className="form-control-sm" name="class_id">
                                 {[defaultClass, ...this.state.classes].map((c) => {
-                                    return <option key={'class_' + c.id} value={c.id}>{c.level}{c.rombel} - {c.sekolah?.nama}</option>
+                                    return <option key={`class_${c.id}`} value={c.id}>{c.level}{c.rombel} - {c.sekolah?.nama}</option>
                                 })}
                             </select>  
                         </div>
@@ -124,17 +134,17 @@ class PointRecordSummary extends BaseManagementPage {
                     {this.state.showFilterDetail?
                     <><div  className="filter-sticky bg-white border border-gray pt-3 pb-3 pl-3 pr-3">
                         <FormGroup label="Kategori"> 
-                                <select value={filter.fieldsFilter['category_name']} onChange={this.updateFieldsFilter} className="form-control-sm" name="category_name">
-                                    {[Object.assign(new Category, {id:"", name:"Semua"}), ...this.state.categories].map((c) => {
-                                        return <option onClick={()=>this.setSelectedCategory(c)}  key={'cat_' + c.id} value={c.id == "" ? c.id :c.name}>{c.name}</option>
+                                <select value={fieldsFilter['category_name']} onChange={this.updateFieldsFilter} className="form-control-sm" name="category_name">
+                                    {[Category.clone({id:"", name:"Semua"}), ...this.state.categories].map((c) => {
+                                        return <option onClick={()=> this.setSelectedCategory(c)}  key={`cat_${c.id}`} value={c.id == "" ? c.id :c.name}>{c.name}</option>
                                     })}
                                 </select> 
                         </FormGroup>
                         {this.state.selectedCategory && this.state.selectedCategory.points?
                             <FormGroup label="Pelanggaran">
-                                <select value={filter.fieldsFilter['point_name']} onChange={this.updateFieldsFilter} className="form-control-sm" name="point_name">
+                                <select value={fieldsFilter['point_name']} onChange={this.updateFieldsFilter} className="form-control-sm" name="point_name">
                                     {[{id:"", name:"Semua"}, ...this.state.selectedCategory.points].map((c) => {
-                                        return <option key={'cat_' + c.id} value={c.id == "" ? c.id :c.name}>{c.name}</option>
+                                        return <option key={`rp_${c.id}`} value={c.id == "" ? c.id :c.name}>{c.name}</option>
                                     })}
                                 </select>
                             </FormGroup>:
@@ -148,11 +158,14 @@ class PointRecordSummary extends BaseManagementPage {
                             </div> 
                         </FormGroup>
                         <FormGroup label="Pemutihan">
-                            <select name="dropped" className="form-control-sm" value={fieldsFilter ? fieldsFilter['dropped'] : 'ALL'} onChange={this.updateFieldsFilter}>
-                                <option value="ALL">All</option>
+                            <select name="dropped" className="form-control-sm" value={fieldsFilter['dropped']?? ''} onChange={this.updateFieldsFilter}>
+                                <option value="">Semua</option>
                                 <option value="false">Belum</option>
                                 <option value="true">Sudah</option>
                             </select>
+                        </FormGroup>
+                        <FormGroup label="Lokasi">
+                            <input name="location" placeholder="Lokasi" className="form-control-sm" value={fieldsFilter['location']??""} onChange={this.updateFieldsFilter} />
                         </FormGroup>
                         <FormGroup label="Jumlah Tampilan">
                             <input type="number" name="limit" className="form-control-sm" value={filter.limit ?? 5} onChange={this.updateFilter} />
@@ -174,62 +187,61 @@ class PointRecordSummary extends BaseManagementPage {
                     </FormGroup>
                     <FormGroup>
                         <input className="btn btn-primary btn-sm" type="submit" value="Submit" />
+                        <a className="btn btn-secondary btn-sm ml-3" onClick={this.resetFilter}>Reset</a>
                     </FormGroup>
                 </form>
-
                 <NavigationButtons activePage={filter.page ?? 0} limit={filter.limit ?? 10} totalData={this.state.totalData}
                     onClick={this.loadAtPage} />
-                <ItemsList isAdmin={this.isAdmin()} startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} loading={this.state.loading}
+                <ItemsList isAdmin={this.isAdmin()} startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)}  
                     recordLoadedForDetail={this.showDetail}
                     recordLoadedForEdit={this.openEditPage}
-                    recordUpdated={this.loadItems}
+                    recordUpdated={this.loadItems} followUp={this.followUp}
                     items={this.state.items} />
             </div>
         )
     }
 }
-
-const ItemsList = (props: { 
-    isAdmin:boolean,
-    loading: boolean, startingNumber: number, 
-    items: PointRecord[], recordLoadedForDetail(item: PointRecord):any,
-    recordLoadedForEdit(item: PointRecord):any, recordUpdated():any
-}) => {
+interface ItemProps { 
+    isAdmin:boolean,  startingNumber: number, 
+    items: PointRecord[], recordLoadedForDetail(p: PointRecord):any,
+    recordLoadedForEdit(p: PointRecord):any, recordUpdated():any, followUp(p:PointRecord):any
+}
+const ItemsList = (props: ItemProps) => {
 
     return (
         <div style={{ overflow: 'scroll' }}>
             <table className="table ">
                 {tableHeader("No", "Siswa", "Kelas", "Tanggal", "Pelanggaran", "Poin", "Lokasi", "Gambar", "Pemutihan", "Opsi")}
                 <tbody>
-
-                    {props.loading ?
-                        <tr><td colSpan={7}><Spinner /></td></tr>
-                        : 
-                        props.items.map((item, i) => {
+                    {props.items.map((item, i) => {
                             item = PointRecord.clone(item);
                             const student = item.student;
-                            const optionTypes = [ !props.isAdmin && item.dropped_at?null:'edit','detail', props.isAdmin?'delete':null];
+                            const optionTypes = props.isAdmin?
+                                                    ['detail', 'delete'] :
+                                                    [ (item.dropped_at?null:'edit'),'detail'];
                             return (
                                 <tr key={"PointRecord-" + i}  className={item.dropped_at?"alert alert-success":"" }>
                                     <td>{i + 1 + props.startingNumber}</td>
-                                    <td>{item.student?.user?.name}</td>
+                                    <td>{student?.user?.name}</td>
                                     <td>{Class.studentClassString(student)}</td>
                                     <td>{item.getTimestamp()}</td>
                                     <td>{item.rule_point?.name} ({item.rule_point?.category?.name})</td>
                                     <td>{item.rule_point?.point}</td>
                                     <td>{item.location}</td>
                                     <td>{item.getPicture() ?
-                                        <img src={item.getPicture() ?? ""} width={50} height={50} />
-                                        : null}</td>
+                                        <img src={item.getPicture() ?? ""} width={50} height={50} />: null}</td>
                                     <td>{item.dropped_at ? <i className="fas fa-check"/>  : "-"} </td>
                                     <td>
-                                        {props.isAdmin? <DropPointButtons record={item} onUpdated={props.recordUpdated} /> :
-                                        <EditDeleteButton record={item} 
-                                            types={optionTypes}
-                                            recordLoadedForDetail={props.recordLoadedForDetail}
-                                            recordLoaded={props.recordLoadedForEdit} 
-                                            modelName={'pointrecord'} />
-                                        }
+                                        <div style={{width:'max-content'}}>
+                                            {props.isAdmin? <><DropPointButtons record={item} onUpdated={props.recordUpdated} /><p/></> : 
+                                            <a className="btn btn-dark btn-sm" onClick={()=>props.followUp(item)}>Follow Up</a>}
+                                            <EditDeleteButton record={item} 
+                                                types={optionTypes}
+                                                recordLoadedForDetail={props.recordLoadedForDetail}
+                                                recordLoaded={props.recordLoadedForEdit} 
+                                                modelName={'pointrecord'} />
+                                        </div>
+                                       
                                     </td>
                                 </tr>
                             )

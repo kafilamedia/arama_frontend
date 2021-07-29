@@ -20,6 +20,7 @@ import MedicalRecordForm from '../pages/dormitoryactivity/medicalrecord/MedicalR
 import AboutUs from './../pages/home/AboutUs';
 import Register from '../pages/login/Register'; 
 import PointRecordEdit from '../pages/dormitoryactivity/point-record/PointRecordEdit';
+import FollowUpReminder from '../pages/dashboard/main/FollowUpReminder';
 
 class ApplicationContent extends BaseComponent {
  
@@ -151,10 +152,10 @@ const Dashboard = (props) => {
                 }
                    
             } />
-            {/* <Route exact path="/dashboard/quizhistory" render={
+              <Route exact path="/dashboard/followup" render={
                 (props: any) =>
-                    <QuizHistoryPage />
-            } /> */}
+                    <FollowUpReminder />
+            } /> 
         </Switch>
     )
 }

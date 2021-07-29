@@ -172,7 +172,9 @@ export default class BaseComponent extends Component<any, any> {
     refresh() {
         this.setState({ updated: new Date() });
     }
-
+    showCommonSuccessAlert = () => {
+        this.showInfo("Success");
+    }
     showCommonErrorAlert = (e: any) => {
         console.error(e);
 
