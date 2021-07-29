@@ -156,7 +156,7 @@ class StudentList extends BaseManagementPage {
                             </React.Fragment> : null}
                     </FormGroup>
                     {showPointRecord ?
-                        <FormGroup label="Periode">
+                        <FormGroup>
                             {filter.day} {MONTHS[(filter.month ?? 1) - 1]} {filter.year} - {filter.dayTo} {MONTHS[(filter.monthTo ?? 1) - 1]} {filter.yearTo}
                         </FormGroup>
                         : null}

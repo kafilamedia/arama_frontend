@@ -131,7 +131,7 @@ const _menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true,
-        role: [  AuthorityType.musyrif_asrama],
+        role: [  AuthorityType.musyrif_asrama, AuthorityType.admin_asrama],
         subMenus: [
             {
                 code: 'studentlist',
@@ -159,7 +159,7 @@ const _menus: Menu[] = [
                 name: 'Rekap Pelanggaran',
                 url: 'pointsummary',
                 menuClass: 'fas fa-clipboard',
-                role: [ AuthorityType.musyrif_asrama],
+                role: [ AuthorityType.musyrif_asrama, AuthorityType.admin_asrama],
             },
            
             {

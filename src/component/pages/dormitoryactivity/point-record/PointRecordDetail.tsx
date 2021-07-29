@@ -24,16 +24,15 @@ export default class PointRecordDetail extends Component<IProps, any> {
         const record = PointRecord.clone(this.props.record);
         const pictureUrl = record.getPicture();
         const timeStamp = record.getTimestamp();
-        return <Card title={"Record Detail - "+timeStamp} footerContent={<AnchorWithIcon className="btn btn-dark" onClick={this.props.close} >Ok</AnchorWithIcon>}>
+        return <Card title={"Detail Pelanggaran"} footerContent={<AnchorWithIcon className="btn btn-dark" onClick={this.props.close} >Ok</AnchorWithIcon>}>
             <FormGroup label="Nama">{record.student?.user?.name} - {Class.studentClassString(record.student)}</FormGroup>
             <FormGroup label="Pelanggaran">
                 <strong>{record.rule_point?.category?.name}</strong> - {record.rule_point?.name} <span className="badge badge-dark">{record.rule_point?.point}</span>
             </FormGroup>
-            <FormGroup label="Lokasi">{record.location??"-"}</FormGroup>
-
-            <FormGroup label="Deskripsi">{record.description??"-"}</FormGroup>
-
-            <FormGroup label="Diputihkan">{record.dropped_at??"-"}</FormGroup>
+            <FormGroup label="Waktu" children={timeStamp} />
+            <FormGroup label="Lokasi" children={record.location??"-"} />
+            <FormGroup label="Deskripsi" children={record.description??"-"} />
+            <FormGroup label="Diputihkan" children={record.dropped_at??"-"} />
             
             <FormGroup label="Gambar">
                 {pictureUrl?

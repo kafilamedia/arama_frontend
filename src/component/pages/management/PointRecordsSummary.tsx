@@ -17,6 +17,7 @@ import WebResponse from '../../../models/commons/WebResponse';
 import Category from '../../../models/Category';
 import Class from '../../../models/Class';
 import { MONTHS } from './../../../utils/DateUtil';
+import DropPointButtons from '../dormitoryactivity/DropPointButtons';
 class State {
     items: PointRecord[] = [];
     filter: Filter = new Filter();
@@ -158,6 +159,7 @@ class PointRecordSummary extends BaseManagementPage {
                         </FormGroup>
                         <FormGroup label="">
                             <a className="btn btn-dark btn-sm" onClick={this.hideFilterDetail}>Tutup</a>
+                            <input className="ml-3 btn btn-primary btn-sm" type="submit" value="Cari" />
                         </FormGroup>
                     </div>
                     <FormGroup label="">
@@ -177,7 +179,7 @@ class PointRecordSummary extends BaseManagementPage {
 
                 <NavigationButtons activePage={filter.page ?? 0} limit={filter.limit ?? 10} totalData={this.state.totalData}
                     onClick={this.loadAtPage} />
-                <ItemsList startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} loading={this.state.loading}
+                <ItemsList isAdmin={this.isAdmin()} startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} loading={this.state.loading}
                     recordLoadedForDetail={this.showDetail}
                     recordLoadedForEdit={this.openEditPage}
                     recordUpdated={this.loadItems}
@@ -188,6 +190,7 @@ class PointRecordSummary extends BaseManagementPage {
 }
 
 const ItemsList = (props: { 
+    isAdmin:boolean,
     loading: boolean, startingNumber: number, 
     items: PointRecord[], recordLoadedForDetail(item: PointRecord):any,
     recordLoadedForEdit(item: PointRecord):any, recordUpdated():any
@@ -205,6 +208,7 @@ const ItemsList = (props: {
                         props.items.map((item, i) => {
                             item = PointRecord.clone(item);
                             const student = item.student;
+                            const optionTypes = [ !props.isAdmin && item.dropped_at?null:'edit','detail', props.isAdmin?'delete':null];
                             return (
                                 <tr key={"PointRecord-" + i}  className={item.dropped_at?"alert alert-success":"" }>
                                     <td>{i + 1 + props.startingNumber}</td>
@@ -219,12 +223,13 @@ const ItemsList = (props: {
                                         : null}</td>
                                     <td>{item.dropped_at ? <i className="fas fa-check"/>  : "-"} </td>
                                     <td>
-                                             
-                                            {/* <DropPointButtons record={item} onUpdated={props.recordUpdated} /> */}
-                                            <EditDeleteButton record={item} types={[ item.dropped_at?null:'edit','detail']}
-                                                recordLoadedForDetail={props.recordLoadedForDetail}
-                                                recordLoaded={props.recordLoadedForEdit} 
-                                                modelName={'pointrecord'} />
+                                        {props.isAdmin? <DropPointButtons record={item} onUpdated={props.recordUpdated} /> :
+                                        <EditDeleteButton record={item} 
+                                            types={optionTypes}
+                                            recordLoadedForDetail={props.recordLoadedForDetail}
+                                            recordLoaded={props.recordLoadedForEdit} 
+                                            modelName={'pointrecord'} />
+                                        }
                                     </td>
                                 </tr>
                             )
