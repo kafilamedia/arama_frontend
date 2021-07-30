@@ -22,6 +22,7 @@ import Register from '../pages/login/Register';
 import PointRecordEdit from '../pages/dormitoryactivity/point-record/PointRecordEdit';
 import FollowUpReminder from '../pages/dashboard/main/FollowUpReminder';
 import WarningActionManagement from '../pages/management/WarningActionManagement';
+import ConfigSettingPage from '../pages/settings/ConfigSettingPage';
 
 class ApplicationContent extends BaseComponent {
  
@@ -72,6 +73,7 @@ class ApplicationContent extends BaseComponent {
                 <StudentsRoute />
                 <MusyrifManagementRoute/>
                 <Dashboard />
+                <Setting/>
             </Fragment>
         )
     }
@@ -81,6 +83,16 @@ class ApplicationContent extends BaseComponent {
 
 }
 
+const Setting  = (props) => {
+
+    return (
+        <Switch>
+            <Route exact path="/settings/config" render={
+                (props:any) => <ConfigSettingPage />
+            } />
+        </Switch>
+    )
+}
 const MusyrifManagementRoute  = (props) => {
 
     return (

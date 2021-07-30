@@ -1,7 +1,5 @@
-
 import { commonAjaxPostCalls } from './Promises';
 import { contextPath } from '../constant/Url';
-import Filter from '../models/commons/Filter';
 import PointRecord from './../models/PointRecord';
 import AttachmentInfo from './../models/settings/AttachmentInfo';
 import WebRequest from './../models/commons/WebRequest';
@@ -26,21 +24,21 @@ export default class StudentService {
             pointRecord: pointRecord,
             attachmentInfo: attachmentInfo
         }
-        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/submitpointrecord", req);
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/submitpointrecord", req);
     }
     public getClasses() :Promise<WebResponse> {
-        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/classes", {});
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/classes", {});
     }
     public getCategories() :Promise<WebResponse> {
-        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/rulecategories", {});
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/rulecategories", {});
     }
     public followUp = (pointRecordId:number):Promise<WebResponse> => {
-        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/followup", {
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/followup", {
             record_id:pointRecordId
         });
     }
     public getFollowUpReminders = ():Promise<WebResponse> => {
-        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/followupreminders", {});
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/followupreminders", {});
     }
     
 
@@ -48,7 +46,7 @@ export default class StudentService {
         const req:WebRequest = {
             medicalRecord: record
         }
-        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/submitmedicalrecord", req)
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/submitmedicalrecord", req)
     }
     public loadMonthlyMedicalRecord = (studentId:number, month:number, year:number) => {
         const req:WebRequest = {
@@ -57,11 +55,11 @@ export default class StudentService {
                 fieldsFilter: {student_id:studentId}
             }
         }
-        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/monthlymedicalrecord", req)
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/monthlymedicalrecord", req)
     }
 
     public setPointDropped = (id: number, dropped: boolean) => {
-        return commonAjaxPostCalls(contextPath() + "/api/dormitorymanagement/droppoint", { 
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/droppoint", { 
             pointRecord : {
                 id: id,
                 dropped_at: dropped?new Date():null

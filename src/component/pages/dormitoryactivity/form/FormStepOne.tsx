@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import BaseComponent from '../../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -57,6 +57,15 @@ class FormStepOne extends BaseComponent {
     onSubmit = () => {
         this.props.onSubmit();
     }
+    updateCategory = (e:ChangeEvent) => {
+        const select = (e.target as HTMLSelectElement);
+        const filteredItems = this.state.categories.filter((c:Category)=>{
+            return c.id.toString() == select.value;
+        })
+        if (filteredItems.length == 0) return;
+
+        this.setCategory(filteredItems[0]);
+    }
     render() {
         const categories = this.state.categories;
         const category = this.props.category;
@@ -69,14 +78,11 @@ class FormStepOne extends BaseComponent {
         return (
             <form onSubmit={(e) => { e.preventDefault(); this.onSubmit() }}>
                 <FormGroup label="Category">
-                    <select className="form-control" onChange={(e)=>e.preventDefault()} value={category ? category.id??"" : ""} >
+                    <select className="form-control" onChange={this.updateCategory} value={category ? category.id??"" : ""} >
                         {categories.map((c) => {
-                            return <option key={"select-cat-" + c.id}
-                                onClick={(e) => { this.setCategory(c) }}
-                                value={c.id}>{c.name}</option>
+                            return <option key={`select-cat-${c.id}`} value={c.id}>{c.name}</option>
                         })}
                     </select>
-
                 </FormGroup>
                 <hr/>
                 <AnchorWithIcon className="btn btn-secondary float-left" iconClassName="fas fa-arrow-left" onClick={this.props.onBack} >Back</AnchorWithIcon>

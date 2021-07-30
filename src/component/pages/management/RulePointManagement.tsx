@@ -133,7 +133,7 @@ const ItemsList = (props: {startingNumber:number, items:RulePoint[], recordLoade
     return (
         <div style={{overflow:'scroll'}}>
         <table className="table table-striped">
-            {tableHeader("No", "Nama", "Poin", "Deskripsi", "Kategori", "Dapat diputihkan", "Opsi")}
+            {tableHeader("No", "Nama", "Poin", "Deskripsi", "Kategori", "Pemutihan", "Opsi")}
             <tbody>
                     {props.items.map((item, i)=>{
                         return (

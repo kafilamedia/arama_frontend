@@ -5,6 +5,7 @@ import UserService from '../services/UserService';
 import Services from './../services/Services';
 import MusyrifManagementService from './../services/MusyrifManagementService';
 import StudentService from '../services/StudentService';
+import ConfigurationService from '../services/ConfigurationService';
 
 export const initState: { services: Services } = {
     services: {
@@ -12,6 +13,7 @@ export const initState: { services: Services } = {
         masterDataService: MasterDataService.getInstance(),
         musyrifManagementService: MusyrifManagementService.getInstance(),
         studentService: StudentService.getInstance(),
+        configurationService: ConfigurationService.getInstance()
     }
 
 };

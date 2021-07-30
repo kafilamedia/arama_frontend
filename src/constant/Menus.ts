@@ -118,7 +118,7 @@ const _menus: Menu[] = [
                 code: 'warning_action',
                 name: 'Peringatan',
                 url: 'warning_action',
-                menuClass: 'fas fa-puzzle-piece',
+                menuClass: 'fas fa-exclamation-triangle',
                 role: [AuthorityType.admin_asrama, AuthorityType.musyrif_asrama],
             }, 
         ]
@@ -172,5 +172,24 @@ const _menus: Menu[] = [
             
         ]
     }, 
+    {
+        code: 'settings',
+        name: "Setting",
+        url: "/settings",
+        menuClass: "fas fa-cogs",
+        active: false,
+        authenticated: true,
+        showSidebar: true,
+        role: [  AuthorityType.admin_asrama],
+        subMenus: [
+            {
+                code: 'config',
+                name: 'Konfigurasi',
+                url: 'config',
+                menuClass: 'fas fa-cog',
+                role: [ AuthorityType.admin_asrama],
+            },
+        ]
+    }
     
 ];

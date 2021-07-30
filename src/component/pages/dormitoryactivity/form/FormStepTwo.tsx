@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import BaseComponent from '../../../BaseComponent';
 import MasterDataService from '../../../../services/MasterDataService';
 import { withRouter } from 'react-router-dom';
@@ -62,6 +62,15 @@ class FormStepTwo extends BaseComponent {
     setRulePoint = (r:RulePoint) => {
         this.props.setRulePoint(r);
     }
+    updateRulePoint = (e:ChangeEvent) => {
+        const select = (e.target as HTMLSelectElement);
+        const filteredItems = this.state.rulePoints.filter((r:RulePoint)=>{
+            return r.id.toString() == select.value;
+        })
+        if (filteredItems.length == 0) return;
+
+        this.setRulePoint(filteredItems[0]);
+    }
     render() {
         const category = this.getCategory();
 
@@ -80,11 +89,9 @@ class FormStepTwo extends BaseComponent {
             <form onSubmit={e => { e.preventDefault(); this.onSubmit() }} >
                 <FormGroup label="Category" children={category.name}/>
                 <FormGroup label="Name">
-                <select className="form-control" onChange={(e)=>e.preventDefault()} value={this.props.rulePoint ? this.props.rulePoint.id : null} >
-                    {rulePoints.map((rulePoint) => {
-                        return <option key={"select-rulePoint-" + rulePoint.id}
-                            onClick={(e) => { this.setRulePoint(rulePoint) }}
-                            value={rulePoint.id}>{rulePoint.name}</option>
+                <select className="form-control" onChange={this.updateRulePoint} value={this.props.rulePoint ? this.props.rulePoint.id : null} >
+                    {rulePoints.map((r:RulePoint) => {
+                        return <option key={`select-rulePoint-${r.id}`} value={r.id}>{r.name}</option>
                     })}
                 </select>
                 </FormGroup>

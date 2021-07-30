@@ -1,6 +1,6 @@
 
 
-import React, { RefObject, Component, FormEvent, Fragment, ChangeEvent } from 'react';
+import React, { FormEvent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import BaseComponent from '../../BaseComponent';

@@ -54,10 +54,19 @@ export default class BaseComponent extends Component<any, any> {
         return this.props.applicationProfile == null ? new ApplicationProfile() : this.props.applicationProfile;
     }
 
-    handleInputChange = (event: any) => {
+    handleInputChange = (event: any, stateFieldName?:string|undefined) => {
         const target = event.target;
-        const value = target.type == 'checkbox' ? target.checked : target.value;
-        this.setState({ [target.name]: value });
+        let value = target.type == 'checkbox' ? target.checked : target.value;
+        if (target.type == 'number') {
+            value = parseInt(value);
+        }
+        if (stateFieldName) {
+            const el = this.state[stateFieldName];
+            el[target.name] = value;
+            this.setState({ [stateFieldName]: el});
+        } else {
+            this.setState({ [target.name]: value });
+        }
     }
 
 
@@ -159,7 +168,6 @@ export default class BaseComponent extends Component<any, any> {
         this.parentApp.showAlert("Info", body, true, function () { });
     }
     showError = (body: any) => {
-
         this.parentApp.showAlertError("Error", body, true, function () { });
     }
 

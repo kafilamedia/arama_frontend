@@ -63,8 +63,8 @@ class PointRecordEdit extends BasePage{
         pointsMap[categoryId.toString()] = response.items;
         this.setState({pointsMap: pointsMap});
     }
-    loadRulePoints = (catId:string) => {  
-        if (catId === "" || this.state.pointsMap[catId] !== undefined) {
+    loadRulePoints = (catId:string) => { 
+        if (catId === "" || this.state.pointsMap[catId] != undefined) {
             return;
         }
         const req: WebRequest = {
@@ -178,6 +178,20 @@ class PointRecordEdit extends BasePage{
         record.student_id = s.id;
         this.setState({record: record, });
     }
+
+    updateCategory = (e:ChangeEvent) => {
+        this.handleInputChange(e);
+        this.loadRulePoints((e.target as HTMLSelectElement).value);
+    }
+
+    updateRulePoint = (e:ChangeEvent) => {
+        const catId =  this.state.selectedCategoryId;
+        const p = this.state.pointsMap[catId].filter((r:RulePoint)=>{
+            return r.id.toString() == (e.target as HTMLSelectElement).value;
+        })
+        if (p.length == 0) return;
+        this.setSelectedRulePoint(p[0]);
+    }
     
     render() {
 
@@ -203,23 +217,23 @@ class PointRecordEdit extends BasePage{
                     <FormGroup label="Pelanggaran">
                         <p>{record.rule_point?.name??"-"} {record.rule_point? `(${record.rule_point.point})` :""}</p>
                         <p/>
-                        <select value={categoryID} name="selectedCategoryId" onChange={this.handleInputChange} className="form-control">
+                        <select value={categoryID} name="selectedCategoryId" onChange={this.updateCategory} className="form-control">
                              <option value="">Pilih Kategori</option>
                              {this.state.categories.map((cat:Category)=>{
                                  return (
-                                    <option onClick={(e)=> this.loadRulePoints(cat.id.toString())} key={`cat_ed_opt_${cat.id}`} value={cat.id}>
+                                    <option key={`cat_ed_opt_${cat.id}`} value={cat.id}>
                                         {cat.name}
                                     </option>
                                  )
                              })}
                          </select>
                          <p/>
-                         <select className="form-control" >
+                         <select className="form-control" onChange={this.updateRulePoint} >
                              <option value="">Pilih Pelanggaran</option>
                              {pointsMap[categoryID]?
                                 pointsMap[categoryID].map(p=>{
                                  return (
-                                    <option onClick={(e)=> this.setSelectedRulePoint(p)} key={`rp_ed_opt_${p.id}`} value={p.id}>
+                                    <option  key={`rp_ed_opt_${p.id}`} value={p.id}>
                                         {p.name} ({p.point})
                                     </option>
                                  )
