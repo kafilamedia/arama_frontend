@@ -99,6 +99,41 @@ class PointRecordSummary extends BaseManagementPage {
             p.id
         )
     }
+    dropAll = (e) => {
+        this.showConfirmation("Putihkan "+this.state.items.length+" data?")
+        .then(ok=>{
+            if (ok) {
+                this.commonAjax(
+                    this.studentService.dropAll,
+                    this.reload,
+                    this.showCommonErrorAlert,
+                    this.itemIdArray
+                )
+            }
+        })
+    }
+    undropAll = (e) => {
+        this.showConfirmation("Reset pemutihan "+this.state.items.length+" data?")
+        .then(ok=>{
+            if (ok) {
+                this.commonAjax(
+                    this.studentService.undropAll,
+                    this.reload,
+                    this.showCommonErrorAlert,
+                    this.itemIdArray
+                )
+            }
+        })
+    }
+    
+    get itemIdArray() {
+        const arr:any[] = [];
+        this.state.items.forEach((item:PointRecord)=>{
+            if (item.id)
+                arr.push(item.id);
+        })
+        return arr;
+    }
 
     render() {
         const filter = this.state.filter;
@@ -187,7 +222,9 @@ class PointRecordSummary extends BaseManagementPage {
                     </FormGroup>
                     <FormGroup>
                         <input className="btn btn-primary btn-sm" type="submit" value="Submit" />
-                        <a className="btn btn-secondary btn-sm ml-3" onClick={this.resetFilter}>Reset</a>
+                        <a className="btn btn-secondary btn-sm ml-2" onClick={this.resetFilter}>Reset</a>
+                        <a onClick={this.dropAll} className="ml-2 btn btn-info btn-sm" >Putihkan Semua</a>
+                        <a onClick={this.undropAll} className="ml-2 btn btn-warning btn-sm" >Reset Pemutihan Semua</a>
                     </FormGroup>
                 </form>
                 <NavigationButtons activePage={filter.page ?? 0} limit={filter.limit ?? 10} totalData={this.state.totalData}
@@ -233,7 +270,11 @@ const ItemsList = (props: ItemProps) => {
                                     <td>{item.dropped_at ? <i className="fas fa-check"/>  : "-"} </td>
                                     <td>
                                         <div style={{width:'max-content'}}>
-                                            <DropPointButtons record={item} onUpdated={props.recordUpdated} /><p/>
+                                            {item.rule_point?.droppable == true ?
+                                            <><DropPointButtons record={item} onUpdated={props.recordUpdated} /><p/></>
+                                            :
+                                            <p><i>Tidak ada pemutihan</i></p>
+                                            }
                                             {/* {props.isAdmin? <><DropPointButtons record={item} onUpdated={props.recordUpdated} /><p/></> : 
                                             <a className="btn btn-dark btn-sm" onClick={()=>props.followUp(item)}>Follow Up</a>} */}
                                             <EditDeleteButton record={item} 

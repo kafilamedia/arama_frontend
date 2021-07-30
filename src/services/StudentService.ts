@@ -66,5 +66,22 @@ export default class StudentService {
             }
         });
     }
+
+    /**
+     * pemutihan
+     * @param recordIdArray 
+     */
+    public dropAll = (recordIdArray: any[]) => {
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/droppointall", { 
+            items : recordIdArray});
+    }
+    /**
+     * reset pemutihan
+     * @param recordIdArray 
+     */
+    public undropAll = (recordIdArray: any[]) => {
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/undroppointall", { 
+            items : recordIdArray});
+    }
      
 }

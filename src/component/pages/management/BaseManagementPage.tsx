@@ -134,7 +134,7 @@ export default  class BaseManagementPage extends BasePage {
     }
 
     reload = (e:any) => {
-        if (e) {
+        if (e && e.preventDefault) {
             e.preventDefault();
         }
         this.loadAtPage(0);

@@ -38,16 +38,17 @@ class WarningActionManagement extends BaseManagementPage {
         return new WarningAction();
     }
     onSubmit = () => {
-        // console.debug("RECORD: ", this.state.record);
+        if (!this.state.record.student_id) {
+            this.showError("Input tidak lengkap");
+            return;
+        }
         this.showConfirmation("Submit Data?")
             .then(ok => {
                 if (!ok) return;
-                
-                const request: WebRequest = {
+                this.callApiSubmit({
                     warningAction: this.state.record,
                     modelName: this.modelName
-                }
-                this.callApiSubmit(request);
+                });
             })
     }
     render() {
@@ -61,7 +62,12 @@ class WarningActionManagement extends BaseManagementPage {
                 :null}
                 <form onSubmit={this.reload}>
                     <FormGroup label="Cari">
-                        <input name="name" placeholder="nama peringatan" className="form-control-sm" value={filter.fieldsFilter['name']?? ""} onChange={this.updateFieldsFilter} />
+                        <select name="name"   className="form-control-sm" value={filter.fieldsFilter['name']?? ""} onChange={this.updateFieldsFilter}>
+                            <option value="">Semua</option>
+                            <option>SP1</option>
+                            <option>SP2</option>
+                            <option>SP3</option>
+                        </select>
                         <input name="student_name" placeholder="nama siswa" className="form-control-sm" value={filter.fieldsFilter['student_name']?? ""} onChange={this.updateFieldsFilter} />
                     </FormGroup>
                     <FormGroup label="Jumlah Tampilan">
@@ -71,13 +77,11 @@ class WarningActionManagement extends BaseManagementPage {
                         <input className="btn btn-primary btn-sm" type="submit" value="Submit" />
                     </FormGroup>
                 </form>
-                <NavigationButtons activePage={filter.page ?? 0} limit={filter.limit ?? 5} totalData={this.state.totalData}
+                <NavigationButtons activePage={filter.page ?? 0} limit={filter.limit ?? 10} totalData={this.state.totalData}
                     onClick={this.loadAtPage} />
-                <ItemsList 
-                    isAdmin={this.isAdmin()}
-                    recordLoaded={this.oneRecordLoaded}
-                    recordDeleted={this.loadItems}
-                    startingNumber={(filter.page??0)*(filter.limit??10)} items={this.state.items} />
+                <ItemsList  items={this.state.items}  isAdmin={this.isAdmin()}
+                    recordLoaded={this.oneRecordLoaded} recordDeleted={this.loadItems}
+                    startingNumber={(filter.page??0)*(filter.limit ?? 10)} />
             </div>
         )
     }
@@ -89,7 +93,7 @@ const ItemsList = (props: ItemProps) => {
     return (
         <div style={{overflow:'scroll'}}>
         <table className="table table-striped">
-            {tableHeader("No", "Siswa", "Kelas", "Nama", "Deskripsi", "Opsi")}
+            {tableHeader("No", "Siswa", "Kelas", "Nama", "Deskripsi", "Tgl Simpan", "Opsi")}
             <tbody>
                     {props.items.map((item:WarningAction, i)=>{
 
@@ -100,6 +104,7 @@ const ItemsList = (props: ItemProps) => {
                                 <td>{Class.studentClassString(item.student)}</td>
                                 <td>{item.name}</td>
                                 <td>{item.description}</td>
+                                <td>{item.created_at}</td>
                                 <td>{props.isAdmin?
                                     <EditDeleteButton 
                                         recordLoaded={props.recordLoaded}
@@ -127,7 +132,13 @@ const RecordForm = (props: { formRef:React.RefObject<Modal>, setStudent(s:Studen
                         <FormGroup children={record.student.user?.name+ " " +Class.studentClassString(record.student)} />:null
                     }
                 <form onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
-                <FormGroup label="Nama"><input placeholder="Nama peringatan" required value={record.name ?? ""} onChange={props.updateRecordProp} className="form-control-sm" name="name" /></FormGroup>
+                <FormGroup label="Nama">
+                    <select required value={record.name  } onChange={props.updateRecordProp} className="form-control" name="name" >
+                        <option>SP1</option>
+                        <option>SP2</option>
+                        <option>SP3</option>
+                    </select>
+                </FormGroup>
                 <FormGroup label="Deskripsi">
                     <textarea required className="form-control" name="description" onChange={props.updateRecordProp} value={record.description ?? ""} />
                 </FormGroup>

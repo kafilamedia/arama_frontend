@@ -25,4 +25,6 @@ export default class WebRequest{
 	 warningAction?:WarningAction;
 
 	 attachmentInfo?:AttachmentInfo;
+
+	 items?:any[]
 }
