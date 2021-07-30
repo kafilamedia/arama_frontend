@@ -233,8 +233,9 @@ const ItemsList = (props: ItemProps) => {
                                     <td>{item.dropped_at ? <i className="fas fa-check"/>  : "-"} </td>
                                     <td>
                                         <div style={{width:'max-content'}}>
-                                            {props.isAdmin? <><DropPointButtons record={item} onUpdated={props.recordUpdated} /><p/></> : 
-                                            <a className="btn btn-dark btn-sm" onClick={()=>props.followUp(item)}>Follow Up</a>}
+                                            <DropPointButtons record={item} onUpdated={props.recordUpdated} /><p/>
+                                            {/* {props.isAdmin? <><DropPointButtons record={item} onUpdated={props.recordUpdated} /><p/></> : 
+                                            <a className="btn btn-dark btn-sm" onClick={()=>props.followUp(item)}>Follow Up</a>} */}
                                             <EditDeleteButton record={item} 
                                                 types={optionTypes}
                                                 recordLoadedForDetail={props.recordLoadedForDetail}

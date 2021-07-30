@@ -8,6 +8,7 @@ import Student from './../../../../models/Student';
 import { tableHeader } from './../../../../utils/CollectionUtil';
 import WebResponse from './../../../../models/commons/WebResponse';
 import Class from './../../../../models/Class';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 interface FollowUpInfo {
     student:Student,
     TOTAL_POINT:any,
@@ -25,7 +26,10 @@ class FollowUpReminder extends BasePage
         this.studentService = this.getServices().studentService;
     }
     componentReady(){
-        if (this.isAdmin()) return;
+        // if (this.isAdmin()) return;
+        this.loadReminder();
+    }
+    loadReminder = () => {
         this.commonAjax(
             this.studentService.getFollowUpReminders,
             this.recordsLoaded,
@@ -41,7 +45,8 @@ class FollowUpReminder extends BasePage
         return (
             <div className="section-body container-fluid">
                 <h2>Follow Up Pelanggaran</h2>
-                <p>Pelanggaran dengan point {"< -50"}</p>
+                <p>Pelanggaran dengan poin di bawah {this.getApplicationProfile().warning_point}</p>
+                <AnchorWithIcon iconClassName="fas fa-redo" onClick={this.loadReminder} children="Reload"/>
                 <table className="table">
                     {tableHeader("No", "Siswa", "Kelas", "Poin", "Penanganan", "Opsi")}
                     <tbody>

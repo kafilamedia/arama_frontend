@@ -17,16 +17,13 @@ import { parseDate } from '../../../../utils/DateUtil';
 import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
 import AttachmentInfo from './../../../../models/settings/AttachmentInfo';
 import { getAttachmentInfoFromFile } from '../../../../utils/ComponentUtil';
-import Student from './../../../../models/Student';
-import Filter from '../../../../models/commons/Filter';
-import './style.css'
+import Student from './../../../../models/Student'; 
+import StudentSearchForm from '../../shared/StudentSearchForm';
+
 class State {
     record : PointRecord  = new PointRecord();
     categories:Category[] = [];
-    pointsMap:Record<string, RulePoint[]> = {};
-    students:Student[] = [];
-
-    studentNameSearch:string = "";
+    pointsMap:Record<string, RulePoint[]> = {}; 
 
     selectedCategoryId:string = "";
     selectedPointId:string = "";
@@ -53,32 +50,14 @@ class PointRecordEdit extends BasePage{
     categoriesLoaded = (response: WebResponse) => {
         this.setState({categories: response.items});
     }
-    studentsLoaded = (response: WebResponse) => {
-        this.setState({students: response.items});
-    }
+    
     loadCategories = () => {
         this.commonAjax(
             this.studentService.getCategories,
             this.categoriesLoaded,  this.showCommonErrorAlert
         )
     }
-    loadStudents = (e:FormEvent) => {
-        e.preventDefault();
-        if ("" == this.state.studentNameSearch) return;
-        const req:WebRequest = {
-            filter:new Filter(),
-            modelName:'student',
-        }
-        if (req.filter)
-            req.filter.fieldsFilter = {
-                'name':this.state.studentNameSearch
-            }
-        this.commonAjax(
-            this.masterDataService.list,
-            this.studentsLoaded,  this.showCommonErrorAlert,
-            req
-        )
-    }
+     
     rulePointsLoaded = (categoryId:string, response:WebResponse) => {
         const pointsMap = this.state.pointsMap;
         pointsMap[categoryId.toString()] = response.items;
@@ -197,9 +176,9 @@ class PointRecordEdit extends BasePage{
         const record = this.state.record;
         record.student = s;
         record.student_id = s.id;
-        this.setState({record: record, students:[], studentNameSearch: ''});
+        this.setState({record: record, });
     }
-    resetStudents = () => this.setState({students: []});
+    
     render() {
 
         const record = this.state.record;
@@ -209,36 +188,17 @@ class PointRecordEdit extends BasePage{
 
         return (
             <div className="section-body container-fluid">
-                <h2>Edit Pelanggaran</h2>
+                <h2>Form Input Pelanggaran</h2>
                 <hr/>
-                <form id="form-search-student" onSubmit={this.loadStudents}>
-                    <FormGroup  label="Siswa" >
-                        <div className="mb-3" style={{position:'absolute'}}>
-                            <div className="input-group">
-                                <input name="studentNameSearch" className="form-control" onChange={this.handleInputChange} value={this.state.studentNameSearch}
-                                    placeholder="Cari Nama" />
-                                <input type="submit" value="Cari" className="btn btn-secondary" />
-                            </div>
-                            {this.state.students.length > 0?
-                            <div className="bg-light border rounded border-secondary" style={{position:'relative', zIndex: 10, padding: 3}}>
-                                {this.state.students.map(s=>{
-                                    return (
-                                        <div onClick={()=> this.setStudent(s)} className="option-item" key={`s_form_${s.id}`}>
-                                            {s.user?.name} {Class.studentClassString(s)}
-                                        </div>
-                                    )
-                                })}
-                                <AnchorWithIcon iconClassName="fas fa-times" className="btn btn-dark w-100" onClick={this.resetStudents} >Tutup</AnchorWithIcon>
-                            </div>
-                            :null}
-                        </div>
-                    </FormGroup>
-                    {record.student? <FormGroup>
-                        <div  >{record.student.user?.name ?? ""} {Class.studentClassString(record.student)}
-                        </div> 
-                    </FormGroup>
-                    : null}
-                </form>
+                <FormGroup  label="Siswa" >
+                    <StudentSearchForm selectItem={this.setStudent} />
+                </FormGroup>
+                {record.student? <FormGroup>
+                    <div  >{record.student.user?.name ?? ""} {Class.studentClassString(record.student)}
+                    </div> 
+                </FormGroup>
+                : null}
+                 
                 <form onSubmit={this.onSubmit}>
                     <FormGroup label="Pelanggaran">
                         <p>{record.rule_point?.name??"-"} {record.rule_point? `(${record.rule_point.point})` :""}</p>

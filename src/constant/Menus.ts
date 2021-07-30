@@ -91,7 +91,7 @@ const _menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true,
-        role: [AuthorityType.admin_asrama],
+        role: [AuthorityType.admin_asrama, AuthorityType.musyrif_asrama],
         subMenus: [
             {
                 code: 'musyrifmanagement',
@@ -114,6 +114,13 @@ const _menus: Menu[] = [
                 menuClass: 'fas fa-puzzle-piece',
                 role: [AuthorityType.admin_asrama],
             }, 
+            {
+                code: 'warning_action',
+                name: 'Peringatan',
+                url: 'warning_action',
+                menuClass: 'fas fa-puzzle-piece',
+                role: [AuthorityType.admin_asrama, AuthorityType.musyrif_asrama],
+            }, 
         ]
     }, 
     {
@@ -135,11 +142,18 @@ const _menus: Menu[] = [
             },
             {
                 code: 'input_point',
-                name: 'Input Pelanggaran',
+                name: 'Form Pelanggaran Tipe 1',
                 url: 'inputpoint',
-                menuClass: 'fas fa-pen-square',
+                menuClass: 'fas fa-edit',
                 role: [ AuthorityType.musyrif_asrama],
             }, 
+            {
+                code: 'pointrecordedit',
+                name: 'Form Pelanggaran Tipe 2',
+                url: 'pointrecordedit',
+                menuClass: 'fas fa-edit',
+                role: [ AuthorityType.musyrif_asrama],
+            },
             // {
             //     code: 'medicalrecord',
             //     name: 'Medical Record',
@@ -155,13 +169,7 @@ const _menus: Menu[] = [
                 role: [ AuthorityType.musyrif_asrama, AuthorityType.admin_asrama],
             },
            
-            {
-                code: 'pointrecordedit',
-                name: 'Edit Pelanggaran',
-                url: 'pointrecordedit',
-                menuClass: 'fas fa-edit',
-                role: [ AuthorityType.musyrif_asrama],
-            },
+            
         ]
     }, 
     

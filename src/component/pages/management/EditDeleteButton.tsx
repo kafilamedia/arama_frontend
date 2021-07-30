@@ -88,7 +88,7 @@ class EditDeleteButton extends BaseComponent
         const types:string[] | undefined = this.props.types ?? undefined;
         return (
             <div className="btn-group">
-                {types === undefined || this.hasType('detail') ?
+                {this.hasType('detail') ?
                     <AnchorWithIcon onClick={this.loadRecordForDetail} iconClassName="fas fa-info-circle" className="btn btn-info btn-sm"/>
                     :
                     null}

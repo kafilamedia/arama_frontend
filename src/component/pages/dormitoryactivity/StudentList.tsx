@@ -40,8 +40,7 @@ class StudentList extends BaseManagementPage {
             'class_id': '',
             'with_point_record': false
         }
-    }
-
+    } 
     itemsLoaded = (response: WebResponse) => {
         this.setState({ items: response.items, totalData: response.totalData });
     }

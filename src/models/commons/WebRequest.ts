@@ -7,6 +7,7 @@ import RulePoint from '../RulePoint';
 import PointRecord from '../PointRecord';
 import AttachmentInfo from './../settings/AttachmentInfo';
 import MedicalRecord from './../MedicalRecord';
+import WarningAction from '../WarningAction';
 
 export default class WebRequest{
 	 employee_id?:any;
@@ -21,6 +22,7 @@ export default class WebRequest{
 	 modelName?:string;
 	 record_id?:any;
 	 medicalRecord?:MedicalRecord;
+	 warningAction?:WarningAction;
 
 	 attachmentInfo?:AttachmentInfo;
 }

@@ -21,6 +21,7 @@ import AboutUs from './../pages/home/AboutUs';
 import Register from '../pages/login/Register'; 
 import PointRecordEdit from '../pages/dormitoryactivity/point-record/PointRecordEdit';
 import FollowUpReminder from '../pages/dashboard/main/FollowUpReminder';
+import WarningActionManagement from '../pages/management/WarningActionManagement';
 
 class ApplicationContent extends BaseComponent {
  
@@ -95,6 +96,9 @@ const MusyrifManagementRoute  = (props) => {
             } />
             <Route exact path="/management/rule_point" render={
                 (props:any) => <RulePointManagement />
+            } />
+            <Route exact path="/management/warning_action" render={
+                (props:any) => <WarningActionManagement />
             } />
         </Switch>
     )

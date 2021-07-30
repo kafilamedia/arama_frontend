@@ -13,5 +13,6 @@ export default class ApplicationProfile extends BaseEntity{
 	fontColor?:string;
 	contact?:string;
 	address?:string;
+    warning_point: number|undefined;
 
 }

@@ -6,11 +6,16 @@ import WebResponse from '../../../models/commons/WebResponse';
 import WebRequest from '../../../models/commons/WebRequest';
 import BasePage from './../BasePage';
 import './Management.css'
-export default class BaseManagementPage extends BasePage {
+import BaseEntity from './../../../models/BaseEntity';
+
+export default  class BaseManagementPage extends BasePage {
     protected masterDataService: MasterDataService;
     protected modelName: string = "undefined";
     protected formRef: React.RefObject<Modal> = React.createRef(); 
 
+    emptyRecord = () : BaseEntity => { 
+        throw new Error("Empty Record Method is Not Implemented....");
+    }
 
     constructor(props, modelName?: string, protected overrideLoading: boolean = false) {
         super(props, "Asrama KIIS", true);
@@ -49,9 +54,7 @@ export default class BaseManagementPage extends BasePage {
     itemsLoaded = (response: WebResponse) => {
         this.setState({ items: response.items, totalData: response.totalData });
     }
-    emptyRecord = (): any => {
-        throw new Error("Not Implemented");
-    }
+    
     updateFilter = (e: ChangeEvent) => {
         const filter = this.state.filter;
         const target = (e.target as any);

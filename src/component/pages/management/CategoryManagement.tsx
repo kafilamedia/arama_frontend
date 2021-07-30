@@ -13,6 +13,7 @@ import Modal from './../../container/Modal';
 import EditDeleteButton from './EditDeleteButton'
 import { tableHeader } from './../../../utils/CollectionUtil';
 import BaseManagementPage from './BaseManagementPage';
+import BaseEntity from './../../../models/BaseEntity';
 class State {
     items: Category[] = [];
     filter: Filter = new Filter();
@@ -41,9 +42,7 @@ class CategoryManagement extends BaseManagementPage {
             })
     }
     
-    emptyRecord = ():any => {
-        return new Category();
-    }
+    emptyRecord = ():BaseEntity => new Category(); 
     render() {
         const filter: Filter = this.state.filter;
         return (

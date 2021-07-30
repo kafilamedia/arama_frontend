@@ -1,11 +1,9 @@
 import React, { ChangeEvent } from 'react'
-import BaseComponent from './../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
 import RulePoint from './../../../models/RulePoint';
 import Filter from '../../../models/commons/Filter';
-import MasterDataService from './../../../services/MasterDataService';
 import Modal from './../../container/Modal';
 import FormGroup from './../../form/FormGroup';
 import WebRequest from '../../../models/commons/WebRequest';
@@ -160,8 +158,8 @@ const ItemsList = (props: {startingNumber:number, items:RulePoint[], recordLoade
 }
 const RecordForm = (props: { categories:Category[], formRef:React.RefObject<Modal>, 
     updateRecordProp(e: ChangeEvent): any, 
-    resetForm():any, 
-    onSubmit(): any, record: RulePoint, reloadCategories():any }) => {
+    resetForm():any, onSubmit(): any,
+    record: RulePoint, reloadCategories():any }) => {
 
     return (
         <form className="record-form mb-3" onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>

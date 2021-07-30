@@ -25,6 +25,7 @@ class MusyrifManagement extends BaseManagementPage{
             'musyrif_only':true
         }
     }
+    emptyRecord = () => new Employee();
     setMusyrifOnly = (musyrifOnly:boolean) => {
         const filter = this.state.filter;
         if (!filter.fieldsFilter) {

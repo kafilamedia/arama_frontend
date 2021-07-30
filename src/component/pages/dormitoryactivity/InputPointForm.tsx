@@ -102,7 +102,7 @@ class InputPointForm extends BasePage {
 
         return (
             <div className="container-fluid section-body">
-                <h2>Input Point</h2>
+                <h2>Form Input Pelanggaran</h2>
                 <Modal title={student.user?.name + " - " + student.kelas?.level + student.kelas?.rombel + " " + student.kelas?.sekolah?.nama}>
 
                     <Progress step={this.state.formStep} totalStep={this.totalStep} />
@@ -172,7 +172,7 @@ const Detail = (props: { record: PointRecord, back(): any }) => {
 const Warning = () => {
     return (
         <div className="container-fluid section-body">
-            <h2>Input Point</h2>
+            <h2>Form Input Pelanggaran</h2>
             <SimpleError>
                 <i className="fas fa-exclamation-circle" />&nbsp;Please select student <hr />
                 <AnchorWithIcon to={"/dormitoryactivity/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
