@@ -1,23 +1,23 @@
 import React, { ChangeEvent, FormEvent } from 'react'
-import BasePage from './../../BasePage';
+import BasePage from '../../BasePage';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../../constant/stores';
-import PointRecord from './../../../../models/PointRecord';
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import PointRecord from '../../../../models/PointRecord';
 import FormGroup from '../../../form/FormGroup';
-import Class from './../../../../models/Class';
-import StudentService from './../../../../services/StudentService';
-import WebResponse from './../../../../models/commons/WebResponse';
-import Category from './../../../../models/Category';
-import WebRequest from './../../../../models/commons/WebRequest';
-import RulePoint from './../../../../models/RulePoint';
-import MasterDataService from './../../../../services/MasterDataService';
-import InputTime from './../../../form/InputTime';
+import Class from '../../../../models/Class';
+import StudentService from '../../../../services/StudentService';
+import WebResponse from '../../../../models/commons/WebResponse';
+import Category from '../../../../models/Category';
+import WebRequest from '../../../../models/commons/WebRequest';
+import RulePoint from '../../../../models/RulePoint';
+import MasterDataService from '../../../../services/MasterDataService';
+import InputTime from '../../../form/InputTime';
 import { parseDate } from '../../../../utils/DateUtil';
-import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
-import AttachmentInfo from './../../../../models/settings/AttachmentInfo';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import AttachmentInfo from '../../../../models/settings/AttachmentInfo';
 import { getAttachmentInfoFromFile } from '../../../../utils/ComponentUtil';
-import Student from './../../../../models/Student'; 
+import Student from '../../../../models/Student'; 
 import StudentSearchForm from '../../shared/StudentSearchForm';
 
 class State {
@@ -265,7 +265,7 @@ class PointRecordEdit extends BasePage{
                         }
                     </FormGroup>
                     <FormGroup>
-                        <Link className="btn btn-dark" to="/dormitoryactivity/pointsummary">Kembali</Link>
+                        <Link className="btn btn-dark" to="/asrama/pointsummary">Kembali</Link>
                         <input type="submit" className="btn btn-primary ml-3" value="Submit" />
                     </FormGroup>
                     {/* <FormGroup label="Siswa">

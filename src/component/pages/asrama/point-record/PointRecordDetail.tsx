@@ -5,7 +5,7 @@ import Card from '../../../container/Card';
 import FormGroup from '../../../form/FormGroup';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import Class from '../../../../models/Class';
-import { doItLater } from './../../../../utils/EventUtil';
+import { doItLater } from '../../../../utils/EventUtil';
 
 interface IProps {
     record:PointRecord;

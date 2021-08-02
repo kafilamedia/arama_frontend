@@ -13,16 +13,18 @@ import MusyrifManagement from '../pages/management/MusyrifManagement';
 import ManagementMain from '../pages/management/ManagementMain';
 import CategoryManagement from '../pages/management/CategoryManagement';
 import RulePointManagement from '../pages/management/RulePointManagement';
-import StudentList from '../pages/dormitoryactivity/StudentList';
-import InputPointForm from '../pages/dormitoryactivity/InputPointForm';
+import StudentList from '../pages/asrama/StudentList';
+import InputPointForm from '../pages/asrama/InputPointForm';
 import PointRecordsManagement from '../pages/management/PointRecordsSummary';
-import MedicalRecordForm from '../pages/dormitoryactivity/medicalrecord/MedicalRecordForm';
+import MedicalRecordForm from '../pages/asrama/medicalrecord/MedicalRecordForm';
 import AboutUs from './../pages/home/AboutUs';
 import Register from '../pages/login/Register'; 
-import PointRecordEdit from '../pages/dormitoryactivity/point-record/PointRecordEdit';
+import PointRecordEdit from '../pages/asrama/point-record/PointRecordEdit';
 import FollowUpReminder from '../pages/dashboard/main/FollowUpReminder';
 import WarningActionManagement from '../pages/management/WarningActionManagement';
 import ConfigSettingPage from '../pages/settings/ConfigSettingPage';
+import StudentSemesterReport from '../pages/report/StudentSemesterReport';
+import CategoryPredicateManagement from '../pages/management/CategoryPredicateManagement';
 
 class ApplicationContent extends BaseComponent {
  
@@ -70,10 +72,11 @@ class ApplicationContent extends BaseComponent {
 
                 </Switch>
                 <LoginRoute />
-                <StudentsRoute />
-                <MusyrifManagementRoute/>
-                <Dashboard />
-                <Setting/>
+                <Asrama     />
+                <Management />
+                <Dashboard  />
+                <Setting    />
+                <Report     />
             </Fragment>
         )
     }
@@ -93,7 +96,17 @@ const Setting  = (props) => {
         </Switch>
     )
 }
-const MusyrifManagementRoute  = (props) => {
+const Report  = (props) => {
+
+    return (
+        <Switch>
+            <Route exact path="/report/studentreport" render={
+                (props:any) => <StudentSemesterReport />
+            } />
+        </Switch>
+    )
+}
+const Management  = (props) => {
 
     return (
         <Switch>
@@ -112,27 +125,30 @@ const MusyrifManagementRoute  = (props) => {
             <Route exact path="/management/warning_action" render={
                 (props:any) => <WarningActionManagement />
             } />
+            <Route exact path="/management/category_predicate" render={
+                (props:any) => <CategoryPredicateManagement />
+            } />
         </Switch>
     )
 }
 
-const StudentsRoute = (proos) => {
+const Asrama = (proos) => {
 
     return (
         <Switch>
-             <Route exact path="/dormitoryactivity/studentlist" render={
+             <Route exact path="/asrama/studentlist" render={
                 (props:any) => <StudentList />
             } />
-             <Route exact path="/dormitoryactivity/inputpoint" render={
+             <Route exact path="/asrama/inputpoint" render={
                 (props:any) => <InputPointForm/>
             } />
-             <Route exact path="/dormitoryactivity/pointsummary" render={
+             <Route exact path="/asrama/pointsummary" render={
                 (props:any) => <PointRecordsManagement/>
             } />
-             <Route exact path="/dormitoryactivity/pointrecordedit" render={
+             <Route exact path="/asrama/pointrecordedit" render={
                 (props:any) => <PointRecordEdit/>
             } />
-             <Route exact path="/dormitoryactivity/medicalrecord" render={
+             <Route exact path="/asrama/medicalrecord" render={
                 (props:any) => <MedicalRecordForm/>
             } />
             

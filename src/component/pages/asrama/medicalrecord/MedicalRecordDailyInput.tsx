@@ -1,10 +1,10 @@
 import React, { ChangeEvent, Component, FormEvent } from 'react'
-import BaseComponent from './../../../BaseComponent';
+import BaseComponent from '../../../BaseComponent';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../../constant/stores';
-import MedicalRecord from './../../../../models/MedicalRecord';
-import StudentService from './../../../../services/StudentService';
-import WebResponse from './../../../../models/commons/WebResponse';
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import MedicalRecord from '../../../../models/MedicalRecord';
+import StudentService from '../../../../services/StudentService';
+import WebResponse from '../../../../models/commons/WebResponse';
 import { twoDigits, monthName } from '../../../../utils/StringUtil';
 
 class State {

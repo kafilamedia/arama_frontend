@@ -26,7 +26,7 @@ class DashboardMain extends BasePage {
         if (!this.state.attachment) return;
         
         this.props.history.push({
-            pathname: '/dormitoryactivity/pointrecordedit',
+            pathname: '/asrama/pointrecordedit',
               state: {attachment: this.state.attachment }
          })
     }

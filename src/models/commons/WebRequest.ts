@@ -8,6 +8,7 @@ import PointRecord from '../PointRecord';
 import AttachmentInfo from './../settings/AttachmentInfo';
 import MedicalRecord from './../MedicalRecord';
 import WarningAction from '../WarningAction';
+import CategoryPredicate from './../CategoryPredicate';
 
 export default class WebRequest{
 	 employee_id?:any;
@@ -23,6 +24,7 @@ export default class WebRequest{
 	 record_id?:any;
 	 medicalRecord?:MedicalRecord;
 	 warningAction?:WarningAction;
+	 categoryPredicate?:CategoryPredicate;
 
 	 attachmentInfo?:AttachmentInfo;
 

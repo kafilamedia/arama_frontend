@@ -1,4 +1,4 @@
-import { commonAjaxPostCalls } from './Promises';
+import { commonAjaxPostCalls, commonAjaxPostCallsWithBlob } from './Promises';
 import { contextPath } from '../constant/Url';
 import PointRecord from './../models/PointRecord';
 import AttachmentInfo from './../models/settings/AttachmentInfo';
@@ -6,6 +6,7 @@ import WebRequest from './../models/commons/WebRequest';
 import MedicalRecord from './../models/MedicalRecord';
 import WebResponse from '../models/commons/WebResponse';
 export default class StudentService {
+    
    
 
     private static instance?: StudentService;
@@ -39,6 +40,13 @@ export default class StudentService {
     }
     public getFollowUpReminders = ():Promise<WebResponse> => {
         return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/followupreminders", {});
+    }
+    public getRaporData = (classId: string) :Promise<WebResponse> => {
+        return commonAjaxPostCalls(contextPath() + `api/report/studentdata/${classId}`, {});
+    }
+    public downloadRaporData = (classId: string) :Promise<any> => {
+        // return commonAjaxPostCallsWithBlob(endpoint, request);
+        return commonAjaxPostCallsWithBlob(contextPath() + `api/report/downloaddata/${classId}`, {});
     }
     
 

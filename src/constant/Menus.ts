@@ -121,12 +121,19 @@ const _menus: Menu[] = [
                 menuClass: 'fas fa-exclamation-triangle',
                 role: [AuthorityType.admin_asrama, AuthorityType.musyrif_asrama],
             }, 
+            {
+                code: 'category_predicate',
+                name: 'Predikat Rapor',
+                url: 'category_predicate',
+                menuClass: 'fas fa-exclamation-triangle',
+                role: [AuthorityType.admin_asrama, ],
+            }, 
         ]
     }, 
     {
-        code: 'dormitoryactivity',
+        code: 'asrama',
         name: "Asrama",
-        url: "/dormitoryactivity",
+        url: "/asrama",
         menuClass: "fas fa-school",
         active: false,
         authenticated: true,
@@ -172,6 +179,25 @@ const _menus: Menu[] = [
             
         ]
     }, 
+    {
+        code: 'report',
+        name: "Laporan",
+        url: "/report",
+        menuClass: "fas fa-file",
+        active: false,
+        authenticated: true,
+        showSidebar: true,
+        role: [  AuthorityType.musyrif_asrama],
+        subMenus: [
+            {
+                code: 'studentreport',
+                name: 'Rapor',
+                url: 'studentreport',
+                menuClass: 'fas fa-file',
+                role: [ AuthorityType.musyrif_asrama],
+            },
+        ]
+    },
     {
         code: 'settings',
         name: "Setting",

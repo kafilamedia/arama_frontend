@@ -3,19 +3,19 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import StudentForm from './StudentForm';
-import Student from './../../../../models/Student';
-import FilterPeriod from './../../../form/FilterPeriod';
-import Filter from './../../../../models/commons/Filter';
-import { getMonthDays } from './../../../../utils/DateUtil';
-import Card from './../../../container/Card';
-import MedicalRecord from './../../../../models/MedicalRecord';
+import Student from '../../../../models/Student';
+import FilterPeriod from '../../../form/FilterPeriod';
+import Filter from '../../../../models/commons/Filter';
+import { getMonthDays } from '../../../../utils/DateUtil';
+import Card from '../../../container/Card';
+import MedicalRecord from '../../../../models/MedicalRecord';
 import MedicalRecordDailyInput from './MedicalRecordDailyInput';
-import StudentService from './../../../../services/StudentService';
-import WebResponse from './../../../../models/commons/WebResponse';
-import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
-import { doItLater } from './../../../../utils/EventUtil';
-import BasePage from './../../BasePage';
-import SimpleError from './../../../alert/SimpleError';
+import StudentService from '../../../../services/StudentService';
+import WebResponse from '../../../../models/commons/WebResponse';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import { doItLater } from '../../../../utils/EventUtil';
+import BasePage from '../../BasePage';
+import SimpleError from '../../../alert/SimpleError';
 class State {
     student?: Student;
     month: number = new Date().getMonth() + 1;
@@ -155,7 +155,7 @@ class MedicalRecordForm extends BasePage {
 const Warning = () => {
     return (<SimpleError>
                 <i className="fas fa-exclamation-circle" />&nbsp;Please select student <hr />
-                <AnchorWithIcon to={"/dormitoryactivity/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
+                <AnchorWithIcon to={"/asrama/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
             </SimpleError> )
 }
 

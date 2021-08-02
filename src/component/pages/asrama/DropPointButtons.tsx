@@ -1,11 +1,11 @@
 import React from 'react'
-import BaseComponent from './../../BaseComponent';
+import BaseComponent from '../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../constant/stores';
-import PointRecord from './../../../models/PointRecord';
-import AnchorWithIcon from './../../navigation/AnchorWithIcon';
-import StudentService from './../../../services/StudentService';
+import { mapCommonUserStateToProps } from '../../../constant/stores';
+import PointRecord from '../../../models/PointRecord';
+import AnchorWithIcon from '../../navigation/AnchorWithIcon';
+import StudentService from '../../../services/StudentService';
 
 class State {
     loading: boolean = false;

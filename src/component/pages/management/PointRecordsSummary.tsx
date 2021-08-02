@@ -10,13 +10,13 @@ import FormGroup from '../../form/FormGroup';
 import NavigationButtons from '../../navigation/NavigationButtons';
 import { tableHeader } from '../../../utils/CollectionUtil';
 import FilterPeriod from '../../form/FilterPeriod';
-import PointRecordDetail from '../dormitoryactivity/point-record/PointRecordDetail';
+import PointRecordDetail from '../asrama/point-record/PointRecordDetail';
 import StudentService from '../../../services/StudentService';
 import WebResponse from '../../../models/commons/WebResponse';
 import Category from '../../../models/Category';
 import Class from '../../../models/Class';
 import { MONTHS } from './../../../utils/DateUtil';
-import DropPointButtons from '../dormitoryactivity/DropPointButtons';
+import DropPointButtons from '../asrama/DropPointButtons';
 class State {
     items: PointRecord[] = [];
     filter: Filter = new Filter();
@@ -82,7 +82,7 @@ class PointRecordSummary extends BaseManagementPage {
     
     openEditPage = (p:PointRecord) => {
         this.props.history.push({
-            pathname: '/dormitoryactivity/pointrecordedit',
+            pathname: '/asrama/pointrecordedit',
               state: {record: p }
          })
     }

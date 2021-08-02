@@ -17,8 +17,8 @@ import StudentService from '../../../services/StudentService';
 import WebResponse from '../../../models/commons/WebResponse';
 import FormGroup from '../../form/FormGroup';
 import { doItLater } from '../../../utils/EventUtil';
-import AttachmentInfo from './../../../models/settings/AttachmentInfo';
-import BasePage from './../BasePage';
+import AttachmentInfo from '../../../models/settings/AttachmentInfo';
+import BasePage from '../BasePage';
 
 class State {
     student?: Student
@@ -175,7 +175,7 @@ const Warning = () => {
             <h2>Form Input Pelanggaran</h2>
             <SimpleError>
                 <i className="fas fa-exclamation-circle" />&nbsp;Please select student <hr />
-                <AnchorWithIcon to={"/dormitoryactivity/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
+                <AnchorWithIcon to={"/asrama/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
             </SimpleError>
         </div>
     )

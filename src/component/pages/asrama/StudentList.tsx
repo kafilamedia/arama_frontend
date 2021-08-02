@@ -14,9 +14,9 @@ import AnchorWithIcon from '../../navigation/AnchorWithIcon';
 import MasterDataService from '../../../services/MasterDataService';
 import BaseManagementPage from '../management/BaseManagementPage';
 import Spinner from '../../loader/Spinner';
-import FilterPeriod from './../../form/FilterPeriod';
-import { MONTHS } from './../../../utils/DateUtil';
-import ToggleButton from './../../navigation/ToggleButton';
+import FilterPeriod from '../../form/FilterPeriod';
+import { MONTHS } from '../../../utils/DateUtil';
+import ToggleButton from '../../navigation/ToggleButton';
 class State {
     items: Student[] = [];
     classes: Class[] = [];
@@ -96,13 +96,13 @@ class StudentList extends BaseManagementPage {
     }
     inputPoint = (student: Student) => {
         this.props.history.push({
-            pathname: "/dormitoryactivity/inputpoint",
+            pathname: "/asrama/inputpoint",
             state: { student: student }
         })
     }
     inputMedicalRecord = (student: Student) => {
         this.props.history.push({
-            pathname: "/dormitoryactivity/medicalrecord",
+            pathname: "/asrama/medicalrecord",
             state: { student: student }
         })
     }
