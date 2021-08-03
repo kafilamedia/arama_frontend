@@ -9,6 +9,7 @@ import BasePage from './../../BasePage';
 import AttachmentInfo from './../../../../models/settings/AttachmentInfo';
 import { getAttachmentInfoFromFile } from './../../../../utils/ComponentUtil';
 import StudentService from './../../../../services/StudentService';
+import { AuthorityType } from '../../../../models/AuthorityType';
 
 class State {
     attachment:AttachmentInfo | undefined;
@@ -48,7 +49,7 @@ class DashboardMain extends BasePage {
                     {/* <p className="badge badge-dark text-capitalize">{(user.roles).join(", ")}</p> */}
                    
                 </div>
-                {this.isAdmin()? null :
+                { !this.getLoggedUser()?.hasRole(AuthorityType.musyrif_asrama) ? null :
                     <form className="mt-10 text-center" onSubmit={this.addPointRecord}>
                         <h1><i className="fas fa-camera" /></h1>
                         <h3> Input Pelanggaran</h3>

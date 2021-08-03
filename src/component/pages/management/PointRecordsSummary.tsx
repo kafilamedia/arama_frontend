@@ -158,8 +158,8 @@ class PointRecordSummary extends BaseManagementPage {
                 <form className="form-filter" onSubmit={this.reload}>
                     <FormGroup label="Cari">
                         <div className="input-group">
-                            <input name="name" placeholder="Nama siswa" className="form-control-sm" value={fieldsFilter['name'] ?? ""} onChange={this.updateFieldsFilter} />
-                            <select value={selectedClassId} onChange={this.updateFieldsFilter} className="form-control-sm" name="class_id">
+                            <input autoComplete="off" name="name" placeholder="Nama siswa" className="form-control-sm" value={fieldsFilter['name'] ?? ""} onChange={this.updateFieldsFilter} />
+                            <select  autoComplete="off" value={selectedClassId} onChange={this.updateFieldsFilter} className="form-control-sm" name="class_id">
                                 {[defaultClass, ...this.state.classes].map((c) => {
                                     return <option key={`class_${c.id}`} value={c.id}>{c.level}{c.rombel} - {c.sekolah?.nama}</option>
                                 })}
