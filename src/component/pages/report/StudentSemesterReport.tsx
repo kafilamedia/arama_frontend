@@ -9,6 +9,7 @@ import WebResponse from './../../../models/commons/WebResponse';
 import FormGroup from '../../form/FormGroup';
 import AttachmentInfo from './../../../models/settings/AttachmentInfo';
 import { tableHeader } from './../../../utils/CollectionUtil';
+import { contextPath } from './../../../constant/Url';
 
 class State {
     classes:Class [] = [];
@@ -66,6 +67,13 @@ class StudentSemesterReport extends BasePage
             classId
         )
     }
+    downloadRapor = () => {
+        if (!this.selectClassRef.current) {
+            return;
+        }
+        const classId = this.selectClassRef.current.value;
+        window.open(contextPath()+'rapor/'+classId);
+    }
 
     reportCreated = (attachment: AttachmentInfo) => {
         this.showConfirmation("Save File " + attachment.name + " ?")
@@ -116,6 +124,7 @@ class StudentSemesterReport extends BasePage
                     <FormGroup>
                         <input type="submit" className="btn btn-success" value="Load Data" />
                         <a className="btn btn-link ml-2" onClick={this.downloadData} >Download Detail Data</a>
+                        <a className="btn btn-link ml-2" onClick={this.downloadRapor} >Download Rapor</a>
                     </FormGroup>
                 </form>
                 {this.state.items.length == 0?

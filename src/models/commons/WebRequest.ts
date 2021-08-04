@@ -9,6 +9,7 @@ import AttachmentInfo from './../settings/AttachmentInfo';
 import MedicalRecord from './../MedicalRecord';
 import WarningAction from '../WarningAction';
 import CategoryPredicate from './../CategoryPredicate';
+import RuleViolation from './../RuleViolation';
 
 export default class WebRequest{
 	 employee_id?:any;
@@ -25,6 +26,7 @@ export default class WebRequest{
 	 medicalRecord?:MedicalRecord;
 	 warningAction?:WarningAction;
 	 categoryPredicate?:CategoryPredicate;
+	 ruleViolation?:RuleViolation;
 
 	 attachmentInfo?:AttachmentInfo;
 

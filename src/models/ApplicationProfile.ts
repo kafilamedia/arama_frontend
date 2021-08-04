@@ -13,6 +13,10 @@ export default class ApplicationProfile extends BaseEntity{
 	fontColor?:string;
 	contact?:string;
 	address?:string;
-    warning_point: number|undefined;
+	warning_point: number|undefined;
+	
+	//transient
+	semester?:number;
+	tahun_ajaran?:string;
 
 }

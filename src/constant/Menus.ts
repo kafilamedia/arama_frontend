@@ -128,6 +128,13 @@ const _menus: Menu[] = [
                 menuClass: 'fas fa-exclamation-triangle',
                 role: [AuthorityType.admin_asrama, ],
             }, 
+            {
+                code: 'rule_violation',
+                name: 'Pelanggaran Umum',
+                url: 'rule_violation',
+                menuClass: 'fas fa-times-circle',
+                role: [AuthorityType.musyrif_asrama, ],
+            }, 
         ]
     }, 
     {

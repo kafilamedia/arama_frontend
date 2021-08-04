@@ -25,6 +25,7 @@ import WarningActionManagement from '../pages/management/WarningActionManagement
 import ConfigSettingPage from '../pages/settings/ConfigSettingPage';
 import StudentSemesterReport from '../pages/report/StudentSemesterReport';
 import CategoryPredicateManagement from '../pages/management/CategoryPredicateManagement';
+import RuleViolationManagement from '../pages/management/RuleViolationManagement';
 
 class ApplicationContent extends BaseComponent {
  
@@ -127,6 +128,9 @@ const Management  = (props) => {
             } />
             <Route exact path="/management/category_predicate" render={
                 (props:any) => <CategoryPredicateManagement />
+            } />
+            <Route exact path="/management/rule_violation" render={
+                (props:any) => <RuleViolationManagement />
             } />
         </Switch>
     )

@@ -51,7 +51,7 @@ export default class BaseComponent extends Component<any, any> {
     }
 
     getApplicationProfile = (): ApplicationProfile => {
-        return this.props.applicationProfile == null ? new ApplicationProfile() : this.props.applicationProfile;
+        return Object.assign(new ApplicationProfile(), this.props.applicationProfile);
     }
 
     handleInputChange = (event: any, stateFieldName?:string|undefined) => {
