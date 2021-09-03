@@ -125,7 +125,7 @@ const _menus: Menu[] = [
                 code: 'category_predicate',
                 name: 'Predikat Rapor',
                 url: 'category_predicate',
-                menuClass: 'fas fa-exclamation-triangle',
+                menuClass: 'far fa-flag',
                 role: [AuthorityType.admin_asrama, ],
             }, 
             {

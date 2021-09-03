@@ -7,6 +7,7 @@ import ApplicationProfile from './../../../models/ApplicationProfile';
 import FormGroup from '../../form/FormGroup';
 import ConfigurationService from './../../../services/ConfigurationService';
 import WebResponse from './../../../models/commons/WebResponse';
+import EmployeeSearchForm from '../shared/EmployeeSearchForm';
 
 class State {
     applicationProfile:ApplicationProfile = new ApplicationProfile();
@@ -36,6 +37,11 @@ class ConfigSettingPage extends BasePage
             this.state.applicationProfile
         )
     }
+    updateField = (fieldName:string, value:any) => {
+        const profile = this.state.applicationProfile;
+        profile[fieldName] = value;
+        this.setState({applicationProfile: profile});
+    }
     configUpdated = (response: WebResponse) => {
         this.showInfo("Sukses, silakan muat ulang halaman");
     }
@@ -46,20 +52,37 @@ class ConfigSettingPage extends BasePage
             <div className="container-fluid section-body" >
                 <h2>Konfigurasi</h2>
                 <hr/>
-                <form style={{padding:5}} onSubmit={this.submit} className="border border-secondary rounded ">
-                    <FormGroup label="Nama Aplikasi">
-                        <input name='name' onChange={(e)=>this.handleInputChange(e, 'applicationProfile')} className="form-control" value={profile.name??""} />
+                <div style={{padding:5}} className="border border-secondary rounded ">
+                    <form onSubmit={this.submit}  >
+                        <FormGroup>
+                            <input type="submit" value="Simpan" className="btn btn-primary" />
+                        </FormGroup>
+                        <FormGroup label="Nama Aplikasi">
+                            <input name='name' onChange={(e)=>this.handleInputChange(e, 'applicationProfile')} className="form-control" value={profile.name??""} />
+                        </FormGroup>
+                        <FormGroup label="Deskripsi Aplikasi">
+                            <input name='description' onChange={(e)=>this.handleInputChange(e, 'applicationProfile')} className="form-control" value={profile.description??""} />
+                        </FormGroup>
+                        <FormGroup label="Batas Poin Peringatan">
+                            <input name='warning_point' onChange={(e)=>this.handleInputChange(e, 'applicationProfile')} className="form-control" type="number" value={profile.warning_point??-30} />
+                        </FormGroup>
+                        <FormGroup label="Tanggal Rapor">
+                            <input name='report_date' onChange={(e)=>this.handleInputChange(e, 'applicationProfile')} className="form-control" value={profile.report_date??""} />
+                        </FormGroup>
+                    </form>
+                    <FormGroup label="Kepala Asrama">
+                        <div style={{height: '80px'}}>
+                            <b>{profile.division_head?.user?.name}</b>
+                            <EmployeeSearchForm selectItem={(e)=>this.updateField('division_head', e)}/>
+                        </div>
                     </FormGroup>
-                    <FormGroup label="Deskripsi Aplikasi">
-                        <input name='description' onChange={(e)=>this.handleInputChange(e, 'applicationProfile')} className="form-control" value={profile.description??""} />
+                    <FormGroup label="Direktur">
+                        <div style={{height: '80px'}}>
+                            <b>{profile.school_director?.user?.name}</b>
+                            <EmployeeSearchForm selectItem={(e)=>this.updateField('school_director', e)}/>
+                        </div>
                     </FormGroup>
-                    <FormGroup label="Batas Poin Peringatan">
-                        <input name='warning_point' onChange={(e)=>this.handleInputChange(e, 'applicationProfile')} className="form-control" type="number" value={profile.warning_point??-30} />
-                    </FormGroup>
-                    <FormGroup>
-                        <input type="submit" value="Simpan" className="btn btn-primary" />
-                    </FormGroup>
-                </form>
+                </div>
             </div>
         )
     }

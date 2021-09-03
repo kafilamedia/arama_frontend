@@ -4,6 +4,7 @@ import Category from './Category';
 export default class CategoryPredicate extends BaseEntity
 {
     name:string | undefined;
+    code:string | undefined;
     description:string | undefined;
     category:Category | undefined;
     category_id: number | undefined;

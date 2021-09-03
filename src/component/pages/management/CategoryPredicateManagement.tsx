@@ -102,6 +102,7 @@ class CategoryPredicateManagement extends BaseManagementPage
                 <FormGroup label="Cari">
                     <div className="input-group">
                         <input name="name" placeholder="nama" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
+                        <input name="code" placeholder="kode" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['kode'] : ""} onChange={this.updateFieldsFilter} />
                         <select value={selectedCategoryId} className="form-control-sm" name="category_id" onChange={this.updateFieldsFilter} >
                             {[{id:"", name:"Semua Kategori"},...categories].map((c)=>{
                                 return <option key={"filter-cat-"+c.id} value={c.id}>{c.name}</option>
@@ -135,12 +136,13 @@ const ItemsList = (props: {startingNumber:number, items:CategoryPredicate[], rec
     return (
         <div style={{overflow:'scroll'}}>
         <table className="table table-striped">
-            {tableHeader("No", "Nama",  "Deskripsi", "Kategori", "Opsi")}
+            {tableHeader("No", "Kode", "Nama",  "Deskripsi", "Kategori", "Opsi")}
             <tbody>
                     {props.items.map((item, i)=>{
                         return (
                             <tr key={`RulePoint-${i}`}>
                                 <td>{i+1+props.startingNumber}</td>
+                                <td>{item.code}</td>
                                 <td>{item.name}</td> 
                                 <td>{item.description}</td>
                                 <td>{item.category?.name}</td> 
@@ -164,13 +166,16 @@ const RecordForm = (props: { categories:Category[], formRef:React.RefObject<Moda
     return (
         <form className="record-form mb-3" onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
             <Modal show={false} ref={props.formRef} toggleable={true} title="Record Form" >
-                <FormGroup label="Nama">
-                    <select required value={props.record.name} className="form-control-sm" name="name" onChange={props.updateRecordProp} >
+                <FormGroup label="Kode">
+                    <select required value={props.record.code} className="form-control-sm" name="code" onChange={props.updateRecordProp} >
                         <option>A</option>
                         <option>B</option>
                         <option>C</option>
                         <option>D</option>
                     </select>
+                </FormGroup>
+                <FormGroup label="Nama">
+                <textarea className="form-control" name="name" onChange={props.updateRecordProp} value={props.record.name ?? ""}  />
                 </FormGroup>
                 <FormGroup label="Deskripsi">
                     <textarea className="form-control" name="description" onChange={props.updateRecordProp} value={props.record.description ?? ""}  />

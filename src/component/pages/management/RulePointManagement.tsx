@@ -164,8 +164,8 @@ const RecordForm = (props: { categories:Category[], formRef:React.RefObject<Moda
     return (
         <form className="record-form mb-3" onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
             <Modal show={false} ref={props.formRef} toggleable={true} title="Record Form" >
-                <FormGroup label="Nama"><input value={props.record.name ?? ""} onChange={props.updateRecordProp} className="form-control-sm" name="name" required/></FormGroup>
-                <FormGroup label="Poin"><input type="number" value={props.record.point} onChange={props.updateRecordProp} className="form-control-sm" name="point" required/></FormGroup>
+                <FormGroup label="Nama"><input value={props.record.name ?? ""} onChange={props.updateRecordProp} className="form-control " name="name" required/></FormGroup>
+                <FormGroup label="Pengurangan Poin"><input type="number" min={0} value={props.record.point} onChange={props.updateRecordProp} className="form-control " name="point" required/></FormGroup>
                 <FormGroup label="Deskripsi">
                     <textarea className="form-control" name="description" onChange={props.updateRecordProp} value={props.record.description ?? ""}  />
                 </FormGroup>

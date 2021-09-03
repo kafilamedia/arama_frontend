@@ -11,6 +11,7 @@ export default class ConfigurationService {
         return this.instance;
     }
     update = (appProfile:ApplicationProfile) => {
+        appProfile.validateField();
         const endpoint: string = contextPath().concat("api/setting/updateconfig");
         return commonAjaxPostCalls(endpoint, {applicationProfile: appProfile });
     }
