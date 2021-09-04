@@ -14,14 +14,7 @@ export const commonHeader = () => {
 };
 
 const LOGIN_KEY:string = "dormitory-app-login-key-2";
- 
-export const getAssetsPath = () :string => {
-    const store = getStore(); 
-    if (null == store) return "";
-    const state = store.getState();
-    return state.userState.assetsPath;
-}
-
+  
 export const getRequestId = () :string => {
     const store = getStore();
     if (null == store) return "";

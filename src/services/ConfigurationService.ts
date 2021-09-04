@@ -2,6 +2,7 @@
 import { contextPath } from './../constant/Url';
 import { commonAjaxPostCalls } from './Promises';
 import ApplicationProfile from './../models/ApplicationProfile';
+import WebRequest from './../models/commons/WebRequest';
 export default class ConfigurationService { 
     private static instance?: ConfigurationService;
     static getInstance(): ConfigurationService {
@@ -13,6 +14,11 @@ export default class ConfigurationService {
     update = (appProfile:ApplicationProfile) => {
         appProfile.validateField();
         const endpoint: string = contextPath().concat("api/setting/updateconfig");
-        return commonAjaxPostCalls(endpoint, {applicationProfile: appProfile });
+        const req:WebRequest = new WebRequest();
+        req.applicationProfile = appProfile;
+        req.attachmentInfo = appProfile.stampAttachment;
+        req.attachmentInfo2 = appProfile.directorSignatureAttachment;
+        req.attachmentInfo3 = appProfile.divisionHeadSignatureAttachment;
+        return commonAjaxPostCalls(endpoint, req);
     }
 }

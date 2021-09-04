@@ -15,7 +15,7 @@ export default class WebRequest{
 	 employee_id?:any;
 	 active?:boolean;
 	 user?:User;
-	 profile?:ApplicationProfile;
+	 applicationProfile?:ApplicationProfile;
 	 filter?:Filter;
 
 	 category?:Category;
@@ -29,6 +29,9 @@ export default class WebRequest{
 	 ruleViolation?:RuleViolation;
 
 	 attachmentInfo?:AttachmentInfo;
+	 attachmentInfo2?:AttachmentInfo;
+	 attachmentInfo3?:AttachmentInfo;
+
 
 	 items?:any[]
 }

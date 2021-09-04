@@ -36,15 +36,6 @@ export default class MasterDataService {
         const endpoint: string = contextPath().concat("api/masterdata/update");
         return commonAjaxPostCalls(endpoint, request);
     }
-   
-    updateApplicationProfile = (applicationProfile: ApplicationProfile) => {
-        const request: WebRequest = {
-            profile: applicationProfile
-        }
-        const endpoint = contextPath().concat("api/app/setting/updateprofile");
-        return commonAjaxPostCalls(endpoint, request)
-    }
-
     generateReport(request: WebRequest) {
         const endpoint: string = contextPath().concat("api/app/report/records");
         return commonAjaxPostCallsWithBlob(endpoint, request);

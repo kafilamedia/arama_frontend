@@ -194,14 +194,14 @@ const _menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true,
-        role: [  AuthorityType.musyrif_asrama],
+        role: [  AuthorityType.musyrif_asrama, AuthorityType.admin_asrama],
         subMenus: [
             {
                 code: 'studentreport',
                 name: 'Rapor',
                 url: 'studentreport',
                 menuClass: 'fas fa-file',
-                role: [ AuthorityType.musyrif_asrama],
+                role: [ AuthorityType.musyrif_asrama, AuthorityType.admin_asrama],
             },
         ]
     },
