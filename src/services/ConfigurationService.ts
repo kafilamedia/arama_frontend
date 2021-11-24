@@ -19,6 +19,7 @@ export default class ConfigurationService {
         req.attachmentInfo = appProfile.stampAttachment;
         req.attachmentInfo2 = appProfile.directorSignatureAttachment;
         req.attachmentInfo3 = appProfile.divisionHeadSignatureAttachment;
+        req.attachmentInfo4 = appProfile.dormitoryStampAttachment;
         return commonAjaxPostCalls(endpoint, req);
     }
 }

@@ -31,6 +31,7 @@ export default class WebRequest{
 	 attachmentInfo?:AttachmentInfo;
 	 attachmentInfo2?:AttachmentInfo;
 	 attachmentInfo3?:AttachmentInfo;
+	 attachmentInfo4?:AttachmentInfo;
 
 
 	 items?:any[]

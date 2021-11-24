@@ -96,6 +96,12 @@ class ConfigSettingPage extends BasePage
                             <input accept="image/*" onChange={this.updateAttachment} type="file" className="form-control"
                                     name="stampAttachment" />
                         </FormGroup>
+                        <FormGroup label="Stempel Asrama">
+                            <img width={60} height={60}
+                                    src={profile.dormitoryStampURL} />
+                            <input accept="image/*" onChange={this.updateAttachment} type="file" className="form-control"
+                                    name="dormitoryStampAttachment" />
+                        </FormGroup>
                     </form>
                     <FormGroup label="Kepala Asrama">
                         <div style={{height: '80px'}}>

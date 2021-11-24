@@ -33,16 +33,24 @@ export default class ApplicationProfile extends BaseEntity{
 	tahun_ajaran?:string;
 
 	stamp?:string;
+	dormitory_stamp?:string;
 
 	divisionHeadSignatureAttachment?:AttachmentInfo;
 	directorSignatureAttachment?:AttachmentInfo;
 	stampAttachment?:AttachmentInfo;
+	dormitoryStampAttachment?:AttachmentInfo;
 
 	get stampURL(){
 		if (this.stampAttachment) {
 			return this.stampAttachment.url;
 		}
 		return contextPath()+'upload/PROFILE/'+this.stamp;
+	}
+	get dormitoryStampURL(){
+		if (this.dormitoryStampAttachment) {
+			return this.dormitoryStampAttachment.url;
+		}
+		return contextPath()+'upload/PROFILE/'+this.dormitory_stamp;
 	}
 	get divisionHeadSignatureURL(){
 		if (this.divisionHeadSignatureAttachment) {
