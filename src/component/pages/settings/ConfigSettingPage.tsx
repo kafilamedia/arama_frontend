@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent } from 'react'
+import React, { ChangeEvent, FormEvent, RefObject } from 'react'
 import BasePage from './../BasePage';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -18,6 +18,7 @@ class ConfigSettingPage extends BasePage
 {
     state:State = new State();
     configService:ConfigurationService;
+    formRef:RefObject<HTMLFormElement> = React.createRef();
     constructor(props) {
         super(props, "Konfigurasi", true);
         this.configService = this.getServices().configurationService;
@@ -29,8 +30,7 @@ class ConfigSettingPage extends BasePage
         });
     }
 
-    submit = (e:FormEvent) => {
-        e.preventDefault();
+    submit = () => {
         console.debug(this.state.applicationProfile)
         this.commonAjax(
             this.configService.update,
@@ -61,11 +61,8 @@ class ConfigSettingPage extends BasePage
             <div className="container-fluid section-body" >
                 <h2>Konfigurasi</h2>
                 <hr/>
-                <div style={{padding:5}} className="border border-secondary rounded ">
-                    <form onSubmit={this.submit}  >
-                        <FormGroup>
-                            <input type="submit" value="Simpan" className="btn btn-primary" />
-                        </FormGroup>
+                <div style={{padding:20}} className="border border-secondary rounded ">
+                    <form ref={this.formRef} onSubmit={this.submit}  >
                         <FormGroup label="Nama Aplikasi">
                             <input name='name' onChange={(e)=>this.handleInputChange(e, 'applicationProfile')} className="form-control" value={profile.name??""} />
                         </FormGroup>
@@ -115,7 +112,11 @@ class ConfigSettingPage extends BasePage
                             <EmployeeSearchForm selectItem={(e)=>this.updateField('school_director', e)}/>
                         </div>
                     </FormGroup>
-                   
+                    <FormGroup>
+                        <button className="btn btn-primary" onClick={this.submit} >
+                            Simpan
+                        </button>
+                    </FormGroup>
                 </div>
             </div>
         )
