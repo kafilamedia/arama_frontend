@@ -44,12 +44,12 @@ class DashboardMain extends BasePage {
             <div  className=" section-body container-fluid">
                 <h2>Dashboard</h2>
                 <div className="alert alert-info">
-                    Welcome, <strong>{user.name}  </strong>
+                    Welcome, <strong>{user.fullName}  </strong>
                     <hr/>
                     {/* <p className="badge badge-dark text-capitalize">{(user.roles).join(", ")}</p> */}
                    
                 </div>
-                { !this.getLoggedUser()?.hasRole(AuthorityType.musyrif_asrama) ? null :
+                { !this.getLoggedUser()?.hasRole(AuthorityType.ROLE_ASRAMA_MUSYRIF) ? null :
                     <form className="mt-10 text-center" onSubmit={this.addPointRecord}>
                         <h1><i className="fas fa-camera" /></h1>
                         <h3> Input Pelanggaran</h3>

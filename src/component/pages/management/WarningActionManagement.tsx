@@ -100,7 +100,7 @@ const ItemsList = (props: ItemProps) => {
                         return (
                             <tr key={"category-"+i}>
                                 <td>{i+1+props.startingNumber}</td>
-                                <td>{item.student?.user?.name}</td>
+                                <td>{item.student?.user?.fullName}</td>
                                 <td>{Class.studentClassString(item.student)}</td>
                                 <td>{item.name}</td>
                                 <td>{item.description}</td>
@@ -129,7 +129,7 @@ const RecordForm = (props: { formRef:React.RefObject<Modal>, setStudent(s:Studen
                     
                 </FormGroup>
                 {record.student?
-                        <FormGroup children={record.student.user?.name+ " " +Class.studentClassString(record.student)} />:null
+                        <FormGroup children={record.student.user?.fullName+ " " +Class.studentClassString(record.student)} />:null
                     }
                 <form onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
                 <FormGroup label="Nama">

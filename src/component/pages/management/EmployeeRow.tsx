@@ -38,13 +38,13 @@ class EmployeeRow extends BaseComponent {
     render() {
         const props = this.props;
         const emp = this.getEmployee();
-        const isMusyrif = emp.user?.hasRole(AuthorityType.musyrif_asrama);
+        const isMusyrif = emp.user?.hasRole(AuthorityType.ROLE_ASRAMA_MUSYRIF);
         return (
             <tr key={emp.id} >
                 <td>{props.startingNumber + 1}</td>
-                <td>{emp.user?.name}</td>
+                <td>{emp.user?.fullName}</td>
                 <td>{emp.user?.email}</td>
-                <td>{emp.user?.nip}</td>
+                <td>-</td>
                 <td><i className={isMusyrif ? "fas fa-check text-success" : "fas fa-times"} /></td>
                 <td> {isMusyrif == true ?
                     <AnchorWithIcon className="btn btn-danger btn-sm" onClick={(e) => this.activateMusyrif(false)} >

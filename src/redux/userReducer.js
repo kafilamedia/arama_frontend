@@ -21,18 +21,14 @@ export const reducer = (state = initState, action) => {
         case types.SET_REQUEST_ID:
             
             result = {
-                ...state, requestId: action.payload.message,
-                applicationProfile: action.payload.profile ?? {},
-                assetsPath: action.payload.profile.assetsPath
+                ...state,
+                requestId: action.payload.requestId,
+                applicationProfile: action.payload.result ?? {},
+                assetsPath: "http://FIXME"
             };
             
-            if (action.payload.loginStatus == true) {
-                result.loggedUser = action.payload.user;
-                result.loginStatus = true;
-            } else {
-                result.loginStatus = false;
-                result.loggedUser = null;
-            }
+            result.loginStatus = false;
+            result.loggedUser = null;
             // console.debug("result");
             // console.debug("action.payload.requestId: ",action.payload.message); 
             // console.debug("REQUEST_ID result.loginStatus:", result.loginStatus)
@@ -72,7 +68,7 @@ export const reducer = (state = initState, action) => {
             return result;
         case types.SET_LOGGED_USER:
             result = {
-                ...state, loggedUser: action.payload.user
+                ...state, loggedUser: action.payload, loginStatus: true
             };
             return result;
         case types.SET_APPLICATION_PROFILE:

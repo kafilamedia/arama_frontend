@@ -54,7 +54,7 @@ class FollowUpReminder extends BasePage
                             return (
                                 <tr key={`f-i-${i}`}>
                                     <td>{i+1}</td>
-                                    <td>{info.student.user?.name}</td>
+                                    <td>{info.student.user?.fullName}</td>
                                     <td>{Class.studentClassString(info.student)}</td>
                                     <td>{info.TOTAL_POINT}</td>
                                     <td>{info.FOLLOW_UP_COUNT}</td>

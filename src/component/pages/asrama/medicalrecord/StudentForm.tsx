@@ -74,7 +74,7 @@ class StudentForm extends BaseComponent{
                                     return (
                                         <div className="option-item"onClick={()=>{
                                             this.setSelectedItem(item);
-                                        }} style={{cursor: 'pointer'}} key={"Student-"+item.id} >{item.user?.name}</div>
+                                        }} style={{cursor: 'pointer'}} key={"Student-"+item.id} >{item.user?.fullName}</div>
                                     )
                                 })}
                                 <a onClick={this.reset} className="option-item"><i className="fas fa-times"/>&nbsp;close</a>
@@ -99,7 +99,7 @@ const ItemDetail = (props:{item:Student}) => {
 
     return (
         <>
-            <FormGroup label="Name">{props.item.user?.name}</FormGroup>
+            <FormGroup label="Name">{props.item.user?.fullName}</FormGroup>
             <FormGroup label="Kelas">{Class.studentClassString(props.item)}</FormGroup>
             
         </>

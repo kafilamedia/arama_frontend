@@ -125,7 +125,7 @@ export default class BaseComponent extends Component<any, any> {
     isAdmin = (): boolean => {
         const user = this.getLoggedUser();
         if (!user) return false;
-        return user.hasRole(AuthorityType.admin_asrama);
+        return user.hasRole(AuthorityType.ROLE_SUPERADMIN);
     }
     scrollTop = () => {
         // console.info("SCROLL TOP");
@@ -203,7 +203,11 @@ export default class BaseComponent extends Component<any, any> {
             console.debug(typeof this, "BACK TO LOGIN");
             this.validateLoginStatus();
         }
+        
+         
     }
+
+    
 
     getServices = (): Services => {
         return this.props.services;

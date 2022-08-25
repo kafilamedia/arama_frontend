@@ -1,26 +1,26 @@
+import Authority from './Authority';
 import { AuthorityType } from './AuthorityType';
 import BaseEntity from './BaseEntity';
 
-export default class User extends BaseEntity{
-	static clone(user: User): User {
-		 return Object.assign(new User(), user);
-	}
-    hasRole(role: AuthorityType): boolean {
-        for (let i = 0; i < this.roles.length; i++) {
-			const element = this.roles[i];
-			if (element == role) {
-				return true;
-			}
-		}
-		return false;
+export default class User extends BaseEntity {
+  static clone(user: User): User {
+    return Object.assign(new User(), user);
+  }
+  hasRole(role: AuthorityType): boolean {
+    for (let i = 0; i < this.authorities.length; i++) {
+      const element = this.authorities[i];
+      if (element.name == role) {
+        return true;
+      }
     }
-	nickname?:string;
-	name?:string;
-	email?:string;
-	password?:string;
-	profileImage?:string;
-	roles:AuthorityType[] = [AuthorityType.user];
-	requestId?:string; 
-	nip?:string;
+    return false;
+  }
+  displayName?: string;
+  fullName?: string;
+  email?: string;
+  password?: string;
+  profileImage?: string;
+  authorities: Authority[] = [ { name: AuthorityType.ROLE_USER } ];
+  requestId?: string;
 
 }

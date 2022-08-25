@@ -103,7 +103,7 @@ class InputPointForm extends BasePage {
         return (
             <div className="container-fluid section-body">
                 <h2>Form Input Pelanggaran</h2>
-                <Modal title={student.user?.name + " - " + student.kelas?.level + student.kelas?.rombel + " " + student.kelas?.sekolah?.nama}>
+                <Modal title={student.user?.fullName + " - " + student.kelas?.level + student.kelas?.rombel + " " + student.kelas?.sekolah?.nama}>
 
                     <Progress step={this.state.formStep} totalStep={this.totalStep} />
                     {this.state.formStep == 1 ?

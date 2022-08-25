@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, RefObject } from 'react'
+import React, { ChangeEvent, FormEvent, RefObject, useLayoutEffect } from 'react'
 import BasePage from './../BasePage';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -58,8 +58,8 @@ class ConfigSettingPage extends BasePage
     render() {
         const profile = this.state.applicationProfile;
         return (
-            <div className="container-fluid section-body" >
-                <h2>Konfigurasi</h2>
+            <div id={`fff ${1==1?'dd':'ss'}`} className="container-fluid section-body" >
+                <h2 >Konfigurasi</h2>
                 <hr/>
                 <div style={{padding:20}} className="border border-secondary rounded ">
                     <form ref={this.formRef} onSubmit={this.submit}  >
@@ -102,13 +102,13 @@ class ConfigSettingPage extends BasePage
                     </form>
                     <FormGroup label="Kepala Asrama">
                         <div style={{height: '80px'}}>
-                            <b>{profile.division_head?.user?.name}</b>
+                            <b>{profile.division_head?.user?.fullName}</b>
                             <EmployeeSearchForm selectItem={(e)=>this.updateField('division_head', e)}/>
                         </div>
                     </FormGroup>
                     <FormGroup label="Direktur">
                         <div style={{height: '80px'}}>
-                            <b>{profile.school_director?.user?.name}</b>
+                            <b>{profile.school_director?.user?.fullName}</b>
                             <EmployeeSearchForm selectItem={(e)=>this.updateField('school_director', e)}/>
                         </div>
                     </FormGroup>

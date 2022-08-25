@@ -259,7 +259,7 @@ const ItemsList = (props: ItemProps) => {
                             return (
                                 <tr key={"PointRecord-" + i}  className={item.dropped_at?"alert alert-success":"" }>
                                     <td>{i + 1 + props.startingNumber}</td>
-                                    <td>{student?.user?.name}</td>
+                                    <td>{student?.user?.fullName}</td>
                                     <td>{Class.studentClassString(student)}</td>
                                     <td>{item.getTimestamp()}</td>
                                     <td>{item.rule_point?.name} ({item.rule_point?.category?.name})</td>

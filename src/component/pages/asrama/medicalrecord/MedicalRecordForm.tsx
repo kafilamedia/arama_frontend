@@ -118,7 +118,7 @@ class MedicalRecordForm extends BasePage {
 
         return (
             <div className="container-fluid section-body">
-                <h2> {student ? student.user?.name: this.title}</h2> 
+                <h2> {student ? student.user?.fullName: this.title}</h2> 
                 <hr/>
                 <StudentForm setItem={this.setStudent} />
                 <p />

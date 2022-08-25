@@ -40,8 +40,8 @@ class Register extends BaseComponent {
     saveUser = () => {
         const user = new UserModel();
         user.password = this.state.editPassword.trim();
-        user.nickname = this.state.username.trim();
-        user.name = this.state.displayName.trim();
+        user.displayName = this.state.username.trim();
+        user.fullName = this.state.displayName.trim();
         this.commonAjax(
             this.userService.saveUser,
             this.userSaved,

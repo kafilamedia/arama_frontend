@@ -66,7 +66,7 @@ class EmployeeSearchForm extends BaseComponent
                     {this.state.items.map(s=>{
                         return (
                             <div onClick={()=> this.select(s)} className="option-item" key={`s_form_${s.id}`}>
-                                {s.user?.name} 
+                                {s.user?.fullName} 
                             </div>
                         )
                     })}

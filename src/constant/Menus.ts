@@ -65,14 +65,14 @@ const _menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true,
-        role: [AuthorityType.admin_asrama, AuthorityType.musyrif_asrama],
+        role: [AuthorityType.ROLE_SUPERADMIN, AuthorityType.ROLE_ASRAMA_MUSYRIF],
         subMenus: [
             {
                 code: 'followup',
                 name: 'Follow Up',
                 url: 'followup',
                 menuClass: 'fas fa-history',
-                role: [ AuthorityType.musyrif_asrama],
+                role: [ AuthorityType.ROLE_ASRAMA_MUSYRIF],
             },
             // {
             //     code: 'dashboard_productsales',
@@ -91,49 +91,49 @@ const _menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true,
-        role: [AuthorityType.admin_asrama, AuthorityType.musyrif_asrama],
+        role: [AuthorityType.ROLE_SUPERADMIN, AuthorityType.ROLE_ASRAMA_MUSYRIF],
         subMenus: [
             {
                 code: 'musyrifmanagement',
                 name: 'Musyrif',
                 url: 'musyrifmanagement',
                 menuClass: 'fas fa-users',
-                role: [AuthorityType.admin_asrama],
+                role: [AuthorityType.ROLE_SUPERADMIN],
             },
             {
                 code: 'rule_category',
                 name: 'Kategori Pelanggaran',
                 url: 'rule_category',
                 menuClass: 'fas fa-tags',
-                role: [AuthorityType.admin_asrama],
+                role: [AuthorityType.ROLE_SUPERADMIN],
             },
             {
                 code: 'rule_point',
                 name: 'Poin Pelanggaran',
                 url: 'rule_point',
                 menuClass: 'fas fa-puzzle-piece',
-                role: [AuthorityType.admin_asrama],
+                role: [AuthorityType.ROLE_SUPERADMIN],
             }, 
             {
                 code: 'warning_action',
                 name: 'Peringatan',
                 url: 'warning_action',
                 menuClass: 'fas fa-exclamation-triangle',
-                role: [AuthorityType.admin_asrama, AuthorityType.musyrif_asrama],
+                role: [AuthorityType.ROLE_SUPERADMIN, AuthorityType.ROLE_ASRAMA_MUSYRIF],
             }, 
             {
                 code: 'category_predicate',
                 name: 'Predikat Rapor',
                 url: 'category_predicate',
                 menuClass: 'far fa-flag',
-                role: [AuthorityType.admin_asrama, ],
+                role: [AuthorityType.ROLE_SUPERADMIN, ],
             }, 
             {
                 code: 'rule_violation',
                 name: 'Pelanggaran Umum',
                 url: 'rule_violation',
                 menuClass: 'fas fa-times-circle',
-                role: [AuthorityType.musyrif_asrama, ],
+                role: [AuthorityType.ROLE_ASRAMA_MUSYRIF, ],
             }, 
         ]
     }, 
@@ -145,28 +145,28 @@ const _menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true,
-        role: [  AuthorityType.musyrif_asrama, AuthorityType.admin_asrama],
+        role: [  AuthorityType.ROLE_ASRAMA_MUSYRIF, AuthorityType.ROLE_SUPERADMIN],
         subMenus: [
             {
                 code: 'studentlist',
                 name: 'Siswa',
                 url: 'studentlist',
                 menuClass: 'fas fa-users',
-                role: [ AuthorityType.musyrif_asrama],
+                role: [ AuthorityType.ROLE_ASRAMA_MUSYRIF],
             },
             {
                 code: 'input_point',
                 name: 'Form Pelanggaran Tipe 1',
                 url: 'inputpoint',
                 menuClass: 'fas fa-edit',
-                role: [ AuthorityType.musyrif_asrama],
+                role: [ AuthorityType.ROLE_ASRAMA_MUSYRIF],
             }, 
             {
                 code: 'pointrecordedit',
                 name: 'Form Pelanggaran Tipe 2',
                 url: 'pointrecordedit',
                 menuClass: 'fas fa-edit',
-                role: [ AuthorityType.musyrif_asrama],
+                role: [ AuthorityType.ROLE_ASRAMA_MUSYRIF],
             },
             // {
             //     code: 'medicalrecord',
@@ -180,7 +180,7 @@ const _menus: Menu[] = [
                 name: 'Rekap Pelanggaran',
                 url: 'pointsummary',
                 menuClass: 'fas fa-clipboard',
-                role: [ AuthorityType.musyrif_asrama, AuthorityType.admin_asrama],
+                role: [ AuthorityType.ROLE_ASRAMA_MUSYRIF, AuthorityType.ROLE_SUPERADMIN],
             },
            
             
@@ -194,14 +194,14 @@ const _menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true,
-        role: [  AuthorityType.musyrif_asrama, AuthorityType.admin_asrama],
+        role: [  AuthorityType.ROLE_ASRAMA_MUSYRIF, AuthorityType.ROLE_SUPERADMIN],
         subMenus: [
             {
                 code: 'studentreport',
                 name: 'Rapor',
                 url: 'studentreport',
                 menuClass: 'fas fa-file',
-                role: [ AuthorityType.musyrif_asrama, AuthorityType.admin_asrama],
+                role: [ AuthorityType.ROLE_ASRAMA_MUSYRIF, AuthorityType.ROLE_SUPERADMIN],
             },
         ]
     },
@@ -213,14 +213,14 @@ const _menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true,
-        role: [  AuthorityType.admin_asrama],
+        role: [  AuthorityType.ROLE_SUPERADMIN],
         subMenus: [
             {
                 code: 'config',
                 name: 'Konfigurasi',
                 url: 'config',
                 menuClass: 'fas fa-cog',
-                role: [ AuthorityType.admin_asrama],
+                role: [ AuthorityType.ROLE_SUPERADMIN],
             },
         ]
     }

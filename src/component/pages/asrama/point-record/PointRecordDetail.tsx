@@ -25,7 +25,7 @@ export default class PointRecordDetail extends Component<IProps, any> {
         const pictureUrl = record.getPicture();
         const timeStamp = record.getTimestamp();
         return <Card title={"Detail Pelanggaran"} footerContent={<AnchorWithIcon className="btn btn-dark" onClick={this.props.close} >Ok</AnchorWithIcon>}>
-            <FormGroup label="Nama">{record.student?.user?.name} - {Class.studentClassString(record.student)}</FormGroup>
+            <FormGroup label="Nama">{record.student?.user?.fullName} - {Class.studentClassString(record.student)}</FormGroup>
             <FormGroup label="Pelanggaran">
                 <strong>{record.rule_point?.category?.name}</strong> - {record.rule_point?.name} <span className="badge badge-dark">{record.rule_point?.point}</span>
             </FormGroup>

@@ -15,7 +15,7 @@ class ManagementMain extends BasePage
             <div className="container-fluid section-body">
                 <h2>Halaman Manajemen</h2>
                 <div className="alert alert-info">
-                    Welcome, <strong>{this.getLoggedUser()?.name}</strong>
+                    Welcome, <strong>{this.getLoggedUser()?.fullName}</strong>
                     <hr/>
                 </div>
             </div>

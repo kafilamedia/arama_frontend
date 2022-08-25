@@ -194,7 +194,7 @@ const ItemsList = (props: { showPointRecord: boolean, loading: boolean, starting
                                         </div>
                                     </td>
                                     <td>
-                                        {student.user?.name}</td>
+                                        {student.user?.fullName}</td>
                                     <td>{student.kelas?.level} {student.kelas?.rombel} {student.kelas?.sekolah?.nama}</td>
                                     {props.showPointRecord ? <td>{student.point}</td> : null}
                                 </tr>

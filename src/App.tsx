@@ -17,6 +17,7 @@ import UserService from './services/UserService';
 import AnchorWithIcon from './component/navigation/AnchorWithIcon';
 import { time } from 'console';
 import { doItLater, updateFavicon } from './utils/EventUtil';
+import User from './models/User';
 
 class IState {
   loading: boolean = false;
@@ -57,12 +58,19 @@ class App extends Component<any, IState> {
 
   requestAppId = () => {
     this.setState({ appIdStatus: "Authenticating application", errorAuthenticatingApp: false });
-    this.userService.requestApplicationId((response) => {
-      this.props.setRequestId(response, this);
-      this.refresh();
-      this.setState({ errorAuthenticatingApp: false });
+    this.userService.requestApplicationId((reqIdResp) => {
+      this.getLoggedUser(reqIdResp);
     }, this.retryRequestAppId)
-
+  }
+  getLoggedUser = (reqIdResp) => {
+    const onSuccess = (data) => {
+      this.setState({ errorAuthenticatingApp: false }, () => {
+        this.props.setRequestId(reqIdResp, this);
+        this.props.setLoggedUser(data.result);
+        this.refresh();
+      });
+    }
+    this.userService.getLoggedUser(onSuccess, console.error);
   }
   retryRequestAppId = () => {
     this.setState({ appIdStatus: "Authenticating application (Retrying)", errorAuthenticatingApp: false });
@@ -231,6 +239,7 @@ function Loading(props) {
 
 
 const mapDispatchToProps = (dispatch: Function) => ({
+  setLoggedUser: (user: User) => dispatch(actions.setLoggedUser(user)),
   setMainApp: (app: App) => dispatch(actions.setMainApp(app)),
   setRequestId: (response: WebResponse, app: App) => dispatch(actions.setRequestId(response, app)),
 })

@@ -1,99 +1,106 @@
 import * as common from './Common'
 import * as types from '../redux/types'
+import { AxiosResponse } from 'axios';
 const axios = require('axios');
+
 export const performLoginMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.DO_LOGIN) {
-        return next(action);
+  if (!action.meta || action.meta.type !== types.DO_LOGIN) {
+    return next(action);
+  }
+  const { app } = action.meta;
+  const parameters = [
+    'username=' + action.meta.email,
+    'password=' + action.meta.password,
+    'transport_type=rest'
+  ];
+  axios.post(action.meta.url, parameters.join('&'), {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  }).then(axiosResponse => {
+    const responseJson = axiosResponse.data;
+    let loginKey: string = '';
+    let loginSuccess: boolean = false;
+
+    if (responseJson.code != null && responseJson.code == '00') {
+      loginKey = axiosResponse.headers['access-token'];
+      // console.log('api_token: ', loginKey);
+      loginSuccess = true;
+    } else {
     }
-    const app = action.meta.app;
-    axios.post(action.meta.url, 'email='+action.meta.email+ '&password='+action.meta.password, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    }).then(axiosResponse => {
-        const responseJson = axiosResponse.data;
-        let loginKey: string = "";
-        let loginSuccess: boolean = false;
-       
-        if (responseJson.code != null && responseJson.code == "00") {
-            loginKey = axiosResponse.headers['api_token'];
-            // console.log("api_token: ", loginKey);
-            loginSuccess = true;
-        } else {
-        }
-        let newAction = Object.assign({}, action, {
-            payload: {
-                loginStatus: loginSuccess,
-                loginKey: loginKey,
-                loggedUser: responseJson.user
-            }
-        });
-        common.updateAccessToken(axiosResponse);
-        delete newAction.meta;
-        store.dispatch(newAction);
-    })
-        .catch(console.log)
-        .finally(() => { app.endLoading(); });
+    let newAction = Object.assign({}, action, {
+      payload: {
+        loginStatus: loginSuccess,
+        loginKey: loginKey,
+        loggedUser: responseJson.result
+      }
+    });
+    common.updateAccessToken(axiosResponse);
+    delete newAction.meta;
+    store.dispatch(newAction);
+  })
+    .catch(console.log)
+    .finally(() => { app.endLoading(); });
 
 }
- 
+
 
 export const getLoggedUserMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.GET_LOGGED_USER) { return next(action); }
+  if (!action.meta || action.meta.type !== types.GET_LOGGED_USER) { return next(action); }
 
-    let headers = common.commonAuthorizedHeader();
+  let headers = common.commonAuthorizedHeader();
 
-    axios.post(action.meta.url, (action.payload), {
-        headers: headers
-    }).then(response => {
-        const data = response.data;
+  axios.post(action.meta.url, (action.payload), {
+    headers: headers
+  }).then(response => {
+    const data = response.data;
 
-        if (!data) {
-            alert("Error performing request");
-            return;
-        }
+    if (!data) {
+      alert('Error performing request');
+      return;
+    }
 
-        let newAction = Object.assign({}, action, { payload: { data } });
-        delete newAction.meta;
-        store.dispatch(newAction);
-    })
-        .catch(console.log).finally(param => {
-            action.meta.app.endLoading();
-            action.meta.app.refresh();
-        });
+    let newAction = Object.assign({}, action, { payload: { data } });
+    delete newAction.meta;
+    store.dispatch(newAction);
+  })
+    .catch(console.log).finally(param => {
+      action.meta.app.endLoading();
+      action.meta.app.refresh();
+    });
 }
 
 
 export const performLogoutMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.DO_LOGOUT) {
-        return next(action);
-    }
-    const app = action.meta.app;
+  if (!action.meta || action.meta.type !== types.DO_LOGOUT) {
+    return next(action);
+  }
+  const app = action.meta.app;
 
-    axios.post(action.meta.url, (action.payload), {
-        headers: common.commonAuthorizedHeader()
+  axios.post(action.meta.url, action.payload, {
+    headers: common.commonAuthorizedHeader()
+  })
+    .then((r: AxiosResponse) => {
+      const responseJson = r.data;
+      let logoutSuccess = false;
+      if (responseJson.code == '00') {
+        logoutSuccess = true;
+      } else {
+        alert('Logout Failed');
+      }
+
+      let newAction = Object.assign({}, action, {
+        payload: {
+          loginStatus: !logoutSuccess
+        }
+      });
+      delete newAction.meta;
+      store.dispatch(newAction);
     })
-        .then(response => {
-            const responseJson = response.data;
-            let logoutSuccess = false;
-            if (responseJson.code == "00") {
-                logoutSuccess = true;
-            } else {
-                alert("Logout Failed");
-            }
-
-            let newAction = Object.assign({}, action, {
-                payload: {
-                    loginStatus: !logoutSuccess
-                }
-            });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(console.log).finally(param => app.endLoading());
+    .catch(console.log).finally(param => app.endLoading());
 }
 
 export const setLoggedUserMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.SET_LOGGED_USER) { return next(action); }
-    let newAction = Object.assign({}, action, { payload: action.payload });
-    delete newAction.meta;
-    store.dispatch(newAction);
+  if (!action.meta || action.meta.type !== types.SET_LOGGED_USER) { return next(action); }
+  let newAction = Object.assign({}, action, { payload: action.payload });
+  delete newAction.meta;
+  store.dispatch(newAction);
 }

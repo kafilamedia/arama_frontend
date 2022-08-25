@@ -208,7 +208,7 @@ class PointRecordEdit extends BasePage{
                     <StudentSearchForm selectItem={this.setStudent} />
                 </FormGroup>
                 {record.student? <FormGroup>
-                    <div  >{record.student.user?.name ?? ""} {Class.studentClassString(record.student)}
+                    <div  >{record.student.user?.fullName ?? ""} {Class.studentClassString(record.student)}
                     </div> 
                 </FormGroup>
                 : null}

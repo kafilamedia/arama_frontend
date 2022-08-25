@@ -67,7 +67,7 @@ class StudentSearchForm extends BaseComponent
                     {this.state.items.map(s=>{
                         return (
                             <div onClick={()=> this.select(s)} className="option-item" key={`s_form_${s.id}`}>
-                                {s.user?.name} {Class.studentClassString(s)}
+                                {s.user?.fullName} {Class.studentClassString(s)}
                             </div>
                         )
                     })}
