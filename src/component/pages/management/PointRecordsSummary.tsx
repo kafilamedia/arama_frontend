@@ -28,7 +28,7 @@ class State {
   selectedCategory: Category | undefined;
   showFilterDetail: boolean = false;
 }
-const defaultFieldsFilter = { name: '', dropped: '', class_id: '', point_name: '', category_name: '', location: '' }
+const defaultFieldsFilter = { 'classMember.student.user.fullName': '', dropped: '', 'classMember.classLevel.id': '', 'rulePoint.name': '', 'rulePoint.category.name': '', location: '' }
 const MODEL_NAME = 'broken-rules';
 const MENU = 'asrama';
 class PointRecordSummary extends BaseManagementPage {
@@ -65,13 +65,13 @@ class PointRecordSummary extends BaseManagementPage {
     this.commonAjax(this.studentService.getCategories,
       this.categoriesLoaded, console.error);
   }
-  categoriesLoaded = (response: WebResponse) => this.setState({ categories: response.items });
-  classessLoaded = (response: WebResponse) => this.setState({ classes: response.items });
+  categoriesLoaded = (response: WebResponse) => this.setState({ categories: response.result.items });
+  classessLoaded = (response: WebResponse) => this.setState({ classes: response.result });
 
   setSelectedCategory = (cat: Category) => {
     const filter = this.state.filter;
     if (cat.id == "") {
-      filter.fieldsFilter['point_name'] = '';
+      filter.fieldsFilter['rulePoint.name'] = '';
     }
     this.setState({ filter: filter, selectedCategory: cat });
   }
@@ -150,7 +150,7 @@ class PointRecordSummary extends BaseManagementPage {
       )
     }
     const defaultClass: Class = { id: "", level: "Semua Kelas", sekolah: {} };
-    const selectedClassId = filter.fieldsFilter['class_id'] ? filter.fieldsFilter['class_id'] : "";
+    const selectedClassId = filter.fieldsFilter['classMember.classLevel.id'] ? filter.fieldsFilter['classMember.classLevel.id'] : "";
 
     return (
       <div className="container-fluid section-body">
@@ -159,10 +159,10 @@ class PointRecordSummary extends BaseManagementPage {
         <form className="form-filter" onSubmit={this.reload}>
           <FormGroup label="Cari">
             <div className="input-group">
-              <input autoComplete="off" name="name" placeholder="Nama siswa" className="form-control-sm" value={fieldsFilter['name'] ?? ""} onChange={this.updateFieldsFilter} />
-              <select autoComplete="off" value={selectedClassId} onChange={this.updateFieldsFilter} className="form-control-sm" name="class_id">
+              <input autoComplete="off" name="classMember.student.user.fullName" placeholder="Nama siswa" className="form-control-sm" value={fieldsFilter['classMember.student.user.fullName'] ?? ''} onChange={this.updateFieldsFilter} />
+              <select autoComplete="off" value={selectedClassId} onChange={this.updateFieldsFilter} className="form-control-sm" name="classMember.classLevel.id">
                 {[defaultClass, ...this.state.classes].map((c) => {
-                  return <option key={`class_${c.id}`} value={c.id}>{c.level}{c.rombel} - {c.sekolah?.nama}</option>
+                  return <option key={`class_${c.id}`} value={c.id}>{c.level}{c.letter} - {c.schoolName}</option>
                 })}
               </select>
             </div>
@@ -170,7 +170,7 @@ class PointRecordSummary extends BaseManagementPage {
           {this.state.showFilterDetail ?
             <><div className="filter-sticky bg-white border border-gray pt-3 pb-3 pl-3 pr-3">
               <FormGroup label="Kategori">
-                <select value={fieldsFilter['category_name']} onChange={this.updateFieldsFilter} className="form-control-sm" name="category_name">
+                <select value={fieldsFilter['rulePoint.category.name']} onChange={this.updateFieldsFilter} className="form-control-sm" name="category.name">
                   {[Category.clone({ id: "", name: "Semua" }), ...this.state.categories].map((c) => {
                     return <option onClick={() => this.setSelectedCategory(c)} key={`cat_${c.id}`} value={c.id == "" ? c.id : c.name}>{c.name}</option>
                   })}
@@ -178,7 +178,7 @@ class PointRecordSummary extends BaseManagementPage {
               </FormGroup>
               {this.state.selectedCategory && this.state.selectedCategory.points ?
                 <FormGroup label="Pelanggaran">
-                  <select value={fieldsFilter['point_name']} onChange={this.updateFieldsFilter} className="form-control-sm" name="point_name">
+                  <select value={fieldsFilter['rulePoint.name']} onChange={this.updateFieldsFilter} className="form-control-sm" name="rulePoint.name">
                     {[{ id: "", name: "Semua" }, ...this.state.selectedCategory.points].map((c) => {
                       return <option key={`rp_${c.id}`} value={c.id == "" ? c.id : c.name}>{c.name}</option>
                     })}

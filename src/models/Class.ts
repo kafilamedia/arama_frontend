@@ -11,4 +11,7 @@ export default class Class {
     level?:string;
     rombel?:string;
     sekolah?:School;
+    //
+    letter?:string;
+    schoolName?:string;
 }
