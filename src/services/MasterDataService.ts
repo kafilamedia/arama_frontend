@@ -2,10 +2,10 @@
 import Filter from '../models/commons/Filter';
 import WebRequest from '../models/commons/WebRequest';
 import { contextPath } from './../constant/Url';
-import { commonAjaxGetCalls, commonAjaxPostCalls, commonAjaxPostCallsWithBlob } from './Promises';
+import { commonAjaxDeleteCalls, commonAjaxGetCalls, commonAjaxPostCalls, commonAjaxPostCallsWithBlob, commonAjaxPutCalls } from './Promises';
 import ApplicationProfile from './../models/ApplicationProfile';
 
-export default class MasterDataService { 
+export default class MasterDataService {
     private static instance?: MasterDataService;
 
     static getInstance(): MasterDataService {
@@ -14,26 +14,27 @@ export default class MasterDataService {
         }
         return this.instance;
     }
-    /**
-     * Get one by ID
-     * @param request 
-     */
-    getOne = (request:WebRequest) => {
-        const endpoint: string = contextPath().concat("api/masterdata/getbyid");
-        return commonAjaxPostCalls(endpoint, request);
+
+    getOne = (menu: 'asrama' | 'management', modelName: string, id: any) => {
+        const endpoint = contextPath().concat(`api/admin/${menu}/${modelName}/${id}`);
+        return commonAjaxGetCalls(endpoint);
     }
-    delete = (request:WebRequest) => {
-        const endpoint: string = contextPath().concat("api/masterdata/delete");
-        return commonAjaxPostCalls(endpoint, request);
+    delete = (menu: 'asrama' | 'management', modelName: string, id: any) => {
+        const endpoint = contextPath().concat(`api/admin/${menu}/${modelName}/${id}`);
+        return commonAjaxDeleteCalls(endpoint);
     }
-    list = (request: WebRequest)  => {
-        const endpoint: string = contextPath().concat("api/admin/management/" + request.modelName);
+    list = (request: WebRequest, menu: 'asrama' | 'management') => {
+        const endpoint = contextPath().concat(`api/admin/${menu}/${request.modelName}`);
         return commonAjaxGetCalls(endpoint + Filter.queryString(request.filter));
     }
 
-    update = (request: WebRequest) => {
-        const endpoint: string = contextPath().concat("api/masterdata/update");
-        return commonAjaxPostCalls(endpoint, request);
+    insert = (modelName: string, menu: 'asrama' | 'management', body: any) => {
+        const endpoint: string = contextPath().concat(`api/admin/${menu}/${modelName}`);
+        return commonAjaxPostCalls(endpoint, body);
+    }
+    update = (modelName: string, menu: 'asrama' | 'management', id: any, body: any) => {
+        const endpoint: string = contextPath().concat(`api/admin/${menu}/${modelName}/${id}`);
+        return commonAjaxPutCalls(endpoint, body);
     }
     generateReport(request: WebRequest) {
         const endpoint: string = contextPath().concat("api/app/report/records");

@@ -154,7 +154,7 @@ const Detail = (props: { record: PointRecord, back(): any }) => {
             <h4 className="text-center text-success"><i className="fas fa-check" style={{ marginRight: 5 }} />Record saved</h4>
             <p />
             <FormGroup label="Date">{date.toDateString()} {record.time}</FormGroup>
-            <FormGroup label="Category">{record.rule_point?.category?.name}</FormGroup>
+            <FormGroup label="Category">{record.rule_point?.ruleCategoryName}</FormGroup>
             <FormGroup label="Name">{record.rule_point?.name}</FormGroup>
             <FormGroup label="Point">{record.rule_point?.point}</FormGroup>
             <FormGroup label="Location">{record.location}</FormGroup>

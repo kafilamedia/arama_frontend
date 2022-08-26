@@ -29,7 +29,7 @@ class StudentList extends BaseManagementPage {
     studentService: StudentService;
     masterDataService: MasterDataService;
     constructor(props) {
-        super(props, 'student');
+        super(props, 'student', 'asrama');
         this.studentService = this.getServices().studentService;
         this.masterDataService = this.getServices().masterDataService;
         this.state.filter.limit = 10;

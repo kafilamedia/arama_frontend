@@ -8,16 +8,20 @@ import BasePage from './../BasePage';
 import './Management.css'
 import BaseEntity from './../../../models/BaseEntity';
 
-export default class BaseManagementPage extends BasePage {
+export default abstract class BaseManagementPage extends BasePage {
   protected masterDataService: MasterDataService;
-  protected modelName: string = "undefined";
   protected formRef: React.RefObject<Modal> = React.createRef();
 
   emptyRecord = (): BaseEntity => {
     throw new Error("Empty Record Method is Not Implemented....");
   }
 
-  constructor(props, modelName?: string, protected overrideLoading: boolean = false) {
+  constructor(
+    props,
+    protected modelName: string,
+    protected menu: 'asrama' | 'management',
+    protected overrideLoading: boolean = false
+  ) {
     super(props, "Asrama KIIS", true);
     if (modelName) {
       this.modelName = modelName;
@@ -48,7 +52,8 @@ export default class BaseManagementPage extends BasePage {
       this.masterDataService.list,
       this.itemsLoaded,
       this.showCommonErrorAlert,
-      request
+      request,
+      this.menu
     )
   }
   itemsLoaded = (response: WebResponse) => {
@@ -124,12 +129,25 @@ export default class BaseManagementPage extends BasePage {
       this.loadItems();
     });
   }
-  protected callApiSubmit = (request: WebRequest) => {
+  protected callApiInsert = (body: any) => {
+    this.commonAjax(
+      this.masterDataService.insert,
+      this.recordUpdated,
+      this.showCommonErrorAlert,
+      this.modelName,
+      this.menu,
+      body
+    )
+  }
+  protected callApiUpdate= (id: any, body: any) => {
     this.commonAjax(
       this.masterDataService.update,
       this.recordUpdated,
       this.showCommonErrorAlert,
-      request
+      this.modelName,
+      this.menu,
+      id,
+      body
     )
   }
 

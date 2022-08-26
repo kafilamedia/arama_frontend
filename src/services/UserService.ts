@@ -11,18 +11,6 @@ export default class UserService {
 
   static getInstance = () => UserService.instance ? UserService.instance : UserService.instance = new UserService();
 
-  updateProfile = (user: User) => {
-    const request: WebRequest = { user }
-    const endpoint = contextPath().concat("api/member/account/updateprofile")
-    return commonAjaxPostCalls(endpoint, request);
-  }
-  saveUser = (user: User) => {
-    const request: WebRequest = {
-      user: user
-    }
-    const endpoint = contextPath().concat("api/public/register")
-    return commonAjaxPublicPostCalls(endpoint, request);
-  }
   requestApplicationId = (callbackSuccess: (response: WebResponse) => any, callbackError: () => any) => {
     const url = contextPath() + "api/public/index";
     commonAjaxGetCalls(url).then((data) => {

@@ -6,8 +6,6 @@ import WebRequest from './../models/commons/WebRequest';
 import MedicalRecord from './../models/MedicalRecord';
 import WebResponse from '../models/commons/WebResponse';
 export default class StudentService {
-    
-   
 
     private static instance?: StudentService;
 
@@ -21,11 +19,7 @@ export default class StudentService {
         if (attachmentInfo) {
             attachmentInfo.data = "";
         }
-        const req:WebRequest = {
-            pointRecord: pointRecord,
-            attachmentInfo: attachmentInfo
-        }
-        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/submitpointrecord", req);
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/submitpointrecord", pointRecord);
     }
     public getClasses() :Promise<WebResponse> {
         return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/classes", {});
@@ -51,10 +45,7 @@ export default class StudentService {
     
 
     public submitMedicalRecord = (record:MedicalRecord) => {
-        const req:WebRequest = {
-            medicalRecord: record
-        }
-        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/submitmedicalrecord", req)
+        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/submitmedicalrecord", record)
     }
     public loadMonthlyMedicalRecord = (studentId:number, month:number, year:number) => {
         const req:WebRequest = {

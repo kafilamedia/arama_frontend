@@ -67,7 +67,7 @@ class FormStepThree extends BaseComponent {
         const attachment = this.getAttachment();
         return (
             <form onSubmit={(e) => { e.preventDefault(); this.onSubmit() }}>
-                <FormGroup label="Category">{rulePoint.category?.name} - {rulePoint.name} <span className="badge badge-dark">{rulePoint.point}</span></FormGroup>
+                <FormGroup label="Category">{rulePoint.ruleCategoryName} - {rulePoint.name} <span className="badge badge-dark">{rulePoint.point}</span></FormGroup>
                 <FormGroup label="Date">
                     <input type="date" className="form-control" onChange={this.updateDate} name="date" value={pointRecord.dateString()} />
                 </FormGroup>

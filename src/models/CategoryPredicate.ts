@@ -1,11 +1,10 @@
 
 import BaseEntity from './BaseEntity';
 import Category from './Category';
-export default class CategoryPredicate extends BaseEntity
-{
-    name:string | undefined;
-    code:string | undefined;
-    description:string | undefined;
-    category:Category | undefined;
-    category_id: number | undefined;
+export default class CategoryPredicate extends BaseEntity {
+    name: string | undefined;
+    code = 'A';
+    description: string | undefined;
+    ruleCategoryName;
+    ruleCategoryId: number | undefined;
 }

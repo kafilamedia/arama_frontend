@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import Login from '../pages/login/Login';
 import DashboardMain from '../pages/dashboard/main/DashboardMain';
 import HomeMain from '../pages/home/HomeMain';
-import Menu from '../../models/settings/Menu'; 
+import Menu from '../../models/settings/Menu';
 import MusyrifManagement from '../pages/management/MusyrifManagement';
 import ManagementMain from '../pages/management/ManagementMain';
 import CategoryManagement from '../pages/management/CategoryManagement';
@@ -18,7 +18,7 @@ import InputPointForm from '../pages/asrama/InputPointForm';
 import PointRecordsManagement from '../pages/management/PointRecordsSummary';
 import MedicalRecordForm from '../pages/asrama/medicalrecord/MedicalRecordForm';
 import AboutUs from './../pages/home/AboutUs';
-import Register from '../pages/login/Register'; 
+import Register from '../pages/login/Register';
 import PointRecordEdit from '../pages/asrama/point-record/PointRecordEdit';
 import FollowUpReminder from '../pages/dashboard/main/FollowUpReminder';
 import WarningActionManagement from '../pages/management/WarningActionManagement';
@@ -28,34 +28,34 @@ import CategoryPredicateManagement from '../pages/management/CategoryPredicateMa
 import RuleViolationManagement from '../pages/management/RuleViolationManagement';
 
 class ApplicationContent extends BaseComponent {
- 
-    constructor(props: any) {
-        super(props, false);
-    }
-    setSidebarMenus = (menus: Menu[]) => {
-        this.props.setSidebarMenus(menus);
-    }
-    render() {
-        return (
-            <Fragment>
-                <Switch>
-                   
-                    {/* -------- home -------- */}
-                    <Route exact path="/home" render={
-                        (props: any) => {
-                            return <HomeMain />
-                        }
-                    } />
-                    <Route exact path="/" render={
-                        (props: any) =>
-                            <HomeMain />
-                    } />
-                    <Route exact path="/about" render={
-                        (props: any) =>
-                            <AboutUs />
-                    } />
-                     
-{/* 
+
+  constructor(props: any) {
+    super(props, false);
+  }
+  setSidebarMenus = (menus: Menu[]) => {
+    this.props.setSidebarMenus(menus);
+  }
+  render() {
+    return (
+      <Fragment>
+        <Switch>
+
+          {/* -------- home -------- */}
+          <Route exact path="/home" render={
+            (props: any) => {
+              return <HomeMain />
+            }
+          } />
+          <Route exact path="/" render={
+            (props: any) =>
+              <HomeMain />
+          } />
+          <Route exact path="/about" render={
+            (props: any) =>
+              <AboutUs />
+          } />
+
+          {/* 
                      
                     <Route exact path="/management" render={
                         (props: any) => {
@@ -69,138 +69,134 @@ class ApplicationContent extends BaseComponent {
                     } /> */}
 
 
-                    {/* ///////// PUBLIC ///////// */}
+          {/* ///////// PUBLIC ///////// */}
 
-                </Switch>
-                <LoginRoute />
-                <Asrama     />
-                <Management />
-                <Dashboard  />
-                <Setting    />
-                <Report     />
-            </Fragment>
-        )
-    }
-    componentDidMount() {
-        // document.title = "Login";
-    }
+        </Switch>
+        <LoginRoute />
+        <Asrama />
+        <Management />
+        <Dashboard />
+        <Setting />
+        <Report />
+      </Fragment>
+    )
+  }
+  componentDidMount() {
+    // document.title = "Login";
+  }
 
 }
 
-const Setting  = (props) => {
+const Setting = (props) => {
 
-    return (
-        <Switch>
-            <Route exact path="/settings/config" render={
-                (props:any) => <ConfigSettingPage />
-            } />
-        </Switch>
-    )
+  return (
+    <Switch>
+      <Route exact path="/settings/config" render={
+        (props: any) => <ConfigSettingPage />
+      } />
+    </Switch>
+  )
 }
-const Report  = (props) => {
+const Report = (props) => {
 
-    return (
-        <Switch>
-            <Route exact path="/report/studentreport" render={
-                (props:any) => <StudentSemesterReport />
-            } />
-        </Switch>
-    )
+  return (
+    <Switch>
+      <Route exact path="/report/studentreport" render={
+        (props: any) => <StudentSemesterReport />
+      } />
+    </Switch>
+  )
 }
-const Management  = (props) => {
+const Management = (props) => {
 
-    return (
-        <Switch>
-            <Route exact path="/management" render={
-                (props:any) => <ManagementMain />
-            } />
-            <Route exact path="/management/musyrifmanagement" render={
-                (props:any) => <MusyrifManagement />
-            } />
-            <Route exact path="/management/rule_category" render={
-                (props:any) => <CategoryManagement />
-            } />
-            <Route exact path="/management/rule_point" render={
-                (props:any) => <RulePointManagement />
-            } />
-            <Route exact path="/management/warning_action" render={
-                (props:any) => <WarningActionManagement />
-            } />
-            <Route exact path="/management/category_predicate" render={
-                (props:any) => <CategoryPredicateManagement />
-            } />
-            <Route exact path="/management/rule_violation" render={
-                (props:any) => <RuleViolationManagement />
-            } />
-        </Switch>
-    )
+  return (
+    <Switch>
+      <Route exact path="/management" render={
+        (props: any) => <ManagementMain />
+      } />
+      <Route exact path="/management/musyrifmanagement" render={
+        (props: any) => <MusyrifManagement />
+      } />
+      <Route exact path="/management/rule_category" render={
+        (props: any) => <CategoryManagement />
+      } />
+      <Route exact path="/management/rule_point" render={
+        (props: any) => <RulePointManagement />
+      } />
+      <Route exact path="/management/warning_action" render={
+        (props: any) => <WarningActionManagement />
+      } />
+      <Route exact path="/management/category_predicate" render={
+        (props: any) => <CategoryPredicateManagement />
+      } />
+      <Route exact path="/management/rule_violation" render={
+        (props: any) => <RuleViolationManagement />
+      } />
+    </Switch>
+  )
 }
 
 const Asrama = (proos) => {
 
-    return (
-        <Switch>
-             <Route exact path="/asrama/studentlist" render={
-                (props:any) => <StudentList />
-            } />
-             <Route exact path="/asrama/inputpoint" render={
-                (props:any) => <InputPointForm/>
-            } />
-             <Route exact path="/asrama/pointsummary" render={
-                (props:any) => <PointRecordsManagement/>
-            } />
-             <Route exact path="/asrama/pointrecordedit" render={
-                (props:any) => <PointRecordEdit/>
-            } />
-             <Route exact path="/asrama/medicalrecord" render={
-                (props:any) => <MedicalRecordForm/>
-            } />
-            
-        </Switch>
-    )
+  return (
+    <Switch>
+      <Route exact path="/asrama/studentlist" render={
+        (props: any) => <StudentList />
+      } />
+      <Route exact path="/asrama/inputpoint" render={
+        (props: any) => <InputPointForm />
+      } />
+      <Route exact path="/asrama/pointsummary" render={
+        (props: any) => <PointRecordsManagement />
+      } />
+      <Route exact path="/asrama/pointrecordedit" render={
+        (props: any) => <PointRecordEdit />
+      } />
+      <Route exact path="/asrama/medicalrecord" render={
+        (props: any) => <MedicalRecordForm />
+      } />
+
+    </Switch>
+  )
 }
 const LoginRoute = (props) => {
 
-    return (
-        <Switch>
-            <Route exact path="/login" render={
-                (props: any) =>
-                    <Login />
-            } />
-            <Route exact path="/register" render={
-                (props: any) =>
-                    <Register />
-            } />
-        </Switch>
-    )
+  return (
+    <Switch>
+      <Route exact path="/login" render={
+        (props: any) =>
+          <Login />
+      } />
+    </Switch>
+  )
 }
 
 
 const Dashboard = (props) => {
-    return (
-        <Switch>
-            {/* -------- dashboard -------- */}
-            <Route exact path="/dashboard" render={
-                (props: any) => {
-                   
-                        console.debug("dashboard path")   
-                       return  <DashboardMain />
-                }
-                   
-            } />
-              <Route exact path="/dashboard/followup" render={
-                (props: any) =>
-                    <FollowUpReminder />
-            } /> 
-        </Switch>
-    )
+  return (
+    <Switch>
+      {/* -------- dashboard -------- */}
+      <Route exact path="/dashboard" render={
+        (props: any) => {
+
+          console.debug("dashboard path")
+          return <DashboardMain />
+        }
+
+      } />
+      <Route exact path="/dashboard/followup" render={
+        (props: any) =>
+          <FollowUpReminder />
+      } />
+    </Switch>
+  )
 }
- 
+
 
 const mapDispatchToProps = (dispatch: Function) => ({})
 
 
 export default withRouter(connect(
-    mapCommonUserStateToProps,
-    mapDispatchToProps
+  mapCommonUserStateToProps,
+  mapDispatchToProps
 )(ApplicationContent))
