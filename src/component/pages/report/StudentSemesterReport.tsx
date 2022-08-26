@@ -90,7 +90,7 @@ class StudentSemesterReport extends BasePage
     }
 
     classesLoaded = (response:WebResponse) => {
-        this.setState({classes: response.items});
+        this.setState({classes: response.result});
     }
     raporDataLoaded = (response:WebResponse) => {
         this.setState({items: response.items});
@@ -117,7 +117,7 @@ class StudentSemesterReport extends BasePage
                     <FormGroup label="Kelas">
                         <select ref={this.selectClassRef} className="form-control">
                             {classes.map((c:Class)=>{
-                                return <option key={`rapor_class_${c.id}`} value={c.id}>{c.level}{c.rombel} {c.sekolah?.nama}</option>
+                                return <option key={`rapor_class_${c.id}`} value={c.id}>{c.level}{c.letter} {c.schoolName}</option>
                             })}
                         </select>
                     </FormGroup>
