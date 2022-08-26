@@ -69,7 +69,7 @@ class MusyrifManagement extends BaseManagementPage {
 const EmployeeList = (props: { onUpdated: () => void, startingNumber: number, items: Employee[] }) => {
   const items = props.items;
   return (
-    <div className="container-fluid" style={{ overflow: 'scroll' }}>
+    <div className="container-fluid" style={{ overflow: 'auto' }}>
       <table className="table table-striped" >
         {tableHeader("No", "Nama", "Email", "NIP", "Role: Musyrif", "Opsi")}
         <tbody>

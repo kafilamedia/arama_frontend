@@ -91,7 +91,7 @@ interface ItemProps { isAdmin: boolean, startingNumber: number, items: WarningAc
 const ItemsList = (props: ItemProps) => {
 
   return (
-    <div style={{ overflow: 'scroll' }}>
+    <div style={{ overflow: 'auto' }}>
       <table className="table table-striped">
         {tableHeader("No", "Siswa", "Kelas", "Nama", "Deskripsi", "Tgl Simpan", "Opsi")}
         <tbody>

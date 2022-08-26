@@ -132,7 +132,7 @@ class MedicalRecordForm extends BasePage {
                         </div>
                         <hr/>
                         <div className="container-fluid  row"> 
-                            <div className="col-12" style={{ overflow: 'scroll' }}>
+                            <div className="col-12" style={{ overflow: 'auto' }}>
                                 <div style={{ display: 'grid', gridTemplateColumns: gridTemplateColumns }}>
 
                                     {days.map(day =>

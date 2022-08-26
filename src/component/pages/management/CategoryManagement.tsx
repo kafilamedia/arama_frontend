@@ -77,7 +77,7 @@ class CategoryManagement extends BaseManagementPage {
 const ItemsList = (props: { startingNumber: number, items: Category[], recordLoaded(item: any), recordDeleted() }) => {
 
   return (
-    <div style={{ overflow: 'scroll' }}>
+    <div style={{ overflow: 'auto' }}>
       <table className="table table-striped">
         {tableHeader("No", "Nama", "Deskripsi", "Opsi")}
         <tbody>

@@ -129,7 +129,7 @@ class StudentSemesterReport extends BasePage
                 </form>
                 {this.state.items.length == 0?
                 <div className="alert alert-warning">Tidak ada data</div>:
-                <div className="mt-5 bg-white border border-secondary" style={{overflow: 'scroll'}}>
+                <div className="mt-5 bg-white border border-secondary" style={{overflow: 'auto'}}>
                     <table className="table table-striped">
                         {tableHeader(...this.reportHeader)}
                         <tbody>

@@ -133,7 +133,7 @@ class RulePointManagement extends BaseManagementPage {
 const ItemsList = (props: { startingNumber: number, items: RulePoint[], recordLoaded(item: any), recordDeleted() }) => {
 
   return (
-    <div style={{ overflow: 'scroll' }}>
+    <div style={{ overflow: 'auto' }}>
       <table className="table table-striped">
         {tableHeader("No", "Nama", "Poin", "Deskripsi", "Kategori", "Pemutihan", "Opsi")}
         <tbody>

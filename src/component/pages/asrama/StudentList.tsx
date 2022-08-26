@@ -175,7 +175,7 @@ class StudentList extends BaseManagementPage {
 const ItemsList = (props: { showPointRecord: boolean, loading: boolean, startingNumber: number, inputPage(type: string, s: Student): any, items: Student[] }) => {
 
     return (
-        <div style={{ overflow: 'scroll' }}>
+        <div style={{ overflow: 'auto' }}>
             <table className="table table-striped">
                 {props.showPointRecord ? tableHeader("No", "", "Name", "Kelas", "Point") : tableHeader("No", "", "Name", "Kelas")}
                 <tbody>

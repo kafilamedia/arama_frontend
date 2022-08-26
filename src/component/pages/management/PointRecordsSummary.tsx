@@ -247,7 +247,7 @@ interface ItemProps {
 const ItemsList = (props: ItemProps) => {
 
   return (
-    <div style={{ overflow: 'scroll' }}>
+    <div style={{ overflow: 'auto' }}>
       <table className="table ">
         {tableHeader("No", "Siswa", "Kelas", "Tanggal", "Pelanggaran", "Poin", "Lokasi", "Gambar", "Pemutihan", "Opsi")}
         <tbody>

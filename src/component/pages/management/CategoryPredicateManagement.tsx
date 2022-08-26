@@ -136,7 +136,7 @@ class CategoryPredicateManagement extends BaseManagementPage {
 const ItemsList = (props: { startingNumber: number, items: CategoryPredicate[], recordLoaded(item: any), recordDeleted() }) => {
 
   return (
-    <div style={{ overflow: 'scroll' }}>
+    <div style={{ overflow: 'auto' }}>
       <table className="table table-striped">
         {tableHeader("No", "Kode", "Nama", "Deskripsi", "Kategori", "Opsi")}
         <tbody>
