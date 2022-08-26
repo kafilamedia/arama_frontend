@@ -9,4 +9,8 @@ export default class Student extends BaseEntity
     user?:User;
 
     point?:number;
+    name?: string;
+    classLetter?: string;
+    classLevel?: number;
+    schoolName?: string;
 }

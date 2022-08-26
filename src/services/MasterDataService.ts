@@ -3,7 +3,7 @@ import Filter from '../models/commons/Filter';
 import WebRequest from '../models/commons/WebRequest';
 import { contextPath } from './../constant/Url';
 import { commonAjaxDeleteCalls, commonAjaxGetCalls, commonAjaxPostCalls, commonAjaxPostCallsWithBlob, commonAjaxPutCalls } from './Promises';
-import ApplicationProfile from './../models/ApplicationProfile';
+type Menus = 'asrama' | 'management' | 'school-data';
 
 export default class MasterDataService {
     private static instance?: MasterDataService;
@@ -15,24 +15,24 @@ export default class MasterDataService {
         return this.instance;
     }
 
-    getOne = (menu: 'asrama' | 'management', modelName: string, id: any) => {
+    getOne = (menu: Menus, modelName: string, id: any) => {
         const endpoint = contextPath().concat(`api/admin/${menu}/${modelName}/${id}`);
         return commonAjaxGetCalls(endpoint);
     }
-    delete = (menu: 'asrama' | 'management', modelName: string, id: any) => {
+    delete = (menu: Menus, modelName: string, id: any) => {
         const endpoint = contextPath().concat(`api/admin/${menu}/${modelName}/${id}`);
         return commonAjaxDeleteCalls(endpoint);
     }
-    list = (request: WebRequest, menu: 'asrama' | 'management') => {
+    list = (request: WebRequest, menu: Menus) => {
         const endpoint = contextPath().concat(`api/admin/${menu}/${request.modelName}`);
         return commonAjaxGetCalls(endpoint + Filter.queryString(request.filter));
     }
 
-    insert = (modelName: string, menu: 'asrama' | 'management', body: any) => {
+    insert = (modelName: string, menu: Menus, body: any) => {
         const endpoint: string = contextPath().concat(`api/admin/${menu}/${modelName}`);
         return commonAjaxPostCalls(endpoint, body);
     }
-    update = (modelName: string, menu: 'asrama' | 'management', id: any, body: any) => {
+    update = (modelName: string, menu: Menus, id: any, body: any) => {
         const endpoint: string = contextPath().concat(`api/admin/${menu}/${modelName}/${id}`);
         return commonAjaxPutCalls(endpoint, body);
     }

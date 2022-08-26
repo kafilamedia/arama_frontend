@@ -15,13 +15,14 @@ import Modal from './../../container/Modal';
 import StudentSearchForm from '../shared/StudentSearchForm';
 import Student from './../../../models/Student';
 import BaseEntity from './../../../models/BaseEntity';
+import ClassMemberSearchForm from '../shared/ClassMemberSearchForm';
 class State {
   items: WarningAction[] = [];
   filter: Filter = new Filter();
   totalData: number = 0;
   record: WarningAction = new WarningAction();
 }
-const MODEL_NAME = 'warningaction';
+const MODEL_NAME = 'warning-letters';
 const MENU = 'asrama';
 class WarningActionManagement extends BaseManagementPage {
 
@@ -30,14 +31,18 @@ class WarningActionManagement extends BaseManagementPage {
     super(props, MODEL_NAME, MENU);
   }
   setStudent = (s: Student) => {
-    const record = this.state.record;
-    record.student = s;
-    record.student_id = s.id;
-    this.setState({ record: record });
+    const { record } = this.state;
+    record.classMemberId = s.id;
+    record.classMemberName = s.name;
+    record.classLetter = s.classLetter;
+    record.classLevel = s.classLevel;
+    record.schoolName = s.schoolName;
+    this.setState({ record });
   }
   emptyRecord = () => new WarningAction();
   onSubmit = () => {
-    if (!this.state.record.student_id) {
+    console.log('his.state.record', this.state.record);
+    if (!this.state.record.classMemberId) {
       this.showError("Input tidak lengkap");
       return;
     }
@@ -52,14 +57,22 @@ class WarningActionManagement extends BaseManagementPage {
       })
   }
   render() {
-    const filter: Filter = this.state.filter;
+    const { filter } = this.state;
     return (
       <div className="container-fluid section-body">
         <h2>Peringatan</h2>
         <hr />
-        {this.isAdmin() ?
-          <RecordForm formRef={this.formRef} setStudent={this.setStudent} resetForm={this.resetForm} onSubmit={this.onSubmit} record={this.state.record} updateRecordProp={this.updateRecordProp} />
-          : null}
+        {
+          this.isAdmin() &&
+          <RecordForm
+            formRef={this.formRef}
+            setStudent={this.setStudent}
+            resetForm={this.resetForm}
+            onSubmit={this.onSubmit}
+            record={this.state.record}
+            updateRecordProp={this.updateRecordProp}
+          />
+        }
         <form onSubmit={this.reload}>
           <FormGroup label="Cari">
             <select name="name" className="form-control-sm" value={filter.fieldsFilter['name'] ?? ""} onChange={this.updateFieldsFilter}>
@@ -68,7 +81,7 @@ class WarningActionManagement extends BaseManagementPage {
               <option>SP2</option>
               <option>SP3</option>
             </select>
-            <input name="student_name" placeholder="nama siswa" className="form-control-sm" value={filter.fieldsFilter['student_name'] ?? ""} onChange={this.updateFieldsFilter} />
+            <input name="classMember.student.user.fullName" placeholder="nama siswa" className="form-control-sm" value={filter.fieldsFilter['classMember.student.user.fullName'] ?? ""} onChange={this.updateFieldsFilter} />
           </FormGroup>
           <FormGroup label="Jumlah Tampilan">
             <input name="limit" type="number" className="form-control-sm" value={filter.limit ?? 5} onChange={this.updateFilter} />
@@ -77,11 +90,19 @@ class WarningActionManagement extends BaseManagementPage {
             <input className="btn btn-primary btn-sm" type="submit" value="Submit" />
           </FormGroup>
         </form>
-        <NavigationButtons activePage={filter.page ?? 0} limit={filter.limit ?? 10} totalData={this.state.totalData}
-          onClick={this.loadAtPage} />
-        <ItemsList items={this.state.items} isAdmin={this.isAdmin()}
-          recordLoaded={this.oneRecordLoaded} recordDeleted={this.loadItems}
-          startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} />
+        <NavigationButtons
+          activePage={filter.page ?? 0}
+          limit={filter.limit ?? 10}
+          totalData={this.state.totalData}
+          onClick={this.loadAtPage}
+        />
+        <ItemsList
+          items={this.state.items}
+          isAdmin={this.isAdmin()}
+          recordLoaded={this.oneRecordLoaded}
+          recordDeleted={this.loadItems}
+          startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)}
+        />
       </div>
     )
   }
@@ -100,8 +121,8 @@ const ItemsList = (props: ItemProps) => {
             return (
               <tr key={"category-" + i}>
                 <td>{i + 1 + props.startingNumber}</td>
-                <td>{item.student?.user?.fullName}</td>
-                <td>{Class.studentClassString(item.student)}</td>
+                <td>{item.classMemberName}</td>
+                <td>{item.classLevel}{item.classLetter} {item.schoolName}</td>
                 <td>{item.name}</td>
                 <td>{item.description}</td>
                 <td>{item.created_at}</td>
@@ -113,7 +134,7 @@ const ItemsList = (props: ItemProps) => {
                     modelName={MODEL_NAME}
                     menu={MENU}
                   />
-                  }
+                }
                 </td>
               </tr>
             )
@@ -129,12 +150,11 @@ const RecordForm = (props: { formRef: React.RefObject<Modal>, setStudent(s: Stud
     <div className="record-form mb-3" >
       <Modal show={false} ref={props.formRef} toggleable={true} title="Record Form" >
         <FormGroup label="Siswa">
-          <StudentSearchForm selectItem={props.setStudent} />
-
+          <ClassMemberSearchForm selectItem={props.setStudent} />
         </FormGroup>
-        {record.student ?
-          <FormGroup children={record.student.user?.fullName + " " + Class.studentClassString(record.student)} /> : null
-        }
+        <FormGroup>
+          {record.classMemberName ?? ''} {record.classLevel ?? ''}{record.classLetter ?? ''} {record.schoolName ?? ''}
+        </FormGroup>
         <form onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
           <FormGroup label="Nama">
             <select required value={record.name} onChange={props.updateRecordProp} className="form-control" name="name" >
