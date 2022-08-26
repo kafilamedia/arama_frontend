@@ -1,9 +1,7 @@
 
-export default class BaseEntity{
-	id?:any; 
+export default class BaseEntity {
+	id?: any;
 
-	created_at?:string;
-	updated_at?:string;
-	 
-
+	created_at?: string;
+	updated_at?: string;
 }

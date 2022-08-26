@@ -44,7 +44,7 @@ class EmployeeRow extends BaseComponent {
                 <td>{props.startingNumber + 1}</td>
                 <td>{emp.user?.fullName}</td>
                 <td>{emp.user?.email}</td>
-                <td>-</td>
+                <td>{emp.nisdm}</td>
                 <td><i className={isMusyrif ? "fas fa-check text-success" : "fas fa-times"} /></td>
                 <td> {isMusyrif == true ?
                     <AnchorWithIcon className="btn btn-danger btn-sm" onClick={(e) => this.activateMusyrif(false)} >

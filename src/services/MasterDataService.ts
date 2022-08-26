@@ -2,7 +2,7 @@
 import Filter from '../models/commons/Filter';
 import WebRequest from '../models/commons/WebRequest';
 import { contextPath } from './../constant/Url';
-import { commonAjaxPostCalls, commonAjaxPostCallsWithBlob } from './Promises';
+import { commonAjaxGetCalls, commonAjaxPostCalls, commonAjaxPostCallsWithBlob } from './Promises';
 import ApplicationProfile from './../models/ApplicationProfile';
 
 export default class MasterDataService { 
@@ -27,9 +27,8 @@ export default class MasterDataService {
         return commonAjaxPostCalls(endpoint, request);
     }
     list = (request: WebRequest)  => {
-        const endpoint: string = contextPath().concat("api/masterdata/list");
-        return commonAjaxPostCalls(endpoint, request);
-
+        const endpoint: string = contextPath().concat("api/admin/management/" + request.modelName);
+        return commonAjaxGetCalls(endpoint + Filter.queryString(request.filter));
     }
 
     update = (request: WebRequest) => {

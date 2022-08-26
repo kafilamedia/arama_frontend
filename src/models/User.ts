@@ -20,7 +20,7 @@ export default class User extends BaseEntity {
   email?: string;
   password?: string;
   profileImage?: string;
-  authorities: Authority[] = [ { name: AuthorityType.ROLE_USER } ];
+  authorities: Authority[] = [ { name: AuthorityType.ROLE_EMPLOYEE } ];
   requestId?: string;
 
 }

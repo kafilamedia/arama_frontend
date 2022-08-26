@@ -8,135 +8,135 @@ import BasePage from './../BasePage';
 import './Management.css'
 import BaseEntity from './../../../models/BaseEntity';
 
-export default  class BaseManagementPage extends BasePage {
-    protected masterDataService: MasterDataService;
-    protected modelName: string = "undefined";
-    protected formRef: React.RefObject<Modal> = React.createRef(); 
+export default class BaseManagementPage extends BasePage {
+  protected masterDataService: MasterDataService;
+  protected modelName: string = "undefined";
+  protected formRef: React.RefObject<Modal> = React.createRef();
 
-    emptyRecord = () : BaseEntity => { 
-        throw new Error("Empty Record Method is Not Implemented....");
-    }
+  emptyRecord = (): BaseEntity => {
+    throw new Error("Empty Record Method is Not Implemented....");
+  }
 
-    constructor(props, modelName?: string, protected overrideLoading: boolean = false) {
-        super(props, "Asrama KIIS", true);
-        if (modelName) {
-            this.modelName = modelName;
-        }
-        this.masterDataService = this.getServices().masterDataService;
-         
+  constructor(props, modelName?: string, protected overrideLoading: boolean = false) {
+    super(props, "Asrama KIIS", true);
+    if (modelName) {
+      this.modelName = modelName;
     }
-    startLoading = (withProgress: boolean = false) => {
-        if (this.overrideLoading) {
-            this.setState({ loading: true });
-        } else {
-            super.startLoading(withProgress);
-        }
-    }
-    endLoading = () => {
-        if (this.overrideLoading) {
-            this.setState({ loading: false });
-        } else {
-            super.endLoading();
-        }
-    }
-    loadItems = () => {
-        const request: WebRequest = {
-            filter: this.state.filter,
-            modelName: this.modelName
-        }
-        this.commonAjax(
-            this.masterDataService.list,
-            this.itemsLoaded,
-            this.showCommonErrorAlert,
-            request
-        )
-    }
-    itemsLoaded = (response: WebResponse) => {
-        this.setState({ items: response.items, totalData: response.totalData });
-    }
-    
-    updateFilter = (e: ChangeEvent) => {
-        const filter = this.state.filter;
-        const target = (e.target as any);
+    this.masterDataService = this.getServices().masterDataService;
 
-        if (!target.value || target.value == "") {
-            return;
-        }
+  }
+  startLoading = (withProgress: boolean = false) => {
+    if (this.overrideLoading) {
+      this.setState({ loading: true });
+    } else {
+      super.startLoading(withProgress);
+    }
+  }
+  endLoading = () => {
+    if (this.overrideLoading) {
+      this.setState({ loading: false });
+    } else {
+      super.endLoading();
+    }
+  }
+  loadItems = () => {
+    const request: WebRequest = {
+      filter: this.state.filter,
+      modelName: this.modelName
+    }
+    this.commonAjax(
+      this.masterDataService.list,
+      this.itemsLoaded,
+      this.showCommonErrorAlert,
+      request
+    )
+  }
+  itemsLoaded = (response: WebResponse) => {
+    this.setState({ items: response.result.items, totalData: response.result.totalData });
+  }
 
-        let value:any;
-        if (target.type == 'number' || (target.dataset && target.dataset['type'] == 'number')) {
-            value = parseInt(target.value);
-        } else {
-            value = target.value;
-        }
-        filter[target.name] = value;
-        this.setState({ filter: filter })
-    }
-    updateFieldsFilter = (e: ChangeEvent) => {
-        const filter = this.state.filter;
-        const target = (e.target as any);
-        if (!filter.fieldsFilter) {
-            filter.fieldsFilter = {};
-        }
-        filter.fieldsFilter[target.name] = target.value;
-        this.setState({ filter: filter })
-    }
-    loadAtPage = (page: number) => {
-        const filter = this.state.filter;
-        filter.page = page;
-        this.setState({ filter: filter }, this.loadItems);
-    }
-    updateRecordProp = (e: ChangeEvent) => {
-        const target = e.target as any;
-        const dataset = target.dataset;
-        let value:any;
-        if (dataset['type'] && dataset['type'] == 'boolean') {
-            value = target.value == "true" ? true : false;
-        } else {
-            value =  target.value;
-        }
-        const record = this.state.record;
-        record[target.name] = value;
-        this.setState({ record: record });
-    }
-    resetForm = (callback?: () => any) => {
-        this.setState({ record: this.emptyRecord() }, callback);
-    }
-    oneRecordLoaded =  (item: any) => {
-        this.setState({ record: item }, () => {
-            if (this.formRef.current) {
-                this.formRef.current.showModal();
-            }
-            this.scrollTop();
-        });
-    }
-    componentDidMount() {
-        super.componentDidMount();
-        this.scrollTop();
-        this.loadItems();
-    }
-    recordUpdated = (response: WebResponse) => {
-        this.resetForm(() => {
-            if (this.formRef.current) {
-                this.formRef.current.hideModal();
-            }
-            this.showInfo("Success Update");
-            this.loadItems();
-        });
-    }
-    protected callApiSubmit = (request: WebRequest) => {
-        this.commonAjax(
-            this.masterDataService.update,
-            this.recordUpdated,
-            this.showCommonErrorAlert,
-            request
-        )
+  updateFilter = (e: ChangeEvent) => {
+    const filter = this.state.filter;
+    const target = (e.target as any);
+
+    if (!target.value || target.value == "") {
+      return;
     }
 
-    reload = (e:any) => {
-        if (e && e.preventDefault) {
-            e.preventDefault();
-        }
-        this.loadAtPage(0);
+    let value: any;
+    if (target.type == 'number' || (target.dataset && target.dataset['type'] == 'number')) {
+      value = parseInt(target.value);
+    } else {
+      value = target.value;
     }
+    filter[target.name] = value;
+    this.setState({ filter: filter })
+  }
+  updateFieldsFilter = (e: ChangeEvent) => {
+    const filter = this.state.filter;
+    const target = (e.target as any);
+    if (!filter.fieldsFilter) {
+      filter.fieldsFilter = {};
+    }
+    filter.fieldsFilter[target.name] = target.value;
+    this.setState({ filter: filter })
+  }
+  loadAtPage = (page: number) => {
+    const filter = this.state.filter;
+    filter.page = page;
+    this.setState({ filter: filter }, this.loadItems);
+  }
+  updateRecordProp = (e: ChangeEvent) => {
+    const target = e.target as any;
+    const dataset = target.dataset;
+    let value: any;
+    if (dataset['type'] && dataset['type'] == 'boolean') {
+      value = target.value == "true" ? true : false;
+    } else {
+      value = target.value;
+    }
+    const record = this.state.record;
+    record[target.name] = value;
+    this.setState({ record: record });
+  }
+  resetForm = (callback?: () => any) => {
+    this.setState({ record: this.emptyRecord() }, callback);
+  }
+  oneRecordLoaded = (item: any) => {
+    this.setState({ record: item }, () => {
+      if (this.formRef.current) {
+        this.formRef.current.showModal();
+      }
+      this.scrollTop();
+    });
+  }
+  componentDidMount() {
+    super.componentDidMount();
+    this.scrollTop();
+    this.loadItems();
+  }
+  recordUpdated = (response: WebResponse) => {
+    this.resetForm(() => {
+      if (this.formRef.current) {
+        this.formRef.current.hideModal();
+      }
+      this.showInfo("Success Update");
+      this.loadItems();
+    });
+  }
+  protected callApiSubmit = (request: WebRequest) => {
+    this.commonAjax(
+      this.masterDataService.update,
+      this.recordUpdated,
+      this.showCommonErrorAlert,
+      request
+    )
+  }
+
+  reload = (e: any) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+    this.loadAtPage(0);
+  }
 }
