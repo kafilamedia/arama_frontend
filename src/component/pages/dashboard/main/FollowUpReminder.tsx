@@ -45,7 +45,7 @@ class FollowUpReminder extends BasePage
         return (
             <div className="section-body container-fluid">
                 <h2>Follow Up Pelanggaran</h2>
-                <p>Pelanggaran dengan poin di bawah {this.getApplicationProfile().warning_point}</p>
+                <p>Pelanggaran dengan poin di bawah {this.getApplicationProfile().warningPointLimit}</p>
                 <AnchorWithIcon iconClassName="fas fa-redo" onClick={this.loadReminder} children="Reload"/>
                 <table className="table">
                     {tableHeader("No", "Siswa", "Kelas", "Poin", "Penanganan", "Opsi")}

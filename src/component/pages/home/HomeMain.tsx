@@ -30,8 +30,8 @@ class HomeMain extends BaseComponent {
                         color: applicationProfile.fontColor??"rgb(0,0,0)"
                     }}
                 >
-                    <h1 className="display-4">{applicationProfile.name}</h1>
-                    <p className="lead">{applicationProfile.description}</p>
+                    <h1 className="display-4">{applicationProfile.appName}</h1>
+                    <p className="lead">{applicationProfile.appDescription}</p>
                     <hr className="my-4" />
                     <p>{applicationProfile.welcoming_message}</p>
                     <Link className="btn btn-primary btn-lg" to="/about" role="button">About Us</Link>

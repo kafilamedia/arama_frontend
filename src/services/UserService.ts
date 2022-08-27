@@ -12,7 +12,7 @@ export default class UserService {
   static getInstance = () => UserService.instance ? UserService.instance : UserService.instance = new UserService();
 
   requestApplicationId = (callbackSuccess: (response: WebResponse) => any, callbackError: () => any) => {
-    const url = contextPath() + "api/public/index";
+    const url = contextPath() + "api/public/asrama/config";
     commonAjaxGetCalls(url).then((data) => {
       if (data.code != "00") {
         alert("Error requesting app ID");
@@ -39,7 +39,7 @@ export default class UserService {
       });
   }
   requestApplicationIdNoAuth = (callbackSuccess: (response: WebResponse) => any, callbackError: () => any) => {
-    const url = contextPath() + "api/public/index";
+    const url = contextPath() + "api/public/asrama/config";
     commonAjaxPublicGetCalls(url).then(data => {
       if (data.code != "00") {
         alert("Error requesting app ID");

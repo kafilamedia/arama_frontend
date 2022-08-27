@@ -1,9 +1,9 @@
 
 import { contextPath } from './../constant/Url';
-import { commonAjaxPostCalls } from './Promises';
+import { commonAjaxPostCalls, commonAjaxGetCalls } from './Promises';
 import ApplicationProfile from './../models/ApplicationProfile';
 import WebRequest from './../models/commons/WebRequest';
-export default class ConfigurationService { 
+export default class ConfigurationService {
     private static instance?: ConfigurationService;
     static getInstance(): ConfigurationService {
         if (this.instance == null) {
@@ -11,15 +11,12 @@ export default class ConfigurationService {
         }
         return this.instance;
     }
-    update = (appProfile:ApplicationProfile) => {
-        appProfile.validateField();
-        const endpoint: string = contextPath().concat("api/setting/updateconfig");
-        const req:WebRequest = new WebRequest();
-        req.applicationProfile = appProfile;
-        req.attachmentInfo = appProfile.stampAttachment;
-        req.attachmentInfo2 = appProfile.directorSignatureAttachment;
-        req.attachmentInfo3 = appProfile.divisionHeadSignatureAttachment;
-        req.attachmentInfo4 = appProfile.dormitoryStampAttachment;
-        return commonAjaxPostCalls(endpoint, req);
+    update = (appProfile: ApplicationProfile) => {
+        const endpoint = contextPath().concat("api/admin/asrama/config");
+        return commonAjaxPostCalls(endpoint, appProfile);
+    }
+    loadConfig = () => {
+        const endpoint = contextPath().concat("api/admin/asrama/config");
+        return commonAjaxGetCalls(endpoint);
     }
 }

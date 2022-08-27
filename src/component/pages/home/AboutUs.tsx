@@ -18,8 +18,8 @@ class AboutUs extends BaseComponent {
         return (<div className="section-body container-fluid" style={{marginTop:'20px'}}>
             <h2>About Us</h2>
             <Card title="Application">
-                <FormGroup label="Name">{appProfile.name}</FormGroup>
-                <FormGroup  ><i>{appProfile.description}</i></FormGroup>
+                <FormGroup label="Name">{appProfile.appName}</FormGroup>
+                <FormGroup  ><i>{appProfile.appDescription}</i></FormGroup>
                 <FormGroup label="Contact">{appProfile.contact}</FormGroup>
                 <FormGroup label="Address">{appProfile.address}</FormGroup>
             </Card>
