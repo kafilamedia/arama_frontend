@@ -5,11 +5,12 @@ import AttachmentInfo from './../models/settings/AttachmentInfo';
 import WebRequest from './../models/commons/WebRequest';
 import MedicalRecord from './../models/MedicalRecord';
 import WebResponse from '../models/commons/WebResponse';
+import Filter from './../models/commons/Filter';
 export default class StudentService {
 
     private static instance?: StudentService;
 
-    static getInstance(): StudentService {
+    static getInstance() {
         if (this.instance == null) {
             this.instance = new StudentService();
         }
@@ -17,23 +18,28 @@ export default class StudentService {
     }
     public submitPointRecord(pointRecord: PointRecord, attachmentInfo?: AttachmentInfo | undefined) {
         if (attachmentInfo) {
-            attachmentInfo.data = "";
+            attachmentInfo.data = '';
         }
-        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/submitpointrecord", pointRecord);
+        return commonAjaxPostCalls(contextPath('api/dormitorymanagement/submitpointrecord'), pointRecord);
     }
     public getClasses()  {
-        return commonAjaxGetCalls(contextPath() + "api/admin/school-data/classlevels");
+        return commonAjaxGetCalls(contextPath('api/admin/school-data/classlevels'));
+    }
+    public getStudentWithPoints(filter: Filter) {
+        delete filter.fieldsFilter['with_point_record'];
+        const q = Filter.queryString(filter);
+        return commonAjaxGetCalls(contextPath(`api/asrama/student-points${q}`));
     }
     public getCategories() {
-        return commonAjaxGetCalls(contextPath() + "api/admin/asrama/rule-categories");
+        return commonAjaxGetCalls(contextPath('api/admin/asrama/rule-categories'));
     }
     public followUp = (pointRecordId: number): Promise<WebResponse> => {
-        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/followup", {
+        return commonAjaxPostCalls(contextPath('api/dormitorymanagement/followup'), {
             record_id: pointRecordId
         });
     }
     public getFollowUpReminders = (): Promise<WebResponse> => {
-        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/followupreminders", {});
+        return commonAjaxPostCalls(contextPath() + 'api/dormitorymanagement/followupreminders', {});
     }
     public getRaporData = (classId: string): Promise<WebResponse> => {
         return commonAjaxPostCalls(contextPath() + `api/report/studentdata/${classId}`, {});
@@ -45,7 +51,7 @@ export default class StudentService {
 
 
     public submitMedicalRecord = (record: MedicalRecord) => {
-        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/submitmedicalrecord", record)
+        return commonAjaxPostCalls(contextPath() + 'api/dormitorymanagement/submitmedicalrecord', record)
     }
     public loadMonthlyMedicalRecord = (studentId: number, month: number, year: number) => {
         const req: WebRequest = {
@@ -54,11 +60,11 @@ export default class StudentService {
                 fieldsFilter: { student_id: studentId }
             }
         }
-        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/monthlymedicalrecord", req)
+        return commonAjaxPostCalls(contextPath() + 'api/dormitorymanagement/monthlymedicalrecord', req)
     }
 
     public setPointDropped = (id: number, dropped: boolean) => {
-        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/droppoint", {
+        return commonAjaxPostCalls(contextPath() + 'api/dormitorymanagement/droppoint', {
             pointRecord: {
                 id: id,
                 dropped_at: dropped ? new Date() : null
@@ -71,7 +77,7 @@ export default class StudentService {
      * @param recordIdArray 
      */
     public dropAll = (recordIdArray: any[]) => {
-        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/droppointall", {
+        return commonAjaxPostCalls(contextPath() + 'api/dormitorymanagement/droppointall', {
             items: recordIdArray
         });
     }
@@ -80,7 +86,7 @@ export default class StudentService {
      * @param recordIdArray 
      */
     public undropAll = (recordIdArray: any[]) => {
-        return commonAjaxPostCalls(contextPath() + "api/dormitorymanagement/undroppointall", {
+        return commonAjaxPostCalls(contextPath() + 'api/dormitorymanagement/undroppointall', {
             items: recordIdArray
         });
     }

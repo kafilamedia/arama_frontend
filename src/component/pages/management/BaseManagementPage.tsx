@@ -19,7 +19,7 @@ export default abstract class BaseManagementPage extends BasePage {
   constructor(
     props,
     protected modelName: string,
-    protected menu: 'asrama' | 'management',
+    protected menu: 'asrama' | 'management' | 'school-data',
     protected overrideLoading: boolean = false
   ) {
     super(props, "Asrama KIIS", true);
@@ -60,14 +60,12 @@ export default abstract class BaseManagementPage extends BasePage {
     this.setState({ items: response.result.items, totalData: response.result.totalData });
   }
 
-  updateFilter = (e: ChangeEvent) => {
-    const filter = this.state.filter;
-    const target = (e.target as any);
-
+  updateFilter = (e: ChangeEvent<any>) => {
+    const { filter } = this.state;
+    const { target } = e;
     if (!target.value || target.value == "") {
       return;
     }
-
     let value: any;
     if (target.type == 'number' || (target.dataset && target.dataset['type'] == 'number')) {
       value = parseInt(target.value);
@@ -75,16 +73,16 @@ export default abstract class BaseManagementPage extends BasePage {
       value = target.value;
     }
     filter[target.name] = value;
-    this.setState({ filter: filter })
+    this.setState({ filter })
   }
   updateFieldsFilter = (e: ChangeEvent) => {
-    const filter = this.state.filter;
+    const { filter } = this.state;
     const target = (e.target as any);
     if (!filter.fieldsFilter) {
       filter.fieldsFilter = {};
     }
     filter.fieldsFilter[target.name] = target.value;
-    this.setState({ filter: filter })
+    this.setState({ filter })
   }
   loadAtPage = (page: number) => {
     const filter = this.state.filter;
@@ -139,7 +137,7 @@ export default abstract class BaseManagementPage extends BasePage {
       body
     )
   }
-  protected callApiUpdate= (id: any, body: any) => {
+  protected callApiUpdate = (id: any, body: any) => {
     this.commonAjax(
       this.masterDataService.update,
       this.recordUpdated,

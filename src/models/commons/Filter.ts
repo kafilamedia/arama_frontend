@@ -48,7 +48,7 @@ export default class Filter {
       for (const key in filter.fieldsFilter) {
         if (Object.prototype.hasOwnProperty.call(filter.fieldsFilter, key)) {
           const element = filter.fieldsFilter[key];
-          q.push(`filter=${key}:${element}`);
+          q.push(`filter=${encodeURIComponent(key)}:${encodeURIComponent(element)}`);
         }
       }
     return '?' + q.join('&');

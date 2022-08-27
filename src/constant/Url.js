@@ -1,12 +1,17 @@
 
-const devMode = 
-    document.getElementById("rootPath").value == "${contextPath}" || 
+const devMode =
+    document.getElementById("rootPath").value == "${contextPath}" ||
     document.getElementById("rootPath").value == "";
 const rootValue = devMode ?
-     "/" : document.getElementById("rootPath").value+"/";
+    "/" : document.getElementById("rootPath").value + "/";
 
-export const contextPath = function(){
+/**
+ * 
+ * @param {string} path 
+ * @returns 
+ */
+export const contextPath = (path = null) => {
     // const contextPath = devMode? "http://localhost:8080/kafila-app-tahfiz".concat(rootValue):rootValue;
-    return "http://localhost:8080/kafila-app-tahfiz/";
+    return `http://localhost:8080/kafila-app-tahfiz/${path ?? ''}`;
 }
-export const baseImageUrl = () => contextPath()+ "images/"; 
+export const baseImageUrl = () => contextPath() + "images/"; 
