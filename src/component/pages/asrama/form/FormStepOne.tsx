@@ -14,89 +14,98 @@ import Spinner from '../../../loader/Spinner';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import Filter from '../../../../models/commons/Filter';
 class State {
-    categories: Category[] = [];
-    loading: boolean = false;
+  categories: Category[] = [];
+  loading = false;
 }
 class FormStepOne extends BaseComponent {
-    state: State = new State();
-    masterDataService: MasterDataService;
-    constructor(props) {
-        super(props, true);
-        this.masterDataService = this.getServices().masterDataService;
-    }
-    categoriesLoaded = (response: WebResponse) => {
-        this.setState({ categories: response.items, categoriesLoaded: true }, () => {
-            if (response.items.length > 0) {
-                if (!this.props.category) {
-                    this.setCategory(response.items[0]);
-                }
-            }
-        });
-    }
-    startLoading = () => this.setState({ loading: true });
-    endLoading = () => this.setState({ loading: false });
-    setCategory = (c: Category) => {
-        this.props.setSelectedCategory(c);  
-    }
-    loadCategories = () => {
-        const req: WebRequest = {
-            filter: Filter.withLimit(0),
-            modelName: 'category'
+  state: State = new State();
+  masterDataService: MasterDataService;
+  constructor(props) {
+    super(props, true);
+    this.masterDataService = this.getServices().masterDataService;
+  }
+  categoriesLoaded = (response: WebResponse) => {
+    this.setState({ categories: response.result.items, categoriesLoaded: true }, () => {
+      if (this.state.categories.length > 0) {
+        if (!this.props.category) {
+          this.setCategory(this.state.categories[0]);
         }
-        this.commonAjax(
-            this.masterDataService.list,
-            this.categoriesLoaded,
-            this.showCommonErrorAlert,
-            req
-        )
+      }
+    });
+  }
+  startLoading = () => this.setState({ loading: true });
+  endLoading = () => this.setState({ loading: false });
+  setCategory = (c: Category) => {
+    this.props.setSelectedCategory(c);
+  }
+  loadCategories = () => {
+    const req: WebRequest = {
+      filter: Filter.withLimit(0),
+      modelName: 'rule-categories'
     }
-    componentDidMount() {
-        super.componentDidMount();
-        this.loadCategories();
+    this.commonAjax(
+      this.masterDataService.list,
+      this.categoriesLoaded,
+      this.showCommonErrorAlert,
+      req,
+      'asrama'
+    )
+  }
+  componentDidMount() {
+    super.componentDidMount();
+    this.loadCategories();
+  }
+  onSubmit = () => {
+    this.props.onSubmit();
+  }
+  updateCategory = (e: ChangeEvent<HTMLSelectElement>) => {
+    const select = e.target;
+    const filtered = this.state.categories.filter((c) => c.id?.toString() == select.value)
+    if (filtered.length == 0) return;
+    this.setCategory(filtered[0]);
+  }
+  render() {
+    const { categories, loading } = this.state;
+    const { category } = this.props;
+    if (loading) {
+      return <Spinner />
     }
-    onSubmit = () => {
-        this.props.onSubmit();
+    if (categories.length == 0) {
+      return <SimpleError>Categories not found</SimpleError>
     }
-    updateCategory = (e:ChangeEvent) => {
-        const select = (e.target as HTMLSelectElement);
-        const filteredItems = this.state.categories.filter((c:Category)=>{
-            return c.id.toString() == select.value;
-        })
-        if (filteredItems.length == 0) return;
+    return (
+      <form onSubmit={(e) => { e.preventDefault(); this.onSubmit() }}>
+        <FormGroup label="Category">
+          <select className="form-control" onChange={this.updateCategory} value={category ? category.id ?? "" : ""} >
+            {categories.map((c) => {
+              return <option key={`select-cat-${c.id}`} value={c.id}>{c.name}</option>
+            })}
+          </select>
+        </FormGroup>
+        <hr />
+        <AnchorWithIcon
+          className="btn btn-secondary float-left"
+          iconClassName="fas fa-arrow-left"
+          onClick={this.props.onBack}
+        >
+          Back
+        </AnchorWithIcon>
+        <AnchorWithIcon
+          className="btn btn-info float-right"
+          iconClassName="fas fa-arrow-right"
+          onClick={this.onSubmit}
+        >
+          Next
+        </AnchorWithIcon>
+      </form >
 
-        this.setCategory(filteredItems[0]);
-    }
-    render() {
-        const categories = this.state.categories;
-        const category = this.props.category;
-        if (this.state.loading) {
-            return <Spinner />
-        }
-        if (categories.length == 0) {
-            return <SimpleError>Categories not found</SimpleError>
-        }
-        return (
-            <form onSubmit={(e) => { e.preventDefault(); this.onSubmit() }}>
-                <FormGroup label="Category">
-                    <select className="form-control" onChange={this.updateCategory} value={category ? category.id??"" : ""} >
-                        {categories.map((c) => {
-                            return <option key={`select-cat-${c.id}`} value={c.id}>{c.name}</option>
-                        })}
-                    </select>
-                </FormGroup>
-                <hr/>
-                <AnchorWithIcon className="btn btn-secondary float-left" iconClassName="fas fa-arrow-left" onClick={this.props.onBack} >Back</AnchorWithIcon>
-                
-                <AnchorWithIcon className="btn btn-info float-right" iconClassName="fas fa-arrow-right" onClick={this.onSubmit}>Next</AnchorWithIcon>
-            </form >
 
-
-        )
-    }
+    )
+  }
 }
 
 export default withRouter(
-    connect(
-        mapCommonUserStateToProps
-    )(FormStepOne)
+  connect(
+    mapCommonUserStateToProps
+  )(FormStepOne)
 )

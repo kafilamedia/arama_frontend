@@ -24,6 +24,7 @@ export default class MasterDataService {
         return commonAjaxDeleteCalls(endpoint);
     }
     list = (request: WebRequest, menu: Menus) => {
+        console.log('filter', request.filter);
         const endpoint = contextPath().concat(`api/admin/${menu}/${request.modelName}`);
         return commonAjaxGetCalls(endpoint + Filter.queryString(request.filter));
     }

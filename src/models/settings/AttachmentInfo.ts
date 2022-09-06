@@ -14,6 +14,9 @@ export default class AttachmentInfo {
         info.url = url;
         return info;
     }
+    constructor(public file?: File) {
+
+    }
     name: string = "";
     blob: Blob = new Blob();
     url: string = "";

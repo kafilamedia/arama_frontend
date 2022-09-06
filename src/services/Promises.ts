@@ -16,11 +16,11 @@ export const emptyPromise = (defaultResponse: any) => new Promise(function (res,
   res(defaultResponse);
 });
 
-export const commonAjaxPostCalls = (endpoint: string, payload?: any) => {
-  const request = payload == null ? {} : payload;
+export const commonAjaxPostCalls = (endpoint: string, payload?: any, contentType = 'application/json') => {
+  const request = payload ?? {};
   return new Promise<WebResponse>(function (resolve, reject) {
     axios.post(endpoint, request, {
-      headers: commonAuthorizedHeader()
+      headers: commonAuthorizedHeader(contentType)
     })
       .then(axiosResponse => {
         updateAccessToken(axiosResponse);
@@ -181,6 +181,35 @@ export const commonAjaxPostCallsWithBlob = (endpoint: string, payload?: any) => 
         // a.click();
 
         // window.URL.revokeObjectURL(url);
+        const attachmentInfo: AttachmentInfo = new AttachmentInfo();
+        attachmentInfo.name = fileName;
+        attachmentInfo.blob = blob;
+        attachmentInfo.url = url;
+        resolve(attachmentInfo);
+
+      })
+      .catch((e: any) => { console.error(e); reject(e); });
+  })
+}
+export const commonAjaxGetCallsWithBlob = (endpoint: string) => {
+  return new Promise<AttachmentInfo>(function (resolve, reject) {
+    axios.get(endpoint, {
+      responseType: 'blob',
+      headers: commonAuthorizedHeader()
+    })
+      .then(axiosResponse => {
+        updateAccessToken(axiosResponse);
+
+        const response: any = axiosResponse.data;
+        response.rawAxiosResponse = axiosResponse;
+        console.debug("axiosResponse.headers: ", axiosResponse.headers);
+        let contentDisposition = axiosResponse.headers["content-disposition"];
+        let fileName = contentDisposition.split("filename=")[1];
+        let rawSplit = fileName.split(".");
+        let extension = rawSplit[rawSplit.length - 1];
+        let blob = new Blob([response], { type: extension });
+        let url = window.URL.createObjectURL(blob);
+        
         const attachmentInfo: AttachmentInfo = new AttachmentInfo();
         attachmentInfo.name = fileName;
         attachmentInfo.blob = blob;

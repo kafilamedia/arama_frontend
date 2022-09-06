@@ -8,12 +8,12 @@ export const getAttachmentInfoFromFile = (fileInput:HTMLInputElement): Promise<A
             return;
         }
         try { 
-            const file:File = fileInput.files[0]; 
+            const file = fileInput.files[0]; 
             const reader = new FileReader();
             reader.readAsDataURL(file);
             console.debug("fileInput.files[0]: ", file);
             reader.onload = function () { 
-                const info:AttachmentInfo = new AttachmentInfo();
+                const info = new AttachmentInfo(file);
                 info.setUrl(new String(reader.result).toString());
                 // info.
                 info.name = file.name;

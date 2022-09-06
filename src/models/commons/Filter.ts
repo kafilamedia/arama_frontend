@@ -1,8 +1,14 @@
 
+import { ChangeEvent } from 'react';
+import { getInputReadableDate } from './../../utils/DateUtil';
 export default class Filter {
   static resetFieldsFilter = (f: Filter): Filter => {
     for (const key in f.fieldsFilter) {
-      f.fieldsFilter[key] = "";
+      if (key.endsWith('=d')) {
+        f.fieldsFilter[key] = getInputReadableDate(new Date());
+      } else {
+        f.fieldsFilter[key] = '';
+      }
     }
     return f;
   }
@@ -17,14 +23,8 @@ export default class Filter {
   orderBy?: string;
   contains?: boolean;
   exacts?: boolean;
-  day?: number;
-  year?: number;
-  month?: number;
   module?: string;
   fieldsFilter: Record<string, any> = {};
-  dayTo?: number;
-  monthTo?: number;
-  yearTo?: number;
   maxValue?: number;
   availabilityCheck?: boolean;
 
@@ -53,5 +53,25 @@ export default class Filter {
       }
     return '?' + q.join('&');
   }
-
+  public static updatePeriodFilter = (filter: Filter, e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: 'time<=d' | 'time>=d') => {
+    const val = parseInt(e.target.value);
+    if (isNaN(val)) {
+      return;
+    }
+    const periodFilter = new Date(filter.fieldsFilter[field]);
+    switch (e.target.name) {
+      case 'day':
+        periodFilter.setDate(val);
+        break;
+      case 'month':
+        periodFilter.setMonth(val);
+        break;
+      case 'year':
+        periodFilter.setFullYear(val);
+        break;
+      default:
+        return;
+    }
+    filter.fieldsFilter[field] = getInputReadableDate(periodFilter);
+  }
 }

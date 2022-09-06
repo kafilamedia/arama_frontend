@@ -49,7 +49,7 @@ class WarningActionManagement extends BaseManagementPage {
     this.showConfirmation("Submit Data?")
       .then(ok => {
         if (!ok) return;
-        if (this.state.record.id > 0) {
+        if (this.state.record.id ?? 0 > 0) {
           this.callApiUpdate(this.state.record.id, this.state.record);
         } else {
           this.callApiInsert(this.state.record);

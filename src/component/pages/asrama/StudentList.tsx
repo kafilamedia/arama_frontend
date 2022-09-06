@@ -15,16 +15,23 @@ import MasterDataService from '../../../services/MasterDataService';
 import BaseManagementPage from '../management/BaseManagementPage';
 import Spinner from '../../loader/Spinner';
 import FilterPeriod from '../../form/FilterPeriod';
-import { MONTHS } from '../../../utils/DateUtil';
+import { getInputReadableDate, MONTHS } from '../../../utils/DateUtil';
 import ToggleButton from '../../navigation/ToggleButton';
 import BaseComponent from './../../BaseComponent';
 class State {
   items: Student[] = [];
   classes: Class[] = [];
-  totalData: number = 0;
-  filter: Filter = new Filter();
-  loading: boolean = false;
+  totalData = 0;
+  filter = new Filter();
+  loading = false;
 }
+const now = new Date();
+const defaultFieldsFilter = {
+  'classLevel.id=': '',
+  'with_point_record': 'false',
+  'time>=d': getInputReadableDate(new Date(now.getFullYear(), 0, 1)),
+  'time<=d': getInputReadableDate(now)
+};
 class StudentList extends BaseComponent {
   readonly state: State = new State();
   readonly studentService: StudentService;
@@ -32,14 +39,8 @@ class StudentList extends BaseComponent {
     super(props);
     this.studentService = this.getServices().studentService;
     this.state.filter.limit = 10;
-    this.state.filter.day = this.state.filter.dayTo = new Date().getDate();
-    this.state.filter.month = this.state.filter.monthTo = new Date().getMonth() + 1;
-    this.state.filter.year = this.state.filter.yearTo = new Date().getFullYear();
     this.state.filter.orderBy = 'student.user.fullName';
-    this.state.filter.fieldsFilter = {
-      'classLevel.id=': '',
-      'with_point_record': false
-    }
+    this.state.filter.fieldsFilter = defaultFieldsFilter;
   }
   itemsLoaded = (response: WebResponse) => {
     this.setState({ items: response.result.items, totalData: response.result.totalData });
@@ -73,14 +74,15 @@ class StudentList extends BaseComponent {
       this.loadClasses();
     })
   }
-  updateFieldsFilter = (e: ChangeEvent<any>) => {
+  updatePeriodFilter = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: 'time<=d' | 'time>=d') => {
     const { filter } = this.state;
-    const { target } = e;
-    if (!filter.fieldsFilter) {
-      filter.fieldsFilter = {};
-    }
-    filter.fieldsFilter[target.name] = target.value;
-    this.setState({ filter })
+    Filter.updatePeriodFilter(filter, e, field);
+    this.setState({ filter });
+  }
+  updateFieldFilter = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { filter } = this.state;
+    filter.fieldsFilter[e.target.name] = e.target.value;
+    this.setState({ filter });
   }
   updateSelectedClass = (e: ChangeEvent) => {
     const target = e.target as HTMLSelectElement;
@@ -106,11 +108,9 @@ class StudentList extends BaseComponent {
       state: { student }
     })
   }
-  updateWithPointRecord = (val: boolean) => {
+  updateWithPointRecord = (enable: boolean) => {
     const { filter } = this.state;
-    if (filter.fieldsFilter) {
-      filter.fieldsFilter['with_point_record'] = val;
-    }
+    filter.fieldsFilter['with_point_record'] = `${enable}`;
     this.setState({ filter });
   }
   updateFilter = (e: ChangeEvent<any>) => {
@@ -131,9 +131,10 @@ class StudentList extends BaseComponent {
   onSubmit = (e) => { e.preventDefault(); this.loadAtPage(0) }
   render() {
     const { filter, classes, loading, totalData } = this.state;
+    const { fieldsFilter } = filter;
     const defaultClass = { id: '', level: 'Semua Kelas' } as Class;
-    const selectedClassId = filter.fieldsFilter && filter.fieldsFilter['classLevel.id='] ? filter.fieldsFilter['classLevel.id='] : "";
-    const showPointRecord = filter.fieldsFilter && filter.fieldsFilter['with_point_record'] && filter.fieldsFilter['with_point_record'] == true;
+    const selectedClassId = fieldsFilter['classLevel.id='] ?? '';
+    const showPointRecord = fieldsFilter['with_point_record'] === `${true}`;
     return (
       <div className="container-fluid section-body">
         <h2>Siswa</h2>
@@ -141,10 +142,16 @@ class StudentList extends BaseComponent {
         <form onSubmit={this.onSubmit}>
           <FormGroup label="Cari">
             <div className="input-group">
-              <input name="student.user.fullName" placeholder="Nama" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['student.user.fullName'] : ''} onChange={this.updateFieldsFilter} />
+              <input
+                name="student.user.fullName"
+                placeholder="Nama"
+                className="form-control-sm"
+                value={fieldsFilter['student.user.fullName'] ?? ''}
+                onChange={this.updateFieldFilter}
+              />
               <select
                 value={selectedClassId}
-                onChange={this.updateFieldsFilter}
+                onChange={this.updateFieldFilter}
                 className="form-control-sm"
                 name="classLevel.id="
               >
@@ -166,7 +173,7 @@ class StudentList extends BaseComponent {
           <FormGroup label="Periode">
             <ToggleButton
               active={showPointRecord}
-              yesLabel={"tampilkan poin"}
+              yesLabel="tampilkan poin"
               noLabel="tanpa poin"
               onClick={this.updateWithPointRecord}
             />
@@ -174,10 +181,10 @@ class StudentList extends BaseComponent {
               showPointRecord &&
               <React.Fragment>
                 <div className="input-group">
-                  <FilterPeriod filter={filter} onChange={this.updateFilter} />
+                  <FilterPeriod date={new Date(fieldsFilter['time>=d'])} onChange={(e) => this.updatePeriodFilter(e, 'time>=d')} />
                 </div>
                 <div className="input-group">
-                  <FilterPeriod mode={"to"} filter={filter} onChange={this.updateFilter} />
+                  <FilterPeriod date={new Date(fieldsFilter['time<=d'])} onChange={(e) => this.updatePeriodFilter(e, 'time<=d')} />
                 </div>
               </React.Fragment>
             }
@@ -185,13 +192,12 @@ class StudentList extends BaseComponent {
           {
             showPointRecord &&
             <FormGroup>
-              {filter.day} {MONTHS[(filter.month ?? 1) - 1]} {filter.year} - {filter.dayTo} {MONTHS[(filter.monthTo ?? 1) - 1]} {filter.yearTo}
+              {new Date(fieldsFilter['time>=d']).toDateString()} - {new Date(fieldsFilter['time<=d']).toDateString()}
             </FormGroup>
           }
           <FormGroup>
             <input type="submit" className="btn btn-primary btn-sm" value="Submit" />
           </FormGroup>
-
         </form>
         <p />
         <NavigationButtons onClick={this.loadAtPage} activePage={filter.page ?? 0} limit={filter.limit ?? 10} totalData={totalData} />

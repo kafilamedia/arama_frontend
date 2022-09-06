@@ -82,17 +82,18 @@ class InputPointForm extends BasePage {
       alert("ERROR: student or rulePoint missing!");
       return;
     }
-    record.student_id = this.state.student?.id;
-    record.point_id = this.state.rulePoint?.id;
+    record.classMemberId = this.state.student?.id;
+    record.rulePointId = this.state.rulePoint?.id;
     this.commonAjax(
       this.studentService.submitPointRecord,
       this.recordSubmitted,
       this.showCommonErrorAlert,
-      record, this.state.attachmentInfo
+      record,
+      this.state.attachmentInfo
     )
   }
   recordSubmitted = (response: WebResponse) => {
-    this.setState({ savedRecord: response.item, formStep: 4 }, this.scrollTop);
+    this.setState({ savedRecord: response.result, formStep: 4 }, this.scrollTop);
   }
   render() {
     const student: Student | undefined = this.state.student;
@@ -104,33 +105,36 @@ class InputPointForm extends BasePage {
       <div className="container-fluid section-body">
         <h2>Form Input Pelanggaran</h2>
         <Modal title={student.name + " - " + student.classLevel + student.classLetter + " " + student.schoolName}>
-
           <Progress step={this.state.formStep} totalStep={this.totalStep} />
-          {this.state.formStep == 1 ?
-            <FormStepOne category={this.state.category}
+          {
+            this.state.formStep == 1 &&
+            <FormStepOne
+              category={this.state.category}
               onBack={this.removeStudent}
               setSelectedCategory={this.setCategory}
               onSubmit={() => { this.nextStep(2) }} />
-            : null}
-          {this.state.formStep == 2 && this.state.category ?
+          }
+          {
+            this.state.formStep == 2 && this.state.category &&
             <FormStepTwo
               rulePoint={this.state.rulePoint}
-
               setRulePoint={this.setRulePoint}
-              category={this.state.category} onBack={() => this.nextStep(1)} onSubmit={() => { this.nextStep(3) }}
-            /> : null}
-          {this.state.formStep == 3 && this.state.category && this.state.rulePoint ?
-            <FormStepThree submit={this.submitRecord}
+              category={this.state.category}
+              onBack={() => this.nextStep(1)}
+              onSubmit={() => { this.nextStep(3) }}
+            />}
+          {
+            this.state.formStep == 3 && this.state.category && this.state.rulePoint &&
+            <FormStepThree
+              submit={this.submitRecord}
               attachmentInfo={this.state.attachmentInfo}
               setAttachment={this.setAttachment}
               removeAttachment={this.removeAttachment}
               rulePoint={this.state.rulePoint}
               onBack={() => this.nextStep(2)}
-            /> : null}
-          {this.state.formStep == 4 && this.state.savedRecord ?
-            <Detail back={() => this.setState({ student: null })} record={this.state.savedRecord} />
-            : null
-          }
+            />}
+          {this.state.formStep == 4 && this.state.savedRecord &&
+            <Detail back={() => this.setState({ student: null })} record={this.state.savedRecord} />}
 
         </Modal>
       </div>
@@ -153,16 +157,17 @@ const Detail = (props: { record: PointRecord, back(): any }) => {
     <div>
       <h4 className="text-center text-success"><i className="fas fa-check" style={{ marginRight: 5 }} />Record saved</h4>
       <p />
-      <FormGroup label="Date">{date.toDateString()} {record.time}</FormGroup>
-      <FormGroup label="Category">{record.rule_point?.ruleCategoryName}</FormGroup>
-      <FormGroup label="Name">{record.rule_point?.name}</FormGroup>
-      <FormGroup label="Point">{record.rule_point?.point}</FormGroup>
+      <FormGroup label="Date">{new Date(record.time).toLocaleString()}</FormGroup>
+      <FormGroup label="Category">{record.ruleCategoryName}</FormGroup>
+      <FormGroup label="Name">{record.ruleName}</FormGroup>
+      <FormGroup label="Point">{record.point}</FormGroup>
       <FormGroup label="Location">{record.location}</FormGroup>
-      {record.getPicture() ?
+      {
+        record.getPicture() &&
         <FormGroup label="Picture">
-          <img src={record.getPicture() ?? ""} width={200} height={200} />
+          <img src={record.getPicture() ?? ''} width={200} height={200} />
         </FormGroup>
-        : null}
+      }
       <hr />
       <FormGroup><a onClick={props.back} className="btn btn-dark">Ok</a></FormGroup>
     </div>

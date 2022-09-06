@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
 import { getStore } from '../redux/configureStore';
-export const commonAuthorizedHeader = () => {
+export const commonAuthorizedHeader = (contentType = 'application-json') => {
   return {
-    'Content-Type': 'application/json',
+    'Content-Type': contentType,
     'requestId': getRequestId(),//'localStorage.getItem("requestId")',
     'Authorization': 'Bearer ' + getLoginKey()
   }

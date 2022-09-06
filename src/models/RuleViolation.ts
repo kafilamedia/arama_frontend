@@ -5,7 +5,7 @@ export default class RuleViolation extends BaseEntity {
     name: string = "";
     description: string | undefined;
     student: Student | undefined;
-    classMemberId: string | undefined;
+    classMemberId?: number;
 
     classMemberName?: string;
     classLevel?: number;

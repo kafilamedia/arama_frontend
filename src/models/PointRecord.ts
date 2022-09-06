@@ -6,68 +6,73 @@ import RulePoint from './RulePoint';
 import Student from './Student';
 import Pictures from './Pictures';
 import { contextPath } from './../constant/Url';
-export default class PointRecord extends BaseEntity
-{
-    setTime(h: number, m: number, s: number) {
-        this.time = [td(h), td(m), td(s)].join(":");
-    }
-    setDate = (d: Date) => {
-        this.day = d.getDate();
-        this.month = d.getMonth() + 1;
-        this.year = d.getFullYear();
-    }
-    dateString = () :string=>{
-        return `${this.year}-${td(this.month)}-${td(this.day)}`;
-    }
-    location?:string;
-    day:number = new Date().getDate();
-    month:number = new Date().getMonth()+1;
-    year:number = new Date().getFullYear();
-    time:string;
-    description?:string;
-    student_id?:string;
-    point_id?:number;
+export default class PointRecord extends BaseEntity {
+  setTime = (h: number, m: number, s: number) => {
+    this.time = new Date();
+    this.time.setFullYear(this.year);
+    this.time.setMonth(this.month - 1);
+    this.time.setDate(this.day);
+    this.time.setHours(h, m, s);
+  }
+  dateString = (): string => {
+    return `${this.year}-${td(this.month)}-${td(this.day)}`;
+  }
+  get timeString() {
+    return `${this.time.getHours()}:${this.time.getMinutes()}:${this.time.getSeconds()}`;
+  }
+  location?: string;
+  get day() { return this.time.getDate() };
+  get month() { return this.time.getMonth() + 1; }
+  get year() { return this.time.getFullYear(); }
+  set day(d: number) { this.time.setDate(d); }
+  set month(m: number) { this.time.setMonth(m - 1); }
+  set year(y: number) { this.time.setFullYear(y); }
+  time = new Date();
+  description?: string;
+  classMemberId?: number;
+  rulePointId?: number;
 
-    rule_point?:RulePoint;
-    student?:Student;
-    dropped_at?:Date;
+  rule_point?: RulePoint;
+  student?: Student;
+  dropped?: Date;
 
-    pictures:Pictures[] = [];
+  pictures: Pictures[] = [];
 
-    constructor() {
-        super();
-        const d = new Date();
-        this.time =  [td(d.getHours()), td(d.getMinutes()), td(d.getSeconds())].join(":");
-    }
+  // reponse fields
+  ruleCategoryName?: string;
+  ruleName?: string;
+  studentName?: string;
+  schoolName?: string;
+  classLevel?: number;
+  classLetter?: string;
+  point?: number;
+  droppable?: boolean;
 
-    /**
-     * get picture URL
-     */
-    getPicture = () :string|null => {
-        if (this.pictures.length == 0) {
-            return null;
-        }
-        return  contextPath()+'upload/POINT_RECORD/'+this.pictures[0].name;
-    }
+  /**
+   * get picture URL
+   */
+  getPicture = () => contextPath(`api/public/asrama/broken-rule-img/${this.id}`);
 
-    getDate = ():Date => {
-        return parseDate(this.dateString());
-    }
+  getDate = (): Date => {
+    return parseDate(this.dateString());
+  }
 
-    getTimestamp = () :string => {
+  getTimestamp = (): string => {
 
-        const d = this.getDate();
-        const day = DAYS[d.getDay()];
-        return day+", "+[
-            td(d.getDate()), td(d.getMonth()+1), d.getFullYear()
-        ].join("/")+" "+this.time;
-    }
+    const d = this.getDate();
+    const day = DAYS[d.getDay()];
+    return day + ", " + [
+      td(d.getDate()), td(d.getMonth() + 1), d.getFullYear()
+    ].join("/") + " " + this.time;
+  }
 
-    public static clone = (object:PointRecord) => {
-        return Object.assign(new PointRecord(), object);
-    }
+  public static clone = (p: PointRecord) => {
+    p = Object.assign(new PointRecord(), p);
+    p.time = new Date(p.time);
+    return p;
+  }
 }
 
 const DAYS = [
-    "Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
+  "Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
 ]

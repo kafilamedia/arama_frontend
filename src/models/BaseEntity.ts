@@ -1,7 +1,6 @@
 
 export default class BaseEntity {
-	id?: any;
-
+	id?: number;
 	created_at?: string;
 	updated_at?: string;
 }

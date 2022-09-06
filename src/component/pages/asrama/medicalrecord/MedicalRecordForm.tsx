@@ -60,7 +60,7 @@ class MedicalRecordForm extends BasePage {
                 this.inputRefs.forEach((ref: any, day: number) => {
                     let record = mappedItems.get(day.toString());
                     if (!record) {
-                        record = MedicalRecord.instance(this.state.student?.id, day, this.state.month, this.state.year);
+                        record = MedicalRecord.instance(this.state.student?.id ?? 0, day, this.state.month, this.state.year);
                     } else {
                         record = MedicalRecord.clone(record);
                     }
@@ -92,8 +92,8 @@ class MedicalRecordForm extends BasePage {
 
     getFilter = (): Filter => {
         const f = new Filter();
-        f.month = this.state.month;
-        f.year = this.state.year;
+        // f.month = this.state.month;
+        // f.year = this.state.year;
         return f;
     }
 
@@ -125,7 +125,7 @@ class MedicalRecordForm extends BasePage {
                 {student ?
                     <Card>
                         <div className="input-group">
-                            <FilterPeriod filter={filter} hideDay onChange={this.handleInputChange} />
+                            <FilterPeriod date={new Date()} disableDay onChange={this.handleInputChange} />
                             <div className="input-group-append">
                             <AnchorWithIcon iconClassName="fas fa-redo" onClick={this.loadMonthlyRecord}>Load Data</AnchorWithIcon>
                             </div>
