@@ -67,7 +67,7 @@ class StudentSemesterReport extends BasePage {
       return;
     }
     const { value: classId } = this.selectClassRef.current;
-    window.open(contextPath() + 'rapor/' + classId);
+    window.open(contextPath(`pages/asrama/report/${classId}`));
   }
 
   reportCreated = (attachment: AttachmentInfo) => {
