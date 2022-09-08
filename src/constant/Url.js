@@ -1,9 +1,4 @@
-
-const devMode =
-    document.getElementById("rootPath").value == "${contextPath}" ||
-    document.getElementById("rootPath").value == "";
-const rootValue = devMode ?
-    "/" : document.getElementById("rootPath").value + "/";
+const rootValue = `${document.getElementById("${ROOT_PATH}").value}/`;
 
 /**
  * 
@@ -11,7 +6,6 @@ const rootValue = devMode ?
  * @returns 
  */
 export const contextPath = (path = null) => {
-    // const contextPath = devMode? "http://localhost:8080/kafila-app-tahfiz".concat(rootValue):rootValue;
-    return `http://localhost:8080/kafila-app-tahfiz/${path ?? ''}`;
+    return `${rootValue}/${path ?? ''}`;
 }
-export const baseImageUrl = () => contextPath() + "images/"; 
+export const baseImageUrl = () => contextPath('images/');
