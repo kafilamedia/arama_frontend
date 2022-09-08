@@ -1,4 +1,4 @@
-const rootValue = `${document.getElementById("${ROOT_PATH}").value}/`;
+const rootValue = `${document.getElementById("${ROOT_PATH}").value}`;
 
 /**
  * 
