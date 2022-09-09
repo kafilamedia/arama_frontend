@@ -1,20 +1,19 @@
 
-import React, { useRef, Fragment } from 'react';
-import BaseComponent from './../BaseComponent';
-import { mapCommonUserStateToProps } from './../../constant/stores';
-import { withRouter, Link } from 'react-router-dom';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { performLogout } from './../../redux/actionCreators';
+import { Link, withRouter } from 'react-router-dom';
 import { getMenus } from '../../constant/Menus';
-import './Header.css';
-import User from './../../models/User';
-import { baseImageUrl } from './../../constant/Url';
-import Menu from './../../models/settings/Menu';
+import { mapCommonUserStateToProps } from './../../constant/stores';
 import ApplicationProfile from './../../models/ApplicationProfile';
+import Menu from './../../models/settings/Menu';
+import User from './../../models/User';
+import { performLogout } from './../../redux/actionCreators';
+import BaseComponent from './../BaseComponent';
+import './Header.css';
 class IState {
   showNavLinks: boolean = false;
 }
-class Header extends BaseComponent {
+class Header extends BaseComponent<any, IState> {
   state: IState = new IState();
   buttonToggleNavRef: React.RefObject<HTMLButtonElement> = React.createRef();
   constructor(props: any) {
@@ -105,20 +104,27 @@ const UserIcon = (props: { user: User | undefined, setMenuNull(): any, onLogout(
   if (props.user) {
     return (
       <Fragment>
-        <Link onClick={props.setMenuNull} style={{ marginRight: "5px" }} className="btn btn-light btn-sm my-2 my-sm-0"
-          to='/settings/user-profile'>
-          <i className="fas fa-user-circle" />
-          &nbsp;{props.user.displayName}
+        <Link
+          onClick={props.setMenuNull}
+          className="btn btn-light btn-sm my-2 my-sm-0 mr-2"
+          to='/settings/user-profile'
+        >
+          <i className="fas fa-user-circle mr-2" />
+          <span>{props.user.displayName}</span>
         </Link>
-        <a style={{ marginRight: '5px' }} className="btn btn-danger btn-sm  my-2 my-sm-0"
-          onClick={props.onLogout}><i className="fas fa-sign-out-alt"></i>&nbsp;Logout
+        <a className="mr-1 btn btn-danger btn-sm  my-2 my-sm-0"
+          onClick={props.onLogout}><i className="fas fa-sign-out-alt mr-2" /><span>Logout</span>
         </a>
       </Fragment>);
   }
   return (
 
-    <Link style={{ marginRight: '5px' }} onClick={props.setMenuNull} className="btn btn-sm btn-info my-2 my-sm-0"
-      to='/login'> <i className="fas fa-sign-in-alt"></i>&nbsp;Login
+    <Link
+      onClick={props.setMenuNull}
+      className="btn btn-sm btn-info my-2 my-sm-0 mr-2"
+      to='/login'
+    >
+      <i className="fas fa-sign-in-alt mr-2"></i><span>Login</span>
     </Link>
   );
 }

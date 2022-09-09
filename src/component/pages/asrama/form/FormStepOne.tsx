@@ -1,23 +1,24 @@
 import { resolve } from 'inversify-react';
-import React, { ChangeEvent } from 'react'
-import BaseComponent from '../../../BaseComponent';
-import { withRouter } from 'react-router-dom';
+import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import WebResponse from '../../../../models/commons/WebResponse';
-import WebRequest from '../../../../models/commons/WebRequest';
 import Category from '../../../../models/Category';
+import Filter from '../../../../models/commons/Filter';
+import WebRequest from '../../../../models/commons/WebRequest';
+import WebResponse from '../../../../models/commons/WebResponse';
 import MasterDataService from '../../../../services/MasterDataService';
-import FormGroup from '../../../form/FormGroup';
 import SimpleError from '../../../alert/SimpleError';
+import BaseComponent from '../../../BaseComponent';
+import FormGroup from '../../../form/FormGroup';
 import Spinner from '../../../loader/Spinner';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
-import Filter from '../../../../models/commons/Filter';
 class State {
   categories: Category[] = [];
   loading = false;
+  categoriesLoaded = false;
 }
-class FormStepOne extends BaseComponent {
+class FormStepOne extends BaseComponent<any, State> {
   state = new State();
 
   @resolve(MasterDataService)

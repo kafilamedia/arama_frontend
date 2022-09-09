@@ -10,10 +10,9 @@ import WebRequest from '../../../models/commons/WebRequest';
 import WebResponse from '../../../models/commons/WebResponse';
 import { resolve } from 'inversify-react';
 
-class EditDeleteButton extends BaseComponent {
+class EditDeleteButton extends BaseComponent<any, any> {
   @resolve(MasterDataService)
   private masterDataService: MasterDataService;
-
   constructor(props) {
     super(props, true);
   }

@@ -25,9 +25,8 @@ class State {
 const MODEL_NAME = 'general-broken-rules';
 const MENU = 'asrama';
 
-class RuleViolationManagement extends BaseManagementPage {
-
-  state: State = new State();
+class RuleViolationManagement extends BaseManagementPage<any, State> {
+  state = new State();
   constructor(props) {
     super(props, MODEL_NAME, MENU);
     this.state.filter = new Filter();
@@ -154,8 +153,7 @@ const RecordForm = (props: { formRef: React.RefObject<Modal>, setStudent(s: Stud
             <input required className="form-control" name="point" onChange={props.updateRecordProp} value={record.point} />
           </FormGroup>
           <FormGroup>
-            <input type="submit" value="Submit" className="btn btn-primary btn-sm" />
-            &nbsp;
+            <input type="submit" value="Submit" className="btn btn-primary btn-sm mr-2" />
             <input type="reset" className="btn btn-secondary btn-sm" onClick={(e) => props.resetForm()} />
           </FormGroup>
         </form>

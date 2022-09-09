@@ -17,7 +17,7 @@ class State {
   items: Student[] = [];
   keyword: string = "";
 }
-class StudentSearchForm extends BaseComponent {
+class StudentSearchForm extends BaseComponent<any, State> {
   state = new State();
   @resolve(MasterDataService)
   private masterDataService: MasterDataService;

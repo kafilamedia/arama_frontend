@@ -18,10 +18,10 @@ class State {
   items: Student[] = [];
   item?: Student;
 }
-class StudentForm extends BaseComponent {
+class StudentForm extends BaseComponent<any, State> {
   state = new State();
   @resolve(MasterDataService)
-  masterDataService: MasterDataService;
+  private masterDataService: MasterDataService;
   constructor(props) {
     super(props, true);
   }
@@ -77,7 +77,10 @@ class StudentForm extends BaseComponent {
                   }} style={{ cursor: 'pointer' }} key={"Student-" + item.id} >{item.user?.fullName}</div>
                 )
               })}
-              <a onClick={this.reset} className="option-item"><i className="fas fa-times" />&nbsp;close</a>
+              <a onClick={this.reset} className="option-item">
+                <i className="fas fa-times mr-2" />
+                <span>close</span>
+              </a>
             </div> : null}
           </FormGroup>
           {selectedItem ?

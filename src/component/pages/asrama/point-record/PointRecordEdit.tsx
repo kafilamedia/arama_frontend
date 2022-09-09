@@ -25,16 +25,16 @@ import { resolve } from 'inversify-react';
 class State {
   record = new PointRecord();
   categories: Category[] = [];
-  pointsMap: Record<string, RulePoint[]> = {};
+  pointsMap: Record<number, RulePoint[]> = {};
 
-  selectedCategoryId = 0;
-  selectedPointId = 0;
+  selectedCategoryId?: number = 0;
+  selectedPointId?: number = 0;
 
   attachment: AttachmentInfo | undefined;
   editMode = false;
   editModeRemoveImage = false;
 }
-class PointRecordEdit extends BasePage {
+class PointRecordEdit extends BasePage<any, State> {
   state = new State();
   @resolve(StudentService)
   private studentService: StudentService;
@@ -64,7 +64,7 @@ class PointRecordEdit extends BasePage {
   rulePointsLoaded = (categoryId: string, response: WebResponse) => {
     const pointsMap = this.state.pointsMap;
     pointsMap[categoryId.toString()] = response.result.items;
-    this.setState({ pointsMap: pointsMap });
+    this.setState({ pointsMap });
   }
   loadRulePoints = (catId: string) => {
     if (catId === '' || this.state.pointsMap[catId] != undefined) {
@@ -128,9 +128,9 @@ class PointRecordEdit extends BasePage {
   }
   updateDate = (e: ChangeEvent<HTMLInputElement>) => {
     const date = parseDate(e.target.value);
-    const record = this.state.record;
+    const { record } = this.state;
     record.time = date;
-    this.setState({ pointRecord: record });
+    this.setState({ record: record });
   }
   submit = () => {
     const { editMode, editModeRemoveImage } = this.state;
@@ -154,7 +154,7 @@ class PointRecordEdit extends BasePage {
     }
   }
   recordSubmitted = (r: WebResponse) => {
-    this.setState({ record: new PointRecord(), attachment: undefined, selectedCategoryId: '' }, () => {
+    this.setState({ record: new PointRecord(), attachment: undefined, selectedCategoryId: undefined }, () => {
       this.showInfo("Data berhasil disimpan");
       this.scrollTop();
     })
@@ -210,6 +210,7 @@ class PointRecordEdit extends BasePage {
 
   updateRulePoint = (e: ChangeEvent<HTMLSelectElement>) => {
     const { selectedCategoryId, pointsMap } = this.state;
+    if (!selectedCategoryId) return;
     const filtered = pointsMap[selectedCategoryId].filter((r) => r.id?.toString() == e.target.value);
     if (filtered.length == 0) return;
     this.setSelectedRulePoint(filtered[0]);
@@ -251,6 +252,7 @@ class PointRecordEdit extends BasePage {
             <select value={record.rulePointId} className="form-control" onChange={this.updateRulePoint} >
               <option value="">Pilih Pelanggaran</option>
               {
+                selectedCategoryId &&
                 pointsMap[selectedCategoryId] &&
                 pointsMap[selectedCategoryId].map(p => {
                   return (

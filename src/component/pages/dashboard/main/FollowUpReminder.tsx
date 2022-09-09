@@ -19,7 +19,7 @@ interface FollowUpInfo {
 class State {
   followUpInfos: FollowUpInfo[] = [];
 }
-class FollowUpReminder extends BasePage {
+class FollowUpReminder extends BasePage<any, State> {
   state = new State();
   @resolve(StudentService)
   private studentService: StudentService;

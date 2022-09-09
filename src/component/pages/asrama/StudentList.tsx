@@ -32,7 +32,7 @@ const defaultFieldsFilter = {
   'time>=d': getInputReadableDate(new Date(now.getFullYear(), 0, 1)),
   'time<=d': getInputReadableDate(now)
 };
-class StudentList extends BaseComponent {
+class StudentList extends BaseComponent<any, State> {
   readonly state = new State();
   @resolve(StudentService)
   private studentService: StudentService;

@@ -10,13 +10,12 @@ import MusyrifManagementService from './../../../services/MusyrifManagementServi
 import BaseComponent from './../../BaseComponent';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 
-class EmployeeRow extends BaseComponent {
+class EmployeeRow extends BaseComponent<any, any> {
   @resolve(MusyrifManagementService)
   private musyrifManagementService: MusyrifManagementService;
   constructor(props) {
     super(props, true);
   }
-
   getEmployee = () => this.props.employee as Employee;
   activeStatusUpdate = (response: WebResponse) => {
     // this.showInfo("Success");

@@ -9,7 +9,7 @@ import './Management.css'
 import BaseEntity from './../../../models/BaseEntity';
 import { resolve } from 'inversify-react';
 
-export default abstract class BaseManagementPage extends BasePage {
+export default abstract class BaseManagementPage<P, S> extends BasePage<P, S> {
   @resolve(MasterDataService)
   protected masterDataService: MasterDataService;
   protected formRef: React.RefObject<Modal> = React.createRef();
@@ -27,14 +27,16 @@ export default abstract class BaseManagementPage extends BasePage {
   }
   startLoading = (withProgress: boolean = false) => {
     if (this.overrideLoading) {
-      this.setState({ loading: true });
+      // FIXME
+      this.setState({ loading: true } as any);
     } else {
       super.startLoading(withProgress);
     }
   }
   endLoading = () => {
     if (this.overrideLoading) {
-      this.setState({ loading: false });
+      // FIXME
+      this.setState({ loading: false } as any);
     } else {
       super.endLoading();
     }
@@ -53,7 +55,7 @@ export default abstract class BaseManagementPage extends BasePage {
     )
   }
   itemsLoaded = (response: WebResponse) => {
-    this.setState({ items: response.result.items, totalData: response.result.totalData });
+    this.setState({ items: response.result.items, totalData: response.result.totalData } as any);
   }
 
   updateFilter = (e: ChangeEvent<any>) => {
@@ -69,7 +71,7 @@ export default abstract class BaseManagementPage extends BasePage {
       value = target.value;
     }
     filter[target.name] = value;
-    this.setState({ filter })
+    this.setState({ filter } as any)
   }
   updateFieldsFilter = (e: ChangeEvent) => {
     const { filter } = this.state;
@@ -78,12 +80,12 @@ export default abstract class BaseManagementPage extends BasePage {
       filter.fieldsFilter = {};
     }
     filter.fieldsFilter[target.name] = target.value;
-    this.setState({ filter })
+    this.setState({ filter } as any)
   }
   loadAtPage = (page: number) => {
     const filter = this.state.filter;
     filter.page = page;
-    this.setState({ filter: filter }, this.loadItems);
+    this.setState({ filter } as any, this.loadItems);
   }
   updateRecordProp = (e: ChangeEvent) => {
     const target = e.target as any;
@@ -96,13 +98,13 @@ export default abstract class BaseManagementPage extends BasePage {
     }
     const record = this.state.record;
     record[target.name] = value;
-    this.setState({ record: record });
+    this.setState({ record: record } as any);
   }
   resetForm = (callback?: () => any) => {
-    this.setState({ record: this.emptyRecord() }, callback);
+    this.setState({ record: this.emptyRecord() } as any, callback);
   }
-  oneRecordLoaded = (item: any) => {
-    this.setState({ record: item }, () => {
+  oneRecordLoaded = (record: any) => {
+    this.setState({ record } as any, () => {
       if (this.formRef.current) {
         this.formRef.current.showModal();
       }

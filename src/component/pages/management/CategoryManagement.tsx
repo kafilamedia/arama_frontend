@@ -1,30 +1,27 @@
 
-import React, { ChangeEvent } from 'react'
-import BaseComponent from './../../BaseComponent';
-import { withRouter } from 'react-router-dom';
+import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../constant/stores';
+import { withRouter } from 'react-router-dom';
 import Filter from '../../../models/commons/Filter';
+import { mapCommonUserStateToProps } from './../../../constant/stores';
+import BaseEntity from './../../../models/BaseEntity';
 import Category from './../../../models/Category';
-import WebRequest from '../../../models/commons/WebRequest';
+import { tableHeader } from './../../../utils/CollectionUtil';
+import Modal from './../../container/Modal';
 import FormGroup from './../../form/FormGroup';
 import NavigationButtons from './../../navigation/NavigationButtons';
-import Modal from './../../container/Modal';
-import EditDeleteButton from './EditDeleteButton'
-import { tableHeader } from './../../../utils/CollectionUtil';
 import BaseManagementPage from './BaseManagementPage';
-import BaseEntity from './../../../models/BaseEntity';
+import EditDeleteButton from './EditDeleteButton';
 class State {
   items: Category[] = [];
   filter: Filter = new Filter();
   totalData: number = 0;
   record: Category = new Category();
-
 }
 const MODEL_NAME = 'rule-categories';
 const MENU = 'asrama';
-class CategoryManagement extends BaseManagementPage {
-  state: State = new State();
+class CategoryManagement extends BaseManagementPage<any, State> {
+  state = new State();
   constructor(props) {
     super(props, MODEL_NAME, MENU);
     this.state.filter.limit = 10;
@@ -115,8 +112,7 @@ const RecordForm = (props: { formRef: React.RefObject<Modal>, updateRecordProp(e
           <textarea required className="form-control" name="description" onChange={props.updateRecordProp} value={props.record.description ?? ""} />
         </FormGroup>
         <FormGroup>
-          <input type="submit" value="Submit" className="btn btn-primary btn-sm" />
-          &nbsp;
+          <input type="submit" value="Submit" className="btn btn-primary btn-sm mr-2" />
           <input type="reset" className="btn btn-secondary btn-sm" onClick={(e) => props.resetForm()} />
         </FormGroup>
       </Modal>

@@ -26,8 +26,8 @@ class State {
 const MODEL_NAME = 'rule-points';
 const MENU = 'asrama';
 
-class RulePointManagement extends BaseManagementPage {
-  state: State = new State();
+class RulePointManagement extends BaseManagementPage<any, State> {
+  state = new State();
   constructor(props) {
     super(props, MODEL_NAME, MENU);
     this.state.filter.limit = 10;
@@ -198,8 +198,7 @@ const RecordForm = (props: {
           </div>
         </FormGroup>
         <FormGroup>
-          <input type="submit" value="Submit" className="btn btn-primary btn-sm" />
-          &nbsp;
+          <input type="submit" value="Submit" className="btn btn-primary btn-sm mr-2" />
           <input value="Reset" type="reset" className="btn btn-secondary btn-sm" onClick={(e) => props.resetForm()} />
         </FormGroup>
       </Modal>

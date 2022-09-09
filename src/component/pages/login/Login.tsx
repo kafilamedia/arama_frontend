@@ -9,9 +9,9 @@ import BaseComponent from './../../BaseComponent';
 import Spinner from './../../loader/Spinner';
 import './Login.css';
 class IState {
-  loading: boolean = false; email: string = ""; editPassword: string = "";
+  loading = false; email = ""; editPassword = "";
 }
-class Login extends BaseComponent {
+class Login extends BaseComponent<any, IState> {
   state: IState = new IState();
   constructor(props: any) {
     super(props, false);
@@ -38,7 +38,7 @@ class Login extends BaseComponent {
     const target = e.target as HTMLInputElement;
     const name: string | null = target.getAttribute("name");
     if (null == name) return;
-    this.setState({ [name]: target.value });
+    this.setState({ [name]: target.value } as any);
   }
   render() {
     return (
@@ -51,13 +51,13 @@ class Login extends BaseComponent {
           <EmailField value={this.state.email} onChange={this.updateCredentialProperty} />
           <PasswordField value={this.state.editPassword} onChange={this.updateCredentialProperty} />
           {
-            this.state.loading ? 
-            <Spinner /> :
-            <Fragment>
-              <button className="btn text-light" style={{ marginRight: '5px', backgroundColor: 'rgb(9,26,78)' }} type="submit">
-                Sign in
-              </button>
-            </Fragment>
+            this.state.loading ?
+              <Spinner /> :
+              <Fragment>
+                <button className="btn text-light" style={{ marginRight: '5px', backgroundColor: 'rgb(9,26,78)' }} type="submit">
+                  Sign in
+                </button>
+              </Fragment>
           }
           <input name="transport_type" type="hidden" value="rest" />
         </form>

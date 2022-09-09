@@ -1,24 +1,20 @@
 
 
 import React, { ChangeEvent, FormEvent } from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import User from './../../../../models/User';
-import BasePage from './../../BasePage';
-import AttachmentInfo from './../../../../models/settings/AttachmentInfo';
-import { getAttachmentInfoFromFile } from './../../../../utils/ComponentUtil';
-import StudentService from './../../../../services/StudentService';
 import { AuthorityType } from '../../../../models/AuthorityType';
-import { resolve } from 'inversify-react';
+import AttachmentInfo from './../../../../models/settings/AttachmentInfo';
+import User from './../../../../models/User';
+import { getAttachmentInfoFromFile } from './../../../../utils/ComponentUtil';
+import BasePage from './../../BasePage';
 
 class State {
-  attachment: AttachmentInfo | undefined;
+  attachment?: AttachmentInfo;
 }
-class DashboardMain extends BasePage {
+class DashboardMain extends BasePage<any, State> {
   state = new State();
-  @resolve(StudentService)
-  private studentService: StudentService;
   constructor(props: any) {
     super(props, "Dashboard", true);
   }

@@ -28,7 +28,7 @@ class State {
   savedRecord?: PointRecord;
   attachmentInfo?: AttachmentInfo;
 }
-class InputPointForm extends BasePage {
+class InputPointForm extends BasePage<any, State> {
   state: State = new State();
   @resolve(StudentService)
   private studentService: StudentService;
@@ -112,7 +112,8 @@ class InputPointForm extends BasePage {
               category={this.state.category}
               onBack={this.removeStudent}
               setSelectedCategory={this.setCategory}
-              onSubmit={() => { this.nextStep(2) }} />
+              onSubmit={() => { this.nextStep(2) }}
+            />
           }
           {
             this.state.formStep == 2 && this.state.category &&
@@ -122,7 +123,8 @@ class InputPointForm extends BasePage {
               category={this.state.category}
               onBack={() => this.nextStep(1)}
               onSubmit={() => { this.nextStep(3) }}
-            />}
+            />
+          }
           {
             this.state.formStep == 3 && this.state.category && this.state.rulePoint &&
             <FormStepThree
@@ -132,9 +134,16 @@ class InputPointForm extends BasePage {
               removeAttachment={this.removeAttachment}
               rulePoint={this.state.rulePoint}
               onBack={() => this.nextStep(2)}
-            />}
-          {this.state.formStep == 4 && this.state.savedRecord &&
-            <Detail back={() => this.setState({ student: null })} record={this.state.savedRecord} />}
+            />
+          }
+          {
+            this.state.formStep == 4 &&
+            this.state.savedRecord &&
+            <Detail
+              back={() => this.setState({ student: undefined })}
+              record={this.state.savedRecord}
+            />
+          }
 
         </Modal>
       </div>
@@ -179,7 +188,7 @@ const Warning = () => {
     <div className="container-fluid section-body">
       <h2>Form Input Pelanggaran</h2>
       <SimpleError>
-        <i className="fas fa-exclamation-circle" />&nbsp;Please select student <hr />
+        <i className="fas fa-exclamation-circle mr-2" /><span>Please select student</span><hr />
         <AnchorWithIcon to={"/asrama/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
       </SimpleError>
     </div>

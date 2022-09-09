@@ -43,7 +43,7 @@ const defaultFieldsFilter = {
 };
 const MODEL_NAME = 'broken-rules';
 const MENU = 'asrama';
-class PointRecordSummary extends BaseManagementPage {
+class PointRecordSummary extends BaseManagementPage<any, State> {
   state = new State();
   @resolve(StudentService)
   private studentService: StudentService;

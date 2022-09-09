@@ -19,7 +19,7 @@ class State {
   items: StudentReportSummary[] = [];
 }
 
-class StudentSemesterReport extends BasePage {
+class StudentSemesterReport extends BasePage<any, State> {
   state = new State();
   @resolve(StudentService)
   private studentService: StudentService;

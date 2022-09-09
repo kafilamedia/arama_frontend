@@ -27,7 +27,7 @@ import StudentSemesterReport from '../pages/report/StudentSemesterReport';
 import CategoryPredicateManagement from '../pages/management/CategoryPredicateManagement';
 import RuleViolationManagement from '../pages/management/RuleViolationManagement';
 
-class ApplicationContent extends BaseComponent {
+class ApplicationContent extends BaseComponent<any, any> {
 
   constructor(props: any) {
     super(props, false);

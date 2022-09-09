@@ -23,7 +23,7 @@ class State {
   year: number = new Date().getFullYear();
   mappedItems: Map<number, MedicalRecord> = new Map()
 }
-class MedicalRecordForm extends BasePage {
+class MedicalRecordForm extends BasePage<any, State> {
   state = new State();
   @resolve(StudentService)
   private studentService: StudentService;
@@ -54,12 +54,12 @@ class MedicalRecordForm extends BasePage {
   }
   recordsLoaded = (response: WebResponse) => {
 
-    const mappedItems: Map<String, MedicalRecord> = this.toMap(response.items);
+    const mappedItems: Map<number, MedicalRecord> = this.toMap(response.items);
 
-    this.setState({ mappedItems: mappedItems }, () => {
+    this.setState({ mappedItems }, () => {
       doItLater(() => {
         this.inputRefs.forEach((ref: any, day: number) => {
-          let record = mappedItems.get(day.toString());
+          let record = mappedItems.get(day);
           if (!record) {
             record = MedicalRecord.instance(this.state.student?.id ?? 0, day, this.state.month, this.state.year);
           } else {
@@ -74,11 +74,11 @@ class MedicalRecordForm extends BasePage {
   }
 
 
-  toMap = (items: MedicalRecord[]): Map<String, MedicalRecord> => {
-    const map: Map<String, MedicalRecord> = new Map();
+  toMap = (items: MedicalRecord[]) => {
+    const map = new Map<number, MedicalRecord>();
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
-      map.set(item.day.toString(), item);
+      map.set(item.day, item);
     }
     return map;
   }
@@ -155,7 +155,7 @@ class MedicalRecordForm extends BasePage {
 
 const Warning = () => {
   return (<SimpleError>
-    <i className="fas fa-exclamation-circle" />&nbsp;Please select student <hr />
+    <i className="fas fa-exclamation-circle mr-2" /><span>Please select student</span><hr />
     <AnchorWithIcon to={"/asrama/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
   </SimpleError>)
 }

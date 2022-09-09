@@ -24,9 +24,8 @@ class State {
 }
 const MODEL_NAME = 'warning-letters';
 const MENU = 'asrama';
-class WarningActionManagement extends BaseManagementPage {
-
-  state: State = new State();
+class WarningActionManagement extends BaseManagementPage<any, State> {
+  state = new State();
   constructor(props) {
     super(props, MODEL_NAME, MENU);
   }
@@ -41,7 +40,6 @@ class WarningActionManagement extends BaseManagementPage {
   }
   emptyRecord = () => new WarningAction();
   onSubmit = () => {
-    console.log('his.state.record', this.state.record);
     if (!this.state.record.classMemberId) {
       this.showError("Input tidak lengkap");
       return;
@@ -117,7 +115,6 @@ const ItemsList = (props: ItemProps) => {
         {tableHeader("No", "Siswa", "Kelas", "Nama", "Deskripsi", "Tgl Simpan", "Opsi")}
         <tbody>
           {props.items.map((item: WarningAction, i) => {
-
             return (
               <tr key={"category-" + i}>
                 <td>{i + 1 + props.startingNumber}</td>
@@ -167,8 +164,7 @@ const RecordForm = (props: { formRef: React.RefObject<Modal>, setStudent(s: Stud
             <textarea required className="form-control" name="description" onChange={props.updateRecordProp} value={record.description ?? ""} />
           </FormGroup>
           <FormGroup>
-            <input type="submit" value="Submit" className="btn btn-primary btn-sm" />
-            &nbsp;
+            <input type="submit" value="Submit" className="btn btn-primary btn-sm mr-2" />
             <input type="reset" className="btn btn-secondary btn-sm" onClick={(e) => props.resetForm()} />
           </FormGroup>
         </form>

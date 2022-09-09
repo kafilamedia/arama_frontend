@@ -11,12 +11,12 @@ import './Layout.css';
 import Menu from '../../models/settings/Menu';
 import { getMenuByMenuPath, extractMenuPath } from './../../constant/Menus';
 class IState {
-    showSidebar: boolean = false;
+    showSidebar?: boolean = false;
     activeMenuCode: any = null;
     menu?: Menu;
     sidebarMenus?: Menu[]
 };
-class MainLayout extends BaseComponent {
+class MainLayout extends BaseComponent<any, IState> {
     state: IState = new IState();
     currentPathName: string = "";
     constructor(props: any) {
@@ -26,13 +26,13 @@ class MainLayout extends BaseComponent {
         }
     }
     setMenuNull = () => {
-        this.setState({ menu: undefined, showSidebar: false, activeMenuCode: null, sidebarMenus: null });
+        this.setState({ menu: undefined, showSidebar: false, activeMenuCode: null, sidebarMenus: undefined });
     }
     setMenu = (menu: Menu) => {
         if (menu == null) {
             return;
         }
-        this.setState({ menu: menu, sidebarMenus: null, showSidebar: menu.showSidebar, activeMenuCode: menu.code });
+        this.setState({ menu: menu, sidebarMenus: undefined, showSidebar: menu.showSidebar, activeMenuCode: menu.code });
     }
     setSidebarMenus = (menus: Menu[]) => {
         // console.debug("Set sidebar menus: ", menus);

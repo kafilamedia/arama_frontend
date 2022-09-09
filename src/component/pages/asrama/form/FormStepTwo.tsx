@@ -18,7 +18,7 @@ class State {
   rulePoints: RulePoint[] = [];
   loading = false;
 }
-class FormStepTwo extends BaseComponent {
+class FormStepTwo extends BaseComponent<any, State> {
   @resolve(MasterDataService)
   private masterDataService: MasterDataService;
   state = new State();

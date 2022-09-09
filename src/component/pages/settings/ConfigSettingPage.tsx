@@ -11,7 +11,7 @@ import { resolve } from 'inversify-react';
 class State {
   applicationProfile: ApplicationProfile = {}
 }
-class ConfigSettingPage extends BasePage {
+class ConfigSettingPage extends BasePage<any, State> {
   readonly state = new State();
   @resolve(ConfigurationService)
   readonly configService: ConfigurationService;
@@ -20,9 +20,8 @@ class ConfigSettingPage extends BasePage {
   }
 
   componentReady() {
-    this.setState({
-      applicationProfile: Object.assign({}, this.getApplicationProfile())
-    });
+    const applicationProfile = Object.assign({}, this.getApplicationProfile());
+    this.setState({ applicationProfile });
   }
 
   submit = () => {

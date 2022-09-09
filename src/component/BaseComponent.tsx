@@ -7,7 +7,7 @@ import WebRequest from '../models/commons/WebRequest';
 import { sendToWebsocket } from './../utils/websockets';
 import { doItLater } from './../utils/EventUtil';
 
-export default class BaseComponent extends Component<any, any> {
+export default class BaseComponent<P, S> extends Component<P, S> {
   parentApp: any;
   authenticated: boolean = true;
   state: any = { updated: new Date() };
@@ -47,7 +47,7 @@ export default class BaseComponent extends Component<any, any> {
   }
 
   getApplicationProfile = (): ApplicationProfile => {
-    return this.props.applicationProfile;
+    return (this.props as any).applicationProfile;
   }
 
   handleInputChange = (event: any, stateFieldName?: string | undefined) => {
@@ -59,9 +59,11 @@ export default class BaseComponent extends Component<any, any> {
     if (stateFieldName) {
       const el = this.state[stateFieldName];
       el[target.name] = value;
-      this.setState({ [stateFieldName]: el });
+      const stateVal: any = { [stateFieldName]: el };
+      this.setState(stateVal);
     } else {
-      this.setState({ [target.name]: value });
+      const stateVal: any = { [target.name]: value };
+      this.setState(stateVal);
     }
   }
 
@@ -113,7 +115,7 @@ export default class BaseComponent extends Component<any, any> {
     this.doAjax(method, true, successCallback, errorCallback, ...params);
   }
   getLoggedUser = (): User | undefined => {
-    const user: User | undefined = this.props.loggedUser;
+    const user: User | undefined = (this.props as any).loggedUser;
     if (!user) return undefined;
     user.password = "^_^";
     return Object.assign(new User(), user);
@@ -130,8 +132,11 @@ export default class BaseComponent extends Component<any, any> {
       window.scrollTo(opt);
     }, 100);
   }
+  get propsAny() {
+    return this.props as any;
+  }
   isUserLoggedIn = (): boolean => {
-    const loggedIn = true == this.props.loginStatus && null != this.props.loggedUser;
+    const loggedIn = true == this.propsAny.loginStatus && null != this.propsAny.loggedUser;
     return loggedIn;
   }
   showConfirmation = (body: any): Promise<boolean> => {
@@ -168,14 +173,12 @@ export default class BaseComponent extends Component<any, any> {
   }
 
   backToLogin() {
-    if (!this.authenticated || this.props.history == null) {
+    if (!this.authenticated || this.propsAny.history == null) {
       return;
     }
-    this.props.history.push("/login");
+    this.propsAny.history.push("/login");
   }
-  refresh() {
-    this.setState({ updated: new Date() });
-  }
+  refresh = () => this.forceUpdate();
   showCommonSuccessAlert = () => {
     this.showInfo("Success");
   }

@@ -14,8 +14,8 @@ import AttachmentInfo from '../../../../models/settings/AttachmentInfo';
 class State {
   pointRecord: PointRecord = new PointRecord();
 }
-class FormStepThree extends BaseComponent {
-  state: State = new State();
+class FormStepThree extends BaseComponent<any, State> {
+  state = new State();
   constructor(props) {
     super(props, true);
   }

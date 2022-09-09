@@ -17,8 +17,8 @@ class State {
   filter: Filter = new Filter();
   totalData: number = 0;
 }
-class MusyrifManagement extends BaseManagementPage {
-  state: State = new State();
+class MusyrifManagement extends BaseManagementPage<any, State> {
+  state = new State();
   constructor(props) {
     super(props, 'employees', 'management');
     this.state.filter.limit = 10;

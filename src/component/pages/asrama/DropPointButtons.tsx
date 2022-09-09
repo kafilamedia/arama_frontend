@@ -11,7 +11,7 @@ import { resolve } from 'inversify-react';
 class State {
   loading = false;
 }
-class DropPointButtons extends BaseComponent {
+class DropPointButtons extends BaseComponent<any, State> {
   @resolve(StudentService)
   private studentService: StudentService;
   state: State = new State();
