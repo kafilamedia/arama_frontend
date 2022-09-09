@@ -46,16 +46,19 @@ class ConfigSettingPage extends BasePage<any, State> {
       <div className="container-fluid section-body" >
         <h2>Konfigurasi</h2>
         <hr />
-        <div style={{ padding: 20 }} className="border border-secondary rounded ">
+        <div style={{ padding: 20 }} className="border border-secondary rounded">
           <form>
             <FormGroup label="Nama Aplikasi">
-              <input name='appName' onChange={this.updateField} className="form-control" value={profile.appName ?? ""} />
+              <input name='appName' onChange={this.updateField} className="form-control" value={profile.appName ?? ""} required />
             </FormGroup>
             <FormGroup label="Deskripsi Aplikasi">
               <input name='appDescription' onChange={this.updateField} className="form-control" value={profile.appDescription ?? ""} />
             </FormGroup>
             <FormGroup label="Batas Poin Peringatan">
-              <input name='warningPointLimit' onChange={this.updateField} className="form-control" type="number" value={profile.warningPointLimit ?? -30} />
+              <input name='warningPointLimit' onChange={this.updateField} className="form-control" type="number" value={profile.warningPointLimit ?? -30} required />
+            </FormGroup>
+            <FormGroup label="Tanggal Rapor">
+              <input name='reportDate' onChange={this.updateField} className="form-control" value={profile.reportDate ?? ''} required />
             </FormGroup>
           </form>
           <FormGroup>
