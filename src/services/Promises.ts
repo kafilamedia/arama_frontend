@@ -39,11 +39,11 @@ export const commonAjaxPostCalls = (endpoint: string, payload?: any, contentType
       });
   })
 }
-export const commonAjaxPutCalls = (endpoint: string, payload?: any) => {
+export const commonAjaxPutCalls = (endpoint: string, payload?: any, contentType = 'application/json') => {
   const request = payload == null ? {} : payload;
   return new Promise<WebResponse>(function (resolve, reject) {
     axios.put(endpoint, request, {
-      headers: commonAuthorizedHeader()
+      headers: commonAuthorizedHeader(contentType)
     })
       .then(axiosResponse => {
         updateAccessToken(axiosResponse);

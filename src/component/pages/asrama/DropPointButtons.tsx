@@ -6,16 +6,17 @@ import { mapCommonUserStateToProps } from '../../../constant/stores';
 import PointRecord from '../../../models/PointRecord';
 import AnchorWithIcon from '../../navigation/AnchorWithIcon';
 import StudentService from '../../../services/StudentService';
+import { resolve } from 'inversify-react';
 
 class State {
-  loading: boolean = false;
+  loading = false;
 }
 class DropPointButtons extends BaseComponent {
-  studentService: StudentService;
+  @resolve(StudentService)
+  private studentService: StudentService;
   state: State = new State();
   constructor(props) {
     super(props, true);
-    this.studentService = this.getServices().studentService;
   }
   startLoading = () => { this.setState({ loading: true }); }
   endLoading = () => { this.setState({ loading: false }); }

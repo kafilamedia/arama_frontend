@@ -10,6 +10,7 @@ import FormGroup from '../../form/FormGroup';
 import AttachmentInfo from './../../../models/settings/AttachmentInfo';
 import { tableHeader } from './../../../utils/CollectionUtil';
 import { contextPath } from './../../../constant/Url';
+import { resolve } from 'inversify-react';
 import StudentReportSummary from './StudentReportSummary';
 import './StudentSemesterReport.scss';
 
@@ -19,12 +20,12 @@ class State {
 }
 
 class StudentSemesterReport extends BasePage {
-  state: State = new State();
+  state = new State();
+  @resolve(StudentService)
   private studentService: StudentService;
   selectClassRef = React.createRef<HTMLSelectElement>();
   constructor(props) {
     super(props, "Rapor Semester", true);
-    this.studentService = this.getServices().studentService;
   }
 
   componentReady() {

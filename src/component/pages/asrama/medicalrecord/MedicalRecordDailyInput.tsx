@@ -6,16 +6,17 @@ import MedicalRecord from '../../../../models/MedicalRecord';
 import StudentService from '../../../../services/StudentService';
 import WebResponse from '../../../../models/commons/WebResponse';
 import { twoDigits, monthName } from '../../../../utils/StringUtil';
+import { resolve } from 'inversify-react';
 
 class State {
     record: MedicalRecord = new MedicalRecord();
 }
 class MedicalRecordDailyInput extends BaseComponent {
-    state: State = new State();
-    studentService: StudentService;
+    state = new State();
+    @resolve(StudentService)
+    private studentService: StudentService;
     constructor(props) {
         super(props, true);
-        this.studentService = this.getServices().studentService;
         this.state.record = MedicalRecord.instance(props.student.id, props.day, props.month, props.year);
     }
     reset = () => {

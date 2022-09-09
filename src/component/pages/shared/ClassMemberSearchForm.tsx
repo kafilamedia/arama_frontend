@@ -10,19 +10,18 @@ import Filter from '../../../models/commons/Filter';
 import WebResponse from '../../../models/commons/WebResponse';
 import AnchorWithIcon from '../../navigation/AnchorWithIcon';
 import './style.css'
-import Class from '../../../models/Class';
+import { resolve } from 'inversify-react';
 
 class State {
   items: Student[] = [];
   keyword: string = "";
 }
 class ClassMemberSearchForm extends BaseComponent {
-
-  state: State = new State();
+  state = new State();
+  @resolve(MasterDataService)
   private masterDataService: MasterDataService;
   constructor(props) {
     super(props, true);
-    this.masterDataService = this.getServices().masterDataService;
   }
   itemsLoaded = (response: WebResponse) => {
     this.setState({ items: response.result });

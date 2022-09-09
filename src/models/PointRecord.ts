@@ -31,8 +31,8 @@ export default class PointRecord extends BaseEntity {
   description?: string;
   classMemberId?: number;
   rulePointId?: number;
+  ruleCategoryId?: number;
 
-  rule_point?: RulePoint;
   student?: Student;
   dropped?: Date;
 
@@ -51,7 +51,7 @@ export default class PointRecord extends BaseEntity {
   /**
    * get picture URL
    */
-  getPicture = () => contextPath(`api/public/asrama/broken-rule-img/${this.id}`);
+  getPicture = () => this.id ? contextPath(`api/public/asrama/broken-rule-img/${this.id}`) : undefined;
 
   getDate = (): Date => {
     return parseDate(this.dateString());

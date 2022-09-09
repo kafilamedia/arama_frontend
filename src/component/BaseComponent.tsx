@@ -2,7 +2,6 @@ import { Component } from 'react';
 import WebResponse from '../models/commons/WebResponse';
 import ApplicationProfile from './../models/ApplicationProfile';
 import User from './../models/User';
-import Services from './../services/Services';
 import { AuthorityType } from '../models/AuthorityType';
 import WebRequest from '../models/commons/WebRequest';
 import { sendToWebsocket } from './../utils/websockets';
@@ -200,13 +199,5 @@ export default class BaseComponent extends Component<any, any> {
       console.debug(typeof this, "BACK TO LOGIN");
       this.validateLoginStatus();
     }
-
-
-  }
-
-
-
-  getServices = (): Services => {
-    return this.props.services;
   }
 }

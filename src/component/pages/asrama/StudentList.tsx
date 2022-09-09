@@ -1,23 +1,23 @@
-import React, { ChangeEvent } from 'react'
-import { withRouter } from 'react-router-dom';
+import { resolve } from 'inversify-react';
+import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
-import Student from '../../../models/Student';
-import StudentService from '../../../services/StudentService';
+import Class from '../../../models/Class';
 import Filter from '../../../models/commons/Filter';
 import WebResponse from '../../../models/commons/WebResponse';
-import Class from '../../../models/Class';
-import FormGroup from '../../form/FormGroup';
-import NavigationButtons from '../../navigation/NavigationButtons';
+import Student from '../../../models/Student';
+import StudentService from '../../../services/StudentService';
 import { tableHeader } from '../../../utils/CollectionUtil';
-import AnchorWithIcon from '../../navigation/AnchorWithIcon';
-import MasterDataService from '../../../services/MasterDataService';
-import BaseManagementPage from '../management/BaseManagementPage';
-import Spinner from '../../loader/Spinner';
+import { getInputReadableDate } from '../../../utils/DateUtil';
 import FilterPeriod from '../../form/FilterPeriod';
-import { getInputReadableDate, MONTHS } from '../../../utils/DateUtil';
+import FormGroup from '../../form/FormGroup';
+import Spinner from '../../loader/Spinner';
+import AnchorWithIcon from '../../navigation/AnchorWithIcon';
+import NavigationButtons from '../../navigation/NavigationButtons';
 import ToggleButton from '../../navigation/ToggleButton';
 import BaseComponent from './../../BaseComponent';
+
 class State {
   items: Student[] = [];
   classes: Class[] = [];
@@ -33,11 +33,11 @@ const defaultFieldsFilter = {
   'time<=d': getInputReadableDate(now)
 };
 class StudentList extends BaseComponent {
-  readonly state: State = new State();
-  readonly studentService: StudentService;
+  readonly state = new State();
+  @resolve(StudentService)
+  private studentService: StudentService;
   constructor(props) {
     super(props);
-    this.studentService = this.getServices().studentService;
     this.state.filter.limit = 10;
     this.state.filter.orderBy = 'student.user.fullName';
     this.state.filter.fieldsFilter = defaultFieldsFilter;

@@ -8,16 +8,17 @@ import BaseEntity from './../../../models/BaseEntity';
 import MasterDataService from './../../../services/MasterDataService';
 import WebRequest from '../../../models/commons/WebRequest';
 import WebResponse from '../../../models/commons/WebResponse';
+import { resolve } from 'inversify-react';
+
 class EditDeleteButton extends BaseComponent {
-  masterDataService: MasterDataService;
+  @resolve(MasterDataService)
+  private masterDataService: MasterDataService;
+
   constructor(props) {
     super(props, true);
-    this.masterDataService = this.getServices().masterDataService;
   }
 
-  get modelName(): string {
-    return this.props.modelName;
-  }
+  get modelName(): string { return this.props.modelName; }
   getRecord = (): BaseEntity => {
     const rec = this.props.record;
     if (!rec) {

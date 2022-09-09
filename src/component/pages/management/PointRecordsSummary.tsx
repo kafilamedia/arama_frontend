@@ -17,6 +17,8 @@ import Category from '../../../models/Category';
 import Class from '../../../models/Class';
 import { MONTHS, getInputReadableDate } from './../../../utils/DateUtil';
 import DropPointButtons from '../asrama/DropPointButtons';
+import { resolve } from 'inversify-react';
+
 class State {
   items: PointRecord[] = [];
   filter: Filter = new Filter();
@@ -42,21 +44,19 @@ const defaultFieldsFilter = {
 const MODEL_NAME = 'broken-rules';
 const MENU = 'asrama';
 class PointRecordSummary extends BaseManagementPage {
-  state: State = new State();
+  state = new State();
+  @resolve(StudentService)
   private studentService: StudentService;
   constructor(props) {
     super(props, MODEL_NAME, MENU, false);
 
-    this.studentService = this.getServices().studentService;
+    const filter = new Filter();
+    filter.limit = 10;
+    filter.fieldsFilter = defaultFieldsFilter;
+    filter.orderBy = 'time';
+    filter.orderType = 'desc';
 
-    const f = new Filter();
-
-    f.limit = 10;
-    f.fieldsFilter = defaultFieldsFilter;
-    f.orderBy = 'time';
-    f.orderType = 'desc';
-
-    this.state.filter = f;
+    this.state.filter = filter;
   }
 
   componentDidMount() {

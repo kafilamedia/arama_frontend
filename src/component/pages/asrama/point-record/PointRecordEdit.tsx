@@ -20,27 +20,29 @@ import { getAttachmentInfoFromFile } from '../../../../utils/ComponentUtil';
 import Student from '../../../../models/Student';
 import StudentSearchForm from '../../shared/StudentSearchForm';
 import ClassMemberSearchForm from '../../shared/ClassMemberSearchForm';
+import { resolve } from 'inversify-react';
 
 class State {
-  record: PointRecord = new PointRecord();
+  record = new PointRecord();
   categories: Category[] = [];
   pointsMap: Record<string, RulePoint[]> = {};
 
-  selectedCategoryId: string = "";
-  selectedPointId: string = "";
+  selectedCategoryId = 0;
+  selectedPointId = 0;
 
   attachment: AttachmentInfo | undefined;
+  editMode = false;
+  editModeRemoveImage = false;
 }
 class PointRecordEdit extends BasePage {
-
-  state: State = new State();
-  studentService: StudentService;
-  masterDataService: MasterDataService;
-  inputTimeRef = React.createRef<InputTime>();
+  state = new State();
+  @resolve(StudentService)
+  private studentService: StudentService;
+  @resolve(MasterDataService)
+  private masterDataService: MasterDataService;
+  private inputTimeRef = React.createRef<InputTime>();
   constructor(props) {
     super(props, "Edit Pelanggaran", true);
-    this.studentService = this.getServices().studentService;
-    this.masterDataService = this.getServices().masterDataService;
   }
 
   componentReady() {
@@ -57,9 +59,8 @@ class PointRecordEdit extends BasePage {
       this.studentService.getCategories,
       this.categoriesLoaded,
       this.showCommonErrorAlert
-    )
+    );
   }
-
   rulePointsLoaded = (categoryId: string, response: WebResponse) => {
     const pointsMap = this.state.pointsMap;
     pointsMap[categoryId.toString()] = response.result.items;
@@ -70,7 +71,7 @@ class PointRecordEdit extends BasePage {
       return;
     }
     const req: WebRequest = {
-      filter: { limit: 0, fieldsFilter: { 'category.id=': catId } },
+      filter: { limit: 0, fieldsFilter: { 'category.id=': catId }, orderBy: 'name' },
       modelName: 'rule-points',
     }
     this.commonAjax(
@@ -81,13 +82,16 @@ class PointRecordEdit extends BasePage {
       'asrama'
     )
   }
-
   checkPassedData = () => {
     if (this.props.location && this.props.location.state) {
+      const record = PointRecord.clone(this.props.location.state.record);
       this.setState({
-        record: PointRecord.clone(this.props.location.state.record),
+        editMode: true,
+        record,
+        selectedCategoryId: record.ruleCategoryId,
         attachment: this.props.location.state.attachment
       }, this.updateInput);
+      this.loadRulePoints(record.ruleCategoryId?.toString() ?? '');
     }
   }
   updateInput = () => {
@@ -101,7 +105,6 @@ class PointRecordEdit extends BasePage {
      * etc
      */
   }
-
   updateRecordField = (e: ChangeEvent) => {
     const { record } = this.state;
     const el = e.target as HTMLElement;
@@ -111,13 +114,13 @@ class PointRecordEdit extends BasePage {
     this.setState({ record });
   }
   setSelectedRulePoint = (p: RulePoint) => {
-    const record = this.state.record;
+    const { record, selectedCategoryId } = this.state;
     record.rulePointId = p.id;
     record.point = p.point;
     record.ruleName = p.name;
+    record.ruleCategoryId = selectedCategoryId;
     this.setState({ record });
   }
-
   updateTime = (h: number, m: number, s: number) => {
     const { record } = this.state;
     record.setTime(h, m, s);
@@ -130,12 +133,25 @@ class PointRecordEdit extends BasePage {
     this.setState({ pointRecord: record });
   }
   submit = () => {
-    this.commonAjax(
-      this.studentService.submitPointRecord,
-      this.recordSubmitted,
-      this.showCommonErrorAlert,
-      this.state.record, this.state.attachment
-    )
+    const { editMode, editModeRemoveImage } = this.state;
+    if (editMode) {
+      this.commonAjax(
+        this.studentService.updatePointRecord,
+        this.recordSubmitted,
+        this.showCommonErrorAlert,
+        this.state.record,
+        this.state.attachment,
+        editModeRemoveImage
+      )
+    } else {
+      this.commonAjax(
+        this.studentService.insertPointRecord,
+        this.recordSubmitted,
+        this.showCommonErrorAlert,
+        this.state.record,
+        this.state.attachment
+      )
+    }
   }
   recordSubmitted = (r: WebResponse) => {
     this.setState({ record: new PointRecord(), attachment: undefined, selectedCategoryId: '' }, () => {
@@ -143,12 +159,10 @@ class PointRecordEdit extends BasePage {
       this.scrollTop();
     })
   }
-
   validateInput = () => {
     const { classMemberId, rulePointId } = this.state.record;
     return (classMemberId && rulePointId)
   }
-
   onSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!this.validateInput()) {
@@ -159,6 +173,9 @@ class PointRecordEdit extends BasePage {
       .then(ok => {
         if (ok) { this.submit(); }
       })
+  }
+  onRemoveImageOptionChanged = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ editModeRemoveImage: e.target.checked });
   }
   removeImage = () => {
     this.showConfirmationDanger("Hapus gambar?")
@@ -199,7 +216,7 @@ class PointRecordEdit extends BasePage {
   }
 
   render() {
-    const { record, selectedCategoryId, pointsMap, attachment } = this.state;
+    const { editMode, editModeRemoveImage, record, selectedCategoryId, pointsMap, attachment } = this.state;
     const pictureUrl = attachment ? attachment.url : record.getPicture();
 
     return (
@@ -216,7 +233,6 @@ class PointRecordEdit extends BasePage {
             </div>
           </FormGroup>
         }
-
         <form onSubmit={this.onSubmit}>
           <FormGroup label="Pelanggaran">
             <p>{record.ruleName ?? '-'} {record.point ?? ''}</p>
@@ -232,7 +248,7 @@ class PointRecordEdit extends BasePage {
               })}
             </select>
             <p />
-            <select className="form-control" onChange={this.updateRulePoint} >
+            <select value={record.rulePointId} className="form-control" onChange={this.updateRulePoint} >
               <option value="">Pilih Pelanggaran</option>
               {
                 pointsMap[selectedCategoryId] &&
@@ -241,7 +257,7 @@ class PointRecordEdit extends BasePage {
                     <option key={`rp_ed_opt_${p.id}`} value={p.id}>
                       {p.name} ({p.point})
                     </option>
-                  )
+                  );
                 })
               }
             </select>
@@ -259,32 +275,42 @@ class PointRecordEdit extends BasePage {
             <textarea className="form-control" name="description" onChange={this.updateRecordField} value={record.description ?? ""} />
           </FormGroup>
           <FormGroup label="Gambar">
-            {pictureUrl ?
-              <>
-                <img src={pictureUrl} width={200} height={200} className="border border-dark" />
-                <p />
-                <AnchorWithIcon className="btn btn-danger btn-sm" onClick={this.removeImage} iconClassName="fas fa-times"  >Hapus Gambar</AnchorWithIcon>
-              </> :
-              <div>
-                <input onChange={this.updatePicture} type="file" accept="image/*" className="form-control" />
-              </div>
+            <div>
+              <img
+                src={pictureUrl ?? ''}
+                width={200}
+                height={200}
+                className="border border-dark mb-2"
+              />
+            </div>
+            {
+              attachment &&
+              <AnchorWithIcon className="btn btn-danger btn-sm" onClick={this.removeImage} iconClassName="fas fa-times"  >Hapus Gambar</AnchorWithIcon>
             }
+            <div>
+              <input
+                onChange={this.updatePicture}
+                type="file"
+                accept="image/*"
+                className="form-control"
+              />
+            </div>
           </FormGroup>
+          {
+            editMode &&
+            <FormGroup label="Hapus Gambar">
+              <input id="remove-img-check" type="checkbox" checked={editModeRemoveImage} onChange={this.onRemoveImageOptionChanged} />
+              <label htmlFor="remove-img-check" className="ml-2">Hapus Gambar</label>
+            </FormGroup>
+          }
           <FormGroup>
             <Link className="btn btn-dark" to="/asrama/pointsummary">Kembali</Link>
             <input type="submit" className="btn btn-primary ml-3" value="Submit" />
           </FormGroup>
-          {/* <FormGroup label="Siswa">
-                        <input type="text" className="form-control" value={record.student?.user?.name} />
-                    </FormGroup> */}
         </form>
       </div>
     )
   }
 }
 
-export default withRouter(
-  connect(
-    mapCommonUserStateToProps
-
-  )(PointRecordEdit))
+export default withRouter(connect(mapCommonUserStateToProps)(PointRecordEdit))

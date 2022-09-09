@@ -1,21 +1,18 @@
-
-import User from './../models/User';
-import WebRequest from '../models/commons/WebRequest';
-import { contextPath } from './../constant/Url';
-import { commonAjaxGetCalls, commonAjaxPostCalls, commonAjaxPublicGetCalls, commonAjaxPublicPostCalls } from './Promises';
-import WebResponse from '../models/commons/WebResponse';
-import { updateAccessToken } from './../middlewares/Common';
+import 'reflect-metadata';
+import { injectable } from 'inversify';
 import { AxiosResponse } from 'axios';
+import WebResponse from '../models/commons/WebResponse';
+import { contextPath } from './../constant/Url';
+import { updateAccessToken } from './../middlewares/Common';
+import { commonAjaxGetCalls, commonAjaxPublicGetCalls } from './Promises';
+
+@injectable()
 export default class UserService {
-  private static instance?: UserService;
-
-  static getInstance = () => UserService.instance ? UserService.instance : UserService.instance = new UserService();
-
   requestApplicationId = (callbackSuccess: (response: WebResponse) => any, callbackError: () => any) => {
-    const url = contextPath() + "api/public/asrama/config";
+    const url = contextPath() + 'api/public/asrama/config';
     commonAjaxGetCalls(url).then((data) => {
-      if (data.code != "00") {
-        alert("Error requesting app ID");
+      if (data.code != '00') {
+        alert('Error requesting app ID');
         return;
       }
       const response = data.rawAxiosResponse as AxiosResponse;
@@ -23,35 +20,33 @@ export default class UserService {
         throw new Error('Unauthenticated');
       }
       updateAccessToken(response);
-      console.debug("response header:", response.headers['access-token']);
+      console.debug('Header.AccessToken:', response.headers['access-token']);
       callbackSuccess(data);
     }).catch(e => {
-      console.error("ERROR requestApplicationId: ", e);
+      console.error('Req app id: ', e);
       callbackError();
     });
   }
   getLoggedUser = (callbackSuccess: (data) => any, callbackError: () => any) => {
-    const url = contextPath() + "api/user";
+    const url = contextPath() + 'api/user';
     commonAjaxGetCalls(url).then(callbackSuccess)
       .catch(e => {
-        console.error("ERROR requestApplicationId: ", e);
+        console.error('ERROR requestApplicationId: ', e);
         callbackError();
       });
   }
   requestApplicationIdNoAuth = (callbackSuccess: (response: WebResponse) => any, callbackError: () => any) => {
-    const url = contextPath() + "api/public/asrama/config";
+    const url = contextPath() + 'api/public/asrama/config';
     commonAjaxPublicGetCalls(url).then(data => {
-      if (data.code != "00") {
-        alert("Error requesting app ID");
+      if (data.code != '00') {
+        alert('Error requesting app ID');
         return;
       }
       callbackSuccess(data);
     }).catch(e => {
-      console.error("ERROR requestApplicationId No Auth: ", e);
-      //   alert("Error, please reload OR try again");
+      console.error('ERROR requestApplicationId No Auth: ', e);
+      //   alert('Error, please reload OR try again');
       callbackError();
-    })
-
+    });
   }
-
 }

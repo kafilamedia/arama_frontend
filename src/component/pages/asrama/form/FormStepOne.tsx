@@ -1,4 +1,4 @@
-
+import { resolve } from 'inversify-react';
 import React, { ChangeEvent } from 'react'
 import BaseComponent from '../../../BaseComponent';
 import { withRouter } from 'react-router-dom';
@@ -18,11 +18,12 @@ class State {
   loading = false;
 }
 class FormStepOne extends BaseComponent {
-  state: State = new State();
-  masterDataService: MasterDataService;
+  state = new State();
+
+  @resolve(MasterDataService)
+  private masterDataService: MasterDataService;
   constructor(props) {
     super(props, true);
-    this.masterDataService = this.getServices().masterDataService;
   }
   categoriesLoaded = (response: WebResponse) => {
     this.setState({ categories: response.result.items, categoriesLoaded: true }, () => {

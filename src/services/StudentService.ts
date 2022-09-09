@@ -1,22 +1,37 @@
-import { commonAjaxGetCalls, commonAjaxGetCallsWithBlob, commonAjaxPostCalls, commonAjaxPostCallsWithBlob } from './Promises';
+import 'reflect-metadata';
+import { injectable } from 'inversify';
 import { contextPath } from '../constant/Url';
-import PointRecord from './../models/PointRecord';
-import AttachmentInfo from './../models/settings/AttachmentInfo';
-import WebRequest from './../models/commons/WebRequest';
-import MedicalRecord from './../models/MedicalRecord';
 import WebResponse from '../models/commons/WebResponse';
 import Filter from './../models/commons/Filter';
+import WebRequest from './../models/commons/WebRequest';
+import MedicalRecord from './../models/MedicalRecord';
+import PointRecord from './../models/PointRecord';
+import AttachmentInfo from './../models/settings/AttachmentInfo';
+import { commonAjaxGetCalls, commonAjaxGetCallsWithBlob, commonAjaxPostCalls } from './Promises';
+
+@injectable()
 export default class StudentService {
-
-  private static instance?: StudentService;
-
-  static getInstance() {
-    if (this.instance == null) {
-      this.instance = new StudentService();
+  public updatePointRecord(req: PointRecord, attachmentInfo?: AttachmentInfo, removeImage = false) {
+    if (attachmentInfo) {
+      attachmentInfo.data = '';
     }
-    return this.instance;
+    const data = new FormData();
+    data.append('id', req.id?.toString() ?? '');
+    data.append('day', req.day?.toString() ?? '');
+    data.append('month', req.month?.toString() ?? '');
+    data.append('year', req.year?.toString() ?? '');
+    data.append('time', new Date(req.time ?? new Date()).getTime().toString());
+    data.append('description', req.description ?? '');
+    data.append('location', req.location ?? '');
+    data.append('rulePointId', req.rulePointId?.toString() ?? '');
+    data.append('classMemberId', req.classMemberId?.toString() ?? '');
+    data.append('removeImage', removeImage ? 'true' : 'false');
+    const imgFile = attachmentInfo?.file;
+    if (imgFile)
+      data.append('image', imgFile);
+    return commonAjaxPostCalls(contextPath('api/asrama/student-points/update'), data, 'multipart/form-data');
   }
-  public submitPointRecord(req: PointRecord, attachmentInfo?: AttachmentInfo) {
+  public insertPointRecord(req: PointRecord, attachmentInfo?: AttachmentInfo) {
     if (attachmentInfo) {
       attachmentInfo.data = '';
     }
@@ -42,7 +57,7 @@ export default class StudentService {
     return commonAjaxGetCalls(contextPath(`api/asrama/student-points${q}`));
   }
   public getCategories() {
-    return commonAjaxGetCalls(contextPath('api/admin/asrama/rule-categories'));
+    return commonAjaxGetCalls(contextPath('api/admin/asrama/rule-categories?order=name'));
   }
   public followUp = (pointRecordId: number): Promise<WebResponse> => {
     return commonAjaxPostCalls(contextPath('api/dormitorymanagement/followup'), {
@@ -96,5 +111,4 @@ export default class StudentService {
     const q = '?' + ids.map(id => `id=${id}`).join('&');
     return commonAjaxPostCalls(path + q);
   }
-
 }

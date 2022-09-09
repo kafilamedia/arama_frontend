@@ -19,7 +19,7 @@ import FormGroup from '../../form/FormGroup';
 import { doItLater } from '../../../utils/EventUtil';
 import AttachmentInfo from '../../../models/settings/AttachmentInfo';
 import BasePage from '../BasePage';
-
+import { resolve } from 'inversify-react';
 class State {
   student?: Student
   category?: Category;
@@ -30,11 +30,11 @@ class State {
 }
 class InputPointForm extends BasePage {
   state: State = new State();
-  studentService: StudentService;
+  @resolve(StudentService)
+  private studentService: StudentService;
   totalStep: number = 4;
   constructor(props) {
-    super(props, "Input Point Record", true);
-    this.studentService = this.getServices().studentService;
+    super(props, 'Input Point Record', true);
   }
   validateStudentData = () => {
     if (!this.props.location.state) {
@@ -85,7 +85,7 @@ class InputPointForm extends BasePage {
     record.classMemberId = this.state.student?.id;
     record.rulePointId = this.state.rulePoint?.id;
     this.commonAjax(
-      this.studentService.submitPointRecord,
+      this.studentService.insertPointRecord,
       this.recordSubmitted,
       this.showCommonErrorAlert,
       record,

@@ -7,8 +7,10 @@ import WebRequest from '../../../models/commons/WebRequest';
 import BasePage from './../BasePage';
 import './Management.css'
 import BaseEntity from './../../../models/BaseEntity';
+import { resolve } from 'inversify-react';
 
 export default abstract class BaseManagementPage extends BasePage {
+  @resolve(MasterDataService)
   protected masterDataService: MasterDataService;
   protected formRef: React.RefObject<Modal> = React.createRef();
 
@@ -16,18 +18,12 @@ export default abstract class BaseManagementPage extends BasePage {
     throw new Error("Empty Record Method is Not Implemented....");
   }
 
-  constructor(
-    props,
-    protected modelName: string,
-    protected menu: 'asrama' | 'management' | 'school-data',
-    protected overrideLoading: boolean = false
-  ) {
+  constructor(props,
+              protected modelName: string,
+              protected menu: 'asrama' | 'management' | 'school-data',
+              protected overrideLoading: boolean = false) {
     super(props, "Asrama KIIS", true);
-    if (modelName) {
-      this.modelName = modelName;
-    }
-    this.masterDataService = this.getServices().masterDataService;
-
+    this.modelName = modelName ?? this.modelName;
   }
   startLoading = (withProgress: boolean = false) => {
     if (this.overrideLoading) {

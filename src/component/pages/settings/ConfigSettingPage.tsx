@@ -6,16 +6,17 @@ import { mapCommonUserStateToProps } from './../../../constant/stores';
 import ApplicationProfile from './../../../models/ApplicationProfile';
 import ConfigurationService from './../../../services/ConfigurationService';
 import BasePage from './../BasePage';
+import { resolve } from 'inversify-react';
 
 class State {
   applicationProfile: ApplicationProfile = {}
 }
 class ConfigSettingPage extends BasePage {
   readonly state = new State();
+  @resolve(ConfigurationService)
   readonly configService: ConfigurationService;
   constructor(props) {
     super(props, "Konfigurasi", true);
-    this.configService = this.getServices().configurationService;
   }
 
   componentReady() {
@@ -41,7 +42,7 @@ class ConfigSettingPage extends BasePage {
     this.showInfo("Sukses, silakan muat ulang halaman");
   }
   render() {
-    const profile = this.state.applicationProfile;
+    const {applicationProfile: profile} = this.state;
     return (
       <div className="container-fluid section-body" >
         <h2>Konfigurasi</h2>

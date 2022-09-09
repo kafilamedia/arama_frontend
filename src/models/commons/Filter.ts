@@ -19,7 +19,7 @@ export default class Filter {
   }
   limit?: number = 5;
   page?: number = 0;
-  orderType?: string;
+  orderType?: 'desc' | 'asc';
   orderBy?: string;
   contains?: boolean;
   exacts?: boolean;

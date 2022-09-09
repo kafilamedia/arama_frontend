@@ -1,5 +1,6 @@
 
 import React, { ChangeEvent } from 'react'
+import { resolve } from 'inversify-react';
 import BaseComponent from '../../../BaseComponent';
 import MasterDataService from '../../../../services/MasterDataService';
 import { withRouter } from 'react-router-dom';
@@ -18,11 +19,11 @@ class State {
   loading = false;
 }
 class FormStepTwo extends BaseComponent {
-  masterDataService: MasterDataService;
-  state: State = new State();
+  @resolve(MasterDataService)
+  private masterDataService: MasterDataService;
+  state = new State();
   constructor(props) {
     super(props, true);
-    this.masterDataService = this.getServices().masterDataService;
   }
   startLoading = () => this.setState({ loading: true });
   endLoading = () => this.setState({ loading: false });

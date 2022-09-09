@@ -1,23 +1,23 @@
 
 import React, { Component, Fragment, RefObject } from 'react';
-import './App.css';
-import { withRouter } from 'react-router-dom'
-import * as actions from './redux/actionCreators'
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import SockJsClient from 'react-stomp';
-import * as url from './constant/Url';
-import { mapCommonUserStateToProps } from './constant/stores';
-import Loader from './component/loader/Loader';
+import './App.css';
 import Alert from './component/alert/Alert';
 import MainLayout from './component/layout/MainLayout';
-import WebResponse from './models/commons/WebResponse';
+import Loader from './component/loader/Loader';
 import Spinner from './component/loader/Spinner';
-import { performWebsocketConnection, setWebSocketUrl, registerWebSocketCallbacks } from './utils/websockets';
-import UserService from './services/UserService';
 import AnchorWithIcon from './component/navigation/AnchorWithIcon';
-import { time } from 'console';
-import { doItLater, updateFavicon } from './utils/EventUtil';
+import { mapCommonUserStateToProps } from './constant/stores';
+import * as url from './constant/Url';
+import WebResponse from './models/commons/WebResponse';
 import User from './models/User';
+import * as actions from './redux/actionCreators';
+import UserService from './services/UserService';
+import { doItLater, updateFavicon } from './utils/EventUtil';
+import { performWebsocketConnection, registerWebSocketCallbacks, setWebSocketUrl } from './utils/websockets';
+import { resolve } from 'inversify-react';
 
 class IState {
   loading: boolean = false;
@@ -30,17 +30,19 @@ class IState {
   errorAuthenticatingApp: boolean = false;
 }
 class App extends Component<any, IState> {
-  wsConnected: boolean = false;
-  loadings: number = 0;
-  alertTitle: String = "Info";
-  alertBody: any = null;
-  alertIsYesOnly: boolean = true;
-  alertIsError: boolean = false;
-  alertOnYesCallback: Function = function (e) { };
-  alertOnCancelCallback: Function = function (e) { };
-  wsUpdateHandler: Function | undefined = undefined;
-  clientRef: RefObject<SockJsClient> = React.createRef();
-  userService: UserService;
+  private wsConnected = false;
+  private loadings = 0;
+  private alertTitle = "Info";
+  private alertBody: any = null;
+  private alertIsYesOnly = true;
+  private alertIsError = false;
+  private alertOnYesCallback = function (e) { };
+  private alertOnCancelCallback = function (e) { };
+  private wsUpdateHandler: Function | undefined = undefined;
+  private clientRef = React.createRef<SockJsClient>();
+
+  @resolve(UserService)
+  private userService: UserService;
   // alertRef: RefObject<Alert> = React.createRef();
   alertCallback = {
     title: "Info", message: "Info", yesOnly: false,
@@ -50,8 +52,6 @@ class App extends Component<any, IState> {
   constructor(props: any) {
     super(props);
     this.state = new IState();
-    this.userService = this.props.services.userService;
-
     this.props.setMainApp(this);
   }
   refresh = () => { this.setState({ mainAppUpdated: new Date() }); }
@@ -77,9 +77,7 @@ class App extends Component<any, IState> {
     this.userService.requestApplicationIdNoAuth((response) => {
       this.props.setRequestId(response, this);
       this.setState({ errorAuthenticatingApp: false });
-    },
-      () =>
-        this.setState({ errorAuthenticatingApp: true }))
+    }, () => this.setState({ errorAuthenticatingApp: true }))
 
   }
   incrementLoadings() {

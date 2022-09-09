@@ -3,19 +3,21 @@ import App from './App'
 import configureStore from './redux/configureStore'
 import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
- 
-const Root = (props:any)  => {
+import { Provider as InvesifyProvider } from 'inversify-react';
+import { inversifyContainer } from './inversify.config';
 
-    const store = configureStore();
+const Root = (props: any) => {
+  const store = configureStore();
+  return (
+    <Provider store={store}>
+      <InvesifyProvider container={inversifyContainer} >
+        <HashRouter>
+          <App />
+        </HashRouter>
+      </InvesifyProvider>
+    </Provider>
 
-    return (
-        <Provider store={store}>
-            <HashRouter>
-                <App/>
-            </HashRouter>
-        </Provider>  
-
-    );
+  );
 }
 
 
