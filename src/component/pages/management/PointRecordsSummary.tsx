@@ -321,6 +321,7 @@ const ItemsList = (props: ItemProps) => {
                       types={optionTypes}
                       recordLoadedForDetail={props.recordLoadedForDetail}
                       recordLoaded={props.recordLoadedForEdit}
+                      recordDeleted={props.recordUpdated}
                       modelName={MODEL_NAME}
                       menu={MENU}
                     />
