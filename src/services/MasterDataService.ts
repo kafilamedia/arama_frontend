@@ -30,11 +30,11 @@ export default class MasterDataService {
     }
 
     insert = (modelName: string, menu: Menus, body: any) => {
-        const endpoint: string = contextPath().concat(`api/admin/${menu}/${modelName}`);
+        const endpoint = contextPath().concat(`api/admin/${menu}/${modelName}`);
         return commonAjaxPostCalls(endpoint, body);
     }
     update = (modelName: string, menu: Menus, id: any, body: any) => {
-        const endpoint: string = contextPath().concat(`api/admin/${menu}/${modelName}/${id}`);
+        const endpoint = contextPath().concat(`api/admin/${menu}/${modelName}/${id}`);
         return commonAjaxPutCalls(endpoint, body);
     }
     generateReport(request: WebRequest) {

@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { getStore } from '../redux/configureStore';
-export const commonAuthorizedHeader = (contentType = 'application-json') => {
+export const commonAuthorizedHeader = (contentType = 'application/json') => {
   return {
     'Content-Type': contentType,
     'requestId': getRequestId(),//'localStorage.getItem("requestId")',
