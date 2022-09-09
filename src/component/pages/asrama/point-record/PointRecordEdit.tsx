@@ -1,26 +1,24 @@
-import React, { ChangeEvent, FormEvent } from 'react'
-import BasePage from '../../BasePage';
-import { withRouter, Link } from 'react-router-dom';
+import { resolve } from 'inversify-react';
+import React, { ChangeEvent, FormEvent } from 'react';
 import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import PointRecord from '../../../../models/PointRecord';
-import FormGroup from '../../../form/FormGroup';
-import Class from '../../../../models/Class';
-import StudentService from '../../../../services/StudentService';
-import WebResponse from '../../../../models/commons/WebResponse';
 import Category from '../../../../models/Category';
 import WebRequest from '../../../../models/commons/WebRequest';
+import WebResponse from '../../../../models/commons/WebResponse';
+import PointRecord from '../../../../models/PointRecord';
 import RulePoint from '../../../../models/RulePoint';
-import MasterDataService from '../../../../services/MasterDataService';
-import InputTime from '../../../form/InputTime';
-import { parseDate } from '../../../../utils/DateUtil';
-import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import AttachmentInfo from '../../../../models/settings/AttachmentInfo';
-import { getAttachmentInfoFromFile } from '../../../../utils/ComponentUtil';
 import Student from '../../../../models/Student';
-import StudentSearchForm from '../../shared/StudentSearchForm';
+import MasterDataService from '../../../../services/MasterDataService';
+import StudentService from '../../../../services/StudentService';
+import { getAttachmentInfoFromFile } from '../../../../utils/ComponentUtil';
+import { parseDate } from '../../../../utils/DateUtil';
+import FormGroup from '../../../form/FormGroup';
+import InputTime from '../../../form/InputTime';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import BasePage from '../../BasePage';
 import ClassMemberSearchForm from '../../shared/ClassMemberSearchForm';
-import { resolve } from 'inversify-react';
 
 class State {
   record = new PointRecord();
