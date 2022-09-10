@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, FormEvent } from 'react'
 import BaseComponent from '../../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -12,7 +12,7 @@ import InputTime from '../../../form/InputTime';
 import { getAttachmentInfoFromFile } from '../../../../utils/ComponentUtil';
 import AttachmentInfo from '../../../../models/settings/AttachmentInfo';
 class State {
-  pointRecord: PointRecord = new PointRecord();
+  pointRecord = new PointRecord();
 }
 class FormStepThree extends BaseComponent<any, State> {
   state = new State();
@@ -20,7 +20,8 @@ class FormStepThree extends BaseComponent<any, State> {
     super(props, true);
   }
 
-  onSubmit = () => {
+  onSubmit = (e: FormEvent) => {
+    e.preventDefault();
     this.showConfirmation("Submit Data?")
       .then(ok => {
         if (ok) {
@@ -45,9 +46,9 @@ class FormStepThree extends BaseComponent<any, State> {
     this.setState({ pointRecord });
   }
   updateTime = (h: number, m: number, s: number) => {
-    const pointRecord = this.state.pointRecord;
+    const { pointRecord } = this.state;
     pointRecord.setTime(h, m, s);
-    this.setState({ pointRecord: pointRecord });
+    this.setState({ pointRecord });
   }
   setAttachment = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
@@ -66,8 +67,11 @@ class FormStepThree extends BaseComponent<any, State> {
     const { pointRecord } = this.state;
     const attachment = this.getAttachment();
     return (
-      <form onSubmit={(e) => { e.preventDefault(); this.onSubmit() }}>
-        <FormGroup label="Category">{rulePoint.ruleCategoryName} - {rulePoint.name} <span className="badge badge-dark">{rulePoint.point}</span></FormGroup>
+      <form onSubmit={this.onSubmit}>
+        <FormGroup label="Category">
+          <span>{rulePoint.ruleCategoryName} - {rulePoint.name}</span>
+          <span className="badge badge-dark">{rulePoint.point}</span>
+        </FormGroup>
         <FormGroup label="Date">
           <input type="date" className="form-control" onChange={this.updateDate} name="date" value={pointRecord.dateString()} />
         </FormGroup>
@@ -80,16 +84,40 @@ class FormStepThree extends BaseComponent<any, State> {
         <FormGroup label="Picture">
           {attachment ?
             <>
-              <img style={{ marginRight: 10 }} className="border border-dark" src={attachment.url} width={100} height={100} />
-              <AnchorWithIcon iconClassName="fas fa-times" className="btn btn-danger" onClick={this.removeAttachment}></AnchorWithIcon>
+              <img
+                className="border border-dark mr-2"
+                src={attachment.url} width={100} height={100} />
+              <AnchorWithIcon
+                iconClassName="fas fa-times"
+                className="btn btn-danger"
+                onClick={this.removeAttachment}
+              />
             </>
-            : <input type="file" accept={"image/*"} className="form-control" onChange={this.setAttachment} name="attachment" />
+            :
+            <input
+              type="file"
+              accept="image/*"
+              className="form-control"
+              onChange={this.setAttachment}
+              name="attachment"
+            />
           }
         </FormGroup>
         <FormGroup label="Description">
-          <textarea value={pointRecord.description ?? ''} onChange={this.updatePointRecord} name="description" className="form-control"></textarea>
+          <textarea
+            value={pointRecord.description ?? ''}
+            onChange={this.updatePointRecord}
+            name="description"
+            className="form-control"
+          />
         </FormGroup>
-        <AnchorWithIcon className="btn btn-secondary float-left" iconClassName="fas fa-arrow-left" onClick={this.props.onBack} >Back</AnchorWithIcon>
+        <AnchorWithIcon
+          className="btn btn-secondary float-left"
+          iconClassName="fas fa-arrow-left"
+          onClick={this.props.onBack}
+        >
+          Back
+        </AnchorWithIcon>
         <button className="btn btn-success float-right" >Submit</button>
       </form>
     )

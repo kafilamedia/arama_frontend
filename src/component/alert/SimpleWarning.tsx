@@ -1,14 +1,13 @@
 
-import React, { Component } from 'react';
-export default class SimpleWarning extends Component<any, any>
-{
+import React, { Component, CSSProperties } from 'react';
+const SimpleWarning = (props: { children?: any, show?: boolean, style?: CSSProperties, className?: string }) => {
 
-    render() {
-        if (this.props.show == false) return null;
-        return (
-            <div style={this.props.style} className={"alert alert-warning "+(this.props.className??"")}>
-                {this.props.children??"Error Occured"}
-            </div>
-        )
-    }
+    if (props.show == false) return null;
+    return (
+        <div style={props.style} className={"alert alert-warning " + (props.className ?? "")}>
+            {props.children ?? "Error Occured"}
+        </div>
+    )
 }
+
+export default SimpleWarning;

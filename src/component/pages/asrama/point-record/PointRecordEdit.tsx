@@ -180,7 +180,6 @@ class PointRecordEdit extends BasePage<any, State> {
       .then(ok => {
         if (ok) {
           const { record } = this.state;
-          record.pictures = [];
           this.setState({ record, attachment: undefined });
         }
       })

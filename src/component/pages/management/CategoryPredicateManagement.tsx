@@ -14,20 +14,19 @@ import NavigationButtons from '../../navigation/NavigationButtons';
 import CategoryPredicate from './../../../models/CategoryPredicate';
 import BaseManagementPage from './BaseManagementPage';
 import EditDeleteButton from './EditDeleteButton';
+
 class State {
   items: CategoryPredicate[] = [];
-  filter: Filter = new Filter();
-  totalData: number = 0;
-  record: CategoryPredicate = new CategoryPredicate();
+  filter = new Filter();
+  totalData = 0;
+  record = new CategoryPredicate();
   categories: Category[] = [];
-  categoriesLoaded: boolean = false;
-
+  categoriesLoaded = false;
 }
 const MODEL_NAME = 'rule-category-predicates';
 const MENU = 'asrama';
 class CategoryPredicateManagement extends BaseManagementPage<any, State> {
   state = new State();
-
   constructor(props) {
     super(props, MODEL_NAME, MENU);
     this.state.filter.limit = 10;
@@ -38,11 +37,12 @@ class CategoryPredicateManagement extends BaseManagementPage<any, State> {
     // console.debug("RECORD: ", this.state.record);
     this.showConfirmation("Submit Data?")
       .then(ok => {
+        const { record } = this.state;
         if (!ok) return;
-        if (this.state.record.id ?? 0 > 0) {
-          this.callApiUpdate(this.state.record.id, this.state.record);
+        if (record.id ?? 0 > 0) {
+          this.callApiUpdate(record.id, record);
         } else {
-          this.callApiInsert(this.state.record);
+          this.callApiInsert(record);
         }
       })
   }
@@ -59,7 +59,7 @@ class CategoryPredicateManagement extends BaseManagementPage<any, State> {
     this.setState({ categories: [], categoriesLoaded: true }, this.resetForm);
   }
   loadCategories = () => {
-    const filter: Filter = new Filter();
+    const filter = new Filter();
     filter.limit = 0;
     const req: WebRequest = {
       filter: filter,
@@ -74,7 +74,7 @@ class CategoryPredicateManagement extends BaseManagementPage<any, State> {
     )
   }
 
-  emptyRecord = (): any => {
+  emptyRecord = () => {
     const record = new CategoryPredicate();
     if (this.state.categories.length > 0) {
       record.ruleCategoryId = this.state.categories[0].id;
@@ -83,9 +83,8 @@ class CategoryPredicateManagement extends BaseManagementPage<any, State> {
   }
 
   render() {
-    const filter: Filter = this.state.filter;
-    const categories: Category[] = this.state.categories;
-    if (this.state.categoriesLoaded && categories.length == 0) {
+    const { items, filter, categories, categoriesLoaded, record, totalData } = this.state;
+    if (categoriesLoaded && categories.length == 0) {
       return (
         <div className="container-fluid section-body">
           <h2>Kategori belum ada</h2>
@@ -97,8 +96,15 @@ class CategoryPredicateManagement extends BaseManagementPage<any, State> {
       <div className="container-fluid section-body">
         <h2>Predikat Rapor</h2>
         <hr />
-        <RecordForm categories={categories} reloadCategories={this.loadCategories} formRef={this.formRef} resetForm={this.resetForm} onSubmit={this.onSubmit}
-          record={this.state.record} updateRecordProp={this.updateRecordProp} />
+        <RecordForm
+          categories={categories}
+          reloadCategories={this.loadCategories}
+          formRef={this.formRef}
+          resetForm={this.resetForm}
+          onSubmit={this.onSubmit}
+          record={record}
+          updateRecordProp={this.updateRecordProp}
+        />
         <form onSubmit={this.reload}>
           <FormGroup label="Cari">
             <div className="input-group">
@@ -121,19 +127,22 @@ class CategoryPredicateManagement extends BaseManagementPage<any, State> {
             <input className="btn btn-primary btn-sm" type="submit" value="Submit" />
           </FormGroup>
         </form>
-        <NavigationButtons activePage={filter.page ?? 0} limit={filter.limit ?? 5} totalData={this.state.totalData}
-          onClick={this.loadAtPage} />
+        <NavigationButtons
+          activePage={filter.page ?? 0}
+          limit={filter.limit ?? 5}
+          totalData={totalData}
+          onClick={this.loadAtPage}
+        />
         <ItemsList
           recordLoaded={this.oneRecordLoaded}
           recordDeleted={this.loadItems}
-          startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} items={this.state.items} />
+          startingNumber={(filter.page ?? 0) * (filter.limit ?? 10)} items={items} />
       </div>
     )
   }
 
 }
 const ItemsList = (props: { startingNumber: number, items: CategoryPredicate[], recordLoaded(item: any), recordDeleted() }) => {
-
   return (
     <div style={{ overflow: 'auto' }}>
       <table className="table table-striped">
@@ -170,7 +179,6 @@ const RecordForm = (props: {
   resetForm(): any, onSubmit(): any,
   record: CategoryPredicate, reloadCategories(): any
 }) => {
-
   return (
     <form className="record-form mb-3" onSubmit={(e) => { e.preventDefault(); props.onSubmit() }}>
       <Modal show={false} ref={props.formRef} toggleable={true} title="Record Form" >
@@ -192,7 +200,7 @@ const RecordForm = (props: {
           <div className="input-group">
             <select required value={props.record.ruleCategoryId} className="form-control-sm" name="ruleCategoryId" onChange={props.updateRecordProp} >
               {props.categories.map((c) => {
-                return <option key={"cat-" + c.id} value={c.id}>{c.name}</option>
+                return <option key={`cat-${c.id}`} value={c.id}>{c.name}</option>
               })}
             </select>
             <div className="input-group-append">

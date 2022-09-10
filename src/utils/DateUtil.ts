@@ -1,19 +1,18 @@
-import { join } from "path";
 import { twoDigits } from './StringUtil';
 
 export const MONTHS = [
-    "Januari",
-    "Februari",
-    "Maret",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember"
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
 ]
 
 const leapMonths = [ 31, (  29  ), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
@@ -33,7 +32,7 @@ export const getInputReadableDate = (date:Date) :string => {
     const year = date.getFullYear();
 
     const arr = [year, twoDigits(date.getMonth()+1), twoDigits(date.getDate())];
-    return arr.join("-");
+    return arr.join('-');
 }
 export function addDays(date:Date, days:number) :Date{
     const result:Date = new Date(date);
@@ -43,7 +42,7 @@ export function addDays(date:Date, days:number) :Date{
   export const getDiffDays = (a:Date, b:Date) : number => {
     // Discard the time and time-zone information.
 
-    console.debug("DIFF DATE ",a," vs ", b);
+    console.debug('DIFF DATE ',a,' vs ', b);
     const _MS_PER_DAY = 1000 * 60 * 60 * 24;
     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()); 
@@ -70,7 +69,7 @@ export const timerString = (inputSeconds:number ) => {
     }
     seconds = totalSeconds; 
 
-    return  twoDigits(hour)+":"+twoDigits(Math.floor(minutes))+":"+twoDigits(seconds);
+    return  twoDigits(hour)+':'+twoDigits(Math.floor(minutes))+':'+twoDigits(seconds);
 }
 
 

@@ -2,7 +2,7 @@
 import BaseEntity from './BaseEntity';
 import Student from './Student';
 export default class RuleViolation extends BaseEntity {
-    name: string = "";
+    name = '';
     description: string | undefined;
     student: Student | undefined;
     classMemberId?: number;
@@ -11,6 +11,6 @@ export default class RuleViolation extends BaseEntity {
     classLevel?: number;
     classLetter?: string;
     schoolName?: string;
-    point: number = 0;
+    point = 0;
 
 }

@@ -1,7 +1,6 @@
-import { createStore, applyMiddleware } from 'redux'
-import { initialState, rootReducer } from './reducers' 
-import * as userMiddleware from '../middlewares/UserMiddleware' 
-import * as realtimeChatMiddleware from '../middlewares/RealtimeChatMiddleware' 
+import { applyMiddleware, createStore } from 'redux';
+import * as userMiddleware from '../middlewares/UserMiddleware';
+import { initialState, rootReducer } from './reducers';
  
 let store = null;
 export const getStore = () => {
@@ -18,11 +17,6 @@ export const configureStore = () => {
             userMiddleware.performLogoutMiddleware,  
             userMiddleware.getLoggedUserMiddleware, 
             userMiddleware.setLoggedUserMiddleware,
- 
-
-            /*realtime chat*/
-            realtimeChatMiddleware.storeChatMessageLocallyMiddleware,
-            realtimeChatMiddleware.getMessagesMiddleware,
 
         )
     );

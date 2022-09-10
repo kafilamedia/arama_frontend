@@ -1,5 +1,5 @@
 
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, FormEvent } from 'react'
 import { resolve } from 'inversify-react';
 import BaseComponent from '../../../BaseComponent';
 import MasterDataService from '../../../../services/MasterDataService';
@@ -58,21 +58,21 @@ class FormStepTwo extends BaseComponent<any, State> {
     super.componentDidMount();
     this.loadRulePoints();
   }
-  onSubmit = () => {
+  onSubmit = (e: FormEvent) => {
+    e.preventDefault();
     this.props.onSubmit();
   }
-  setRulePoint = (r: RulePoint) => {
-    this.props.setRulePoint(r);
+  setRulePoint = (rulePoint: RulePoint) => {
+    this.props.setRulePoint(rulePoint);
   }
-  updateRulePoint = (e: ChangeEvent) => {
-    const select = (e.target as HTMLSelectElement);
+  updateRulePoint = (e: ChangeEvent<HTMLSelectElement>) => {
+    const select = e.target;
     const filtered = this.state.rulePoints.filter((r) => r.id?.toString() == select.value)
     if (filtered.length == 0) return;
     this.setRulePoint(filtered[0]);
   }
   render() {
     const category = this.getCategory();
-
     const { rulePoints, loading } = this.state;
 
     if (null == category) {
@@ -85,11 +85,11 @@ class FormStepTwo extends BaseComponent<any, State> {
       return <SimpleError>Rule Points for {category.name} not found</SimpleError>
     }
     return (
-      <form onSubmit={e => { e.preventDefault(); this.onSubmit() }} >
+      <form onSubmit={this.onSubmit} >
         <FormGroup label="Category" children={category.name} />
         <FormGroup label="Name">
           <select className="form-control" onChange={this.updateRulePoint} value={this.props.rulePoint ? this.props.rulePoint.id : null} >
-            {rulePoints.map((r: RulePoint) => {
+            {rulePoints.map((r) => {
               return <option key={`select-rulePoint-${r.id}`} value={r.id}>{r.name}</option>
             })}
           </select>

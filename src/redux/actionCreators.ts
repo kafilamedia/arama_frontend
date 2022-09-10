@@ -9,76 +9,13 @@ const usedHost = url.contextPath();
 const apiEntityBaseUrl = usedHost + "api/app/entity/"
 const apiAdmin = usedHost + "api/app/admin/"
 
-export const getEntityProperty = (entityName, app) => {
-  app.startLoading();
-  let requested = {
-    type: types.GET_ENTITY_PROPERTY,
-    payload: {
-      entity: entityName
-    },
-    meta: {
-      type: types.GET_ENTITY_PROPERTY,
-      url: apiEntityBaseUrl.concat("config"),
-      app: app,
-    }
-  };
-  return requested;
-}
-
-
-export const getManagementMenus = (app) => {
-  app.startLoading();
-  let requested = {
-    type: types.GET_MANAGEMENT_MENUS,
-    payload: {},
-    meta: {
-      type: types.GET_MANAGEMENT_MENUS,
-      url: apiEntityBaseUrl.concat("managementpages"),
-      app: app,
-    }
-  };
-  return requested;
-}
-
-
-export const setRequestId = (data: WebResponse, app) => {
-
-  const ret = {
+export const setRequestId = (data: WebResponse, app) => ({
+  type: types.SET_REQUEST_ID,
+  payload: { loginStatus: data.loggedIn, referer: app, ...data },
+  meta: {
     type: types.SET_REQUEST_ID,
-    payload: { loginStatus: data.loggedIn, referer: app, ...data },
-    meta: {
-      type: types.SET_REQUEST_ID,
-    }
-  };
-  // console.debug("setRequestId: ", ret);
-  return ret;
-}
-
-export const getMessageList = (app) => {
-  app.startLoading();
-  return {
-    type: types.GET_MESSAGE,
-    payload: {},
-    meta: {
-      type: types.GET_MESSAGE, app: app,
-      url: apiAdmin.concat("getmessages")
-    }
-  };
-}
-
-export const storeMessageLocally = (messages) => {
-
-  return {
-    type: types.STORE_MESSAGE,
-    payload: {
-      entities: messages
-    },
-    meta: {
-      type: types.STORE_MESSAGE,
-    }
-  };
-}
-
+  }
+});
 
 export const performLogout = (app) => {
   app.startLoading();
@@ -110,40 +47,26 @@ export const getLoggedUser = (app) => {
   let request = {
     type: types.GET_LOGGED_USER,
     payload: {},
-    meta: { type: types.GET_LOGGED_USER, url: contextPath().concat("api/user"), app: app }
+    meta: { type: types.GET_LOGGED_USER, url: contextPath('api/user'), app }
   };
   return request;
 }
 
-export const setLoggedUser = (user: User) => {
-  let request = {
-    type: types.SET_LOGGED_USER,
-    payload: Object.assign(new User(), user),
-    meta: { type: types.SET_LOGGED_USER }
-  };
-  return request;
-}
+export const setLoggedUser = (user: User) => ({
+  type: types.SET_LOGGED_USER,
+  payload: Object.assign(new User(), user),
+  meta: { type: types.SET_LOGGED_USER }
+});
 
-export const setApplicationProfile = (applicationProfile: ApplicationProfile) => {
-
-  let request = {
-    type: types.SET_APPLICATION_PROFILE,
-    payload: { applicationProfile: applicationProfile },
-    meta: { type: types.SET_APPLICATION_PROFILE }
-  };
-  return request;
-}
-
-export const removeEntity = () => ({
-  type: types.REMOVE_SHOP_ENTITY,
-  payload: {},
-  meta: { type: types.REMOVE_SHOP_ENTITY }
-})
-
+export const setApplicationProfile = (applicationProfile: ApplicationProfile) => ({
+  type: types.SET_APPLICATION_PROFILE,
+  payload: { applicationProfile },
+  meta: { type: types.SET_APPLICATION_PROFILE }
+});
 
 export const setMainApp = (mainApp: any) => ({
   type: types.SET_MAIN_APP,
   payload: mainApp,
   meta: { type: types.SET_MAIN_APP }
-})
+});
 

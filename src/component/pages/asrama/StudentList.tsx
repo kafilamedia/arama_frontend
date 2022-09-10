@@ -132,7 +132,7 @@ class StudentList extends BaseComponent<any, State> {
   render() {
     const { filter, classes, loading, totalData } = this.state;
     const { fieldsFilter } = filter;
-    const defaultClass = { id: '', level: 'Semua Kelas' } as Class;
+    const defaultClass = { id: 0, level: 'Semua Kelas' } as Class;
     const selectedClassId = fieldsFilter['classLevel.id='] ?? '';
     const showPointRecord = fieldsFilter['with_point_record'] === `${true}`;
     return (

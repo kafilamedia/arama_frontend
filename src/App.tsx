@@ -19,17 +19,17 @@ import { doItLater, updateFavicon } from './utils/EventUtil';
 import { performWebsocketConnection, registerWebSocketCallbacks, setWebSocketUrl } from './utils/websockets';
 import { resolve } from 'inversify-react';
 
-class IState {
-  loading: boolean = false;
-  loadingPercentage: number = 0;
+class State {
+  loading = false;
+  loadingPercentage  = 0;
   requestId?: string;
-  mainAppUpdated: Date = new Date();
-  showAlert: boolean = false;
-  realtime: boolean = false;
-  appIdStatus: string = "Loading App Id";
-  errorAuthenticatingApp: boolean = false;
+  mainAppUpdated = new Date();
+  showAlert  = false;
+  withProgress = false;
+  appIdStatus = "Loading App Id";
+  errorAuthenticatingApp = false;
 }
-class App extends Component<any, IState> {
+class App extends Component<any, State> {
   private wsConnected = false;
   private loadings = 0;
   private alertTitle = "Info";
@@ -39,7 +39,6 @@ class App extends Component<any, IState> {
   private alertOnYesCallback = function (e) { };
   private alertOnCancelCallback = function (e) { };
   private wsUpdateHandler: Function | undefined = undefined;
-  private clientRef = React.createRef<SockJsClient>();
 
   @resolve(UserService)
   private userService: UserService;
@@ -51,7 +50,7 @@ class App extends Component<any, IState> {
 
   constructor(props: any) {
     super(props);
-    this.state = new IState();
+    this.state = new State();
     this.props.setMainApp(this);
   }
   refresh = () => { this.setState({ mainAppUpdated: new Date() }); }
@@ -91,15 +90,15 @@ class App extends Component<any, IState> {
     }
   }
 
-  startLoading(realtime: boolean = false) {
+  startLoading(withProgress: boolean = false) {
     this.incrementLoadings();
-    this.setState({ loading: true, realtime: realtime });
+    this.setState({ loading: true, withProgress });
   }
 
   endLoading() {
     this.decrementLoadings();
     if (this.loadings == 0) {
-      if (this.state.realtime) {
+      if (this.state.withProgress) {
         this.setState({ loadingPercentage: 100 }, this.smoothEndLoading);
       } else {
         this.setState({ loading: false, loadingPercentage: 0 });
@@ -167,15 +166,15 @@ class App extends Component<any, IState> {
   }
 
   initWebsocket = () => {
-    setWebSocketUrl(url.contextPath() + 'realtime-app');
+    setWebSocketUrl(url.contextPath('withProgress-app'));
     registerWebSocketCallbacks({
-      subscribeUrl: "/wsResp/progress/" + this.props.requestId,
+      subscribeUrl: `/wsResp/progress/${this.props.requestId}`,
       callback: this.handleProgress  //must use lambda
     },
-      {
-        subscribeUrl: "/wsResp/" + this.props.requestId + "/update",
-        callback: (response) => this.handleWsUpdate(response)
-      });
+    {
+      subscribeUrl: `/wsResp/${this.props.requestId}/update`,
+      callback: (response) => this.handleWsUpdate(response)
+    });
     performWebsocketConnection();
     this.wsConnected = true;
   }
@@ -207,7 +206,7 @@ class App extends Component<any, IState> {
     }
     return (
       <Fragment>
-        <Loading realtime={this.state.realtime} loading={this.state.loading} loadingPercentage={this.state.loadingPercentage} />
+        <Loading withProgress={this.state.withProgress} loading={this.state.loading} loadingPercentage={this.state.loadingPercentage} />
         {this.state.showAlert ?
           <Alert title={this.alertTitle}
             isError={this.alertIsError}
@@ -217,7 +216,7 @@ class App extends Component<any, IState> {
           >{this.alertBody}</Alert> :
           null}
         <MainLayout />
-        {/* <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/progress/' + this.props.requestId]}
+        {/* <SockJsClient url={usedHost + 'withProgress-app'} topics={['/wsResp/progress/' + this.props.requestId]}
 
           onMessage={(msg: WebResponse) => { this.handleMessage(msg) }}
           ref={this.clientRef} /> */}
@@ -229,7 +228,7 @@ class App extends Component<any, IState> {
 function Loading(props) {
   if (props.loading == true) {
     return (
-      <Loader realtime={props.realtime} progress={props.loadingPercentage} text="Please wait..." type="loading" />
+      <Loader withProgress={props.withProgress} progress={props.loadingPercentage} text="Please wait..." type="loading" />
     );
   }
   return null;

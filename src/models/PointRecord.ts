@@ -1,11 +1,9 @@
 
-import BaseEntity from './BaseEntity';
+import { contextPath } from './../constant/Url';
 import { parseDate } from './../utils/DateUtil';
 import { twoDigits as td } from './../utils/StringUtil';
-import RulePoint from './RulePoint';
+import BaseEntity from './BaseEntity';
 import Student from './Student';
-import Pictures from './Pictures';
-import { contextPath } from './../constant/Url';
 export default class PointRecord extends BaseEntity {
   setTime = (h: number, m: number, s: number) => {
     this.time = new Date();
@@ -36,9 +34,7 @@ export default class PointRecord extends BaseEntity {
   student?: Student;
   dropped?: Date;
 
-  pictures: Pictures[] = [];
-
-  // reponse fields
+  // response fields
   ruleCategoryName?: string;
   ruleName?: string;
   studentName?: string;
@@ -57,13 +53,12 @@ export default class PointRecord extends BaseEntity {
     return parseDate(this.dateString());
   }
 
-  getTimestamp = (): string => {
-
+  getTimestamp = () => {
     const d = this.getDate();
     const day = DAYS[d.getDay()];
-    return day + ", " + [
+    return day + ', ' + [
       td(d.getDate()), td(d.getMonth() + 1), d.getFullYear()
-    ].join("/") + " " + this.time;
+    ].join('/') + ' ' + this.time;
   }
 
   public static clone = (p: PointRecord) => {
@@ -74,5 +69,5 @@ export default class PointRecord extends BaseEntity {
 }
 
 const DAYS = [
-  "Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
+  'Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
 ]

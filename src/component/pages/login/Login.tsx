@@ -8,11 +8,11 @@ import { mapCommonUserStateToProps } from './../../../constant/stores';
 import BaseComponent from './../../BaseComponent';
 import Spinner from './../../loader/Spinner';
 import './Login.css';
-class IState {
+class State {
   loading = false; email = ""; editPassword = "";
 }
-class Login extends BaseComponent<any, IState> {
-  state: IState = new IState();
+class Login extends BaseComponent<any, State> {
+  state: State = new State();
   constructor(props: any) {
     super(props, false);
   }

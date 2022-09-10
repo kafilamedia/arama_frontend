@@ -28,7 +28,6 @@ import CategoryPredicateManagement from '../pages/management/CategoryPredicateMa
 import RuleViolationManagement from '../pages/management/RuleViolationManagement';
 
 class ApplicationContent extends BaseComponent<any, any> {
-
   constructor(props: any) {
     super(props, false);
   }
@@ -88,7 +87,6 @@ class ApplicationContent extends BaseComponent<any, any> {
 }
 
 const Setting = (props) => {
-
   return (
     <Switch>
       <Route exact path="/settings/config" render={
@@ -98,7 +96,6 @@ const Setting = (props) => {
   )
 }
 const Report = (props) => {
-
   return (
     <Switch>
       <Route exact path="/report/studentreport" render={
@@ -108,7 +105,6 @@ const Report = (props) => {
   )
 }
 const Management = (props) => {
-
   return (
     <Switch>
       <Route exact path="/management" render={
@@ -137,7 +133,6 @@ const Management = (props) => {
 }
 
 const Asrama = (proos) => {
-
   return (
     <Switch>
       <Route exact path="/asrama/studentlist" render={
@@ -160,7 +155,6 @@ const Asrama = (proos) => {
   )
 }
 const LoginRoute = (props) => {
-
   return (
     <Switch>
       <Route exact path="/login" render={

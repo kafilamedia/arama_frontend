@@ -100,8 +100,6 @@ class FormStepOne extends BaseComponent<any, State> {
           Next
         </AnchorWithIcon>
       </form >
-
-
     )
   }
 }

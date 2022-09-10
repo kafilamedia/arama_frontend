@@ -7,7 +7,6 @@ import StudentService from './../../../../services/StudentService';
 import Student from './../../../../models/Student';
 import { tableHeader } from './../../../../utils/CollectionUtil';
 import WebResponse from './../../../../models/commons/WebResponse';
-import Class from './../../../../models/Class';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import { resolve } from 'inversify-react';
 
@@ -27,7 +26,6 @@ class FollowUpReminder extends BasePage<any, State> {
     super(props, "Follow Up Pelanggaran", true);
   }
   componentReady() {
-    // if (this.isAdmin()) return;
     this.loadReminder();
   }
   loadReminder = () => {
@@ -37,8 +35,8 @@ class FollowUpReminder extends BasePage<any, State> {
       console.error
     )
   }
-  recordsLoaded = (r: WebResponse) => {
-    this.setState({ followUpInfos: r.items });
+  recordsLoaded = (resp: WebResponse) => {
+    this.setState({ followUpInfos: resp.result.items });
   }
 
   render() {
@@ -52,11 +50,12 @@ class FollowUpReminder extends BasePage<any, State> {
           {tableHeader("No", "Siswa", "Kelas", "Poin", "Penanganan", "Opsi")}
           <tbody>
             {this.state.followUpInfos.map((info, i) => {
+              const { student } = info;
               return (
                 <tr key={`f-i-${i}`}>
                   <td>{i + 1}</td>
                   <td>{info.student.user?.fullName}</td>
-                  <td>{Class.studentClassString(info.student)}</td>
+                  <td>{student.classLevel}{student.classLetter} {student.schoolName}</td>
                   <td>{info.TOTAL_POINT}</td>
                   <td>{info.FOLLOW_UP_COUNT}</td>
                   <td>

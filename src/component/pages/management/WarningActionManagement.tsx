@@ -118,7 +118,7 @@ const ItemsList = (props: ItemProps) => {
                 <td>{item.classLevel}{item.classLetter} {item.schoolName}</td>
                 <td>{item.name}</td>
                 <td>{item.description}</td>
-                <td>{item.created_at}</td>
+                <td>{item.createdAt}</td>
                 <td>{props.isAdmin &&
                   <EditDeleteButton
                     recordLoaded={props.recordLoaded}

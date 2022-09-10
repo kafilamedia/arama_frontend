@@ -169,7 +169,7 @@ class PointRecordSummary extends BaseManagementPage<any, State> {
         </div>
       )
     }
-    const defaultClass: Class = { id: '', level: 'Semua Kelas', sekolah: {} };
+    const defaultClass = { id: 0, level: 'Semua Kelas'} as Class;
     const selectedClassId = filter.fieldsFilter['classMember.classLevel.id='] ? filter.fieldsFilter['classMember.classLevel.id='] : '';
 
     return (

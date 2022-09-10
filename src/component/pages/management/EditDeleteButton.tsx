@@ -17,9 +17,9 @@ class EditDeleteButton extends BaseComponent<any, any> {
     super(props, true);
   }
 
-  get modelName(): string { return this.props.modelName; }
-  getRecord = (): BaseEntity => {
-    const rec = this.props.record;
+  get modelName() { return this.props.modelName as string; }
+  getRecord = () => {
+    const rec = this.props.record as BaseEntity;
     if (!rec) {
       alert("this.props.record undefined");
       return {};
@@ -50,7 +50,6 @@ class EditDeleteButton extends BaseComponent<any, any> {
     return req;
   }
   loadRecord = () => {
-
     this.commonAjax(
       this.masterDataService.getOne,
       this.recordLoaded,
@@ -61,7 +60,6 @@ class EditDeleteButton extends BaseComponent<any, any> {
     )
   }
   loadRecordForDetail = () => {
-
     this.commonAjax(
       this.masterDataService.getOne,
       this.recordLoadedForDetail,
@@ -85,7 +83,7 @@ class EditDeleteButton extends BaseComponent<any, any> {
         )
       })
   }
-  hasType = (type: string): boolean => {
+  hasType = (type: string) => {
     if (!this.props.types) return false;
     return (this.props.types as string[]).indexOf(type) >= 0;
   }
@@ -93,18 +91,18 @@ class EditDeleteButton extends BaseComponent<any, any> {
     const types: string[] | undefined = this.props.types ?? undefined;
     return (
       <div className="btn-group">
-        {this.hasType('detail') ?
+        {
+          this.hasType('detail') &&
           <AnchorWithIcon onClick={this.loadRecordForDetail} iconClassName="fas fa-info-circle" className="btn btn-info btn-sm" />
-          :
-          null}
-        {types === undefined || this.hasType('edit') ?
+        }
+        {
+          types === undefined || this.hasType('edit') &&
           <AnchorWithIcon onClick={this.loadRecord} iconClassName="fas fa-edit" className="btn btn-warning btn-sm" />
-          :
-          null}
-        {types === undefined || this.hasType('delete') ?
+        }
+        {
+          types === undefined || this.hasType('delete') &&
           <AnchorWithIcon onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger btn-sm" />
-          :
-          null}
+        }
 
       </div>
     )

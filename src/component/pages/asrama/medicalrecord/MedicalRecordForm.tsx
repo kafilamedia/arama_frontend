@@ -53,9 +53,7 @@ class MedicalRecordForm extends BasePage<any, State> {
     }, 100);
   }
   recordsLoaded = (response: WebResponse) => {
-
-    const mappedItems: Map<number, MedicalRecord> = this.toMap(response.items);
-
+    const mappedItems = this.toMap(response.result.items) as Map<number, MedicalRecord>;
     this.setState({ mappedItems }, () => {
       doItLater(() => {
         this.inputRefs.forEach((ref: any, day: number) => {

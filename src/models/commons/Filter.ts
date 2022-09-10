@@ -1,21 +1,22 @@
 
 import { ChangeEvent } from 'react';
-import { getInputReadableDate } from './../../utils/DateUtil';
+import { getInputReadableDate } from './../../utils/DateUtil'
+;
 export default class Filter {
-  static resetFieldsFilter = (f: Filter): Filter => {
-    for (const key in f.fieldsFilter) {
+  static resetFieldsFilter = (filter: Filter): Filter => {
+    for (const key in filter.fieldsFilter) {
       if (key.endsWith('=d')) {
-        f.fieldsFilter[key] = getInputReadableDate(new Date());
+        filter.fieldsFilter[key] = getInputReadableDate(new Date());
       } else {
-        f.fieldsFilter[key] = '';
+        filter.fieldsFilter[key] = '';
       }
     }
-    return f;
+    return filter;
   }
   static withLimit = (arg0: number): Filter => {
-    const f = new Filter();
-    f.limit = arg0;
-    return f;
+    const filter = new Filter();
+    filter.limit = arg0;
+    return filter;
   }
   limit?: number = 5;
   page?: number = 0;

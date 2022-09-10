@@ -1,27 +1,25 @@
 
 import React, { Component } from 'react';
-export default class Card extends Component<any, any> {
-    constructor(props: any) {
-        super(props)
-    }
+const Card = (props: { attributes?: any, className?: string, title?: string, children?: any, footerContent?: any }) => {
+  return (
+    <div {...props.attributes} className={"card " + props.className}>
+      {
+        props.title &&
+        <div className="card-header">
+          {props.title}
+        </div>
+      }
+      <div className="card-body">
+        {props.children}
+      </div>
+      {
+        props.footerContent != undefined &&
+        <div className="card-footer">
+          {props.footerContent}
+        </div>
+      }
+    </div>
+  )
+};
 
-    render() {
-
-        return (
-            <div {...this.props.attributes} className={"card " + this.props.className}>
-                {this.props.title ? <div className="card-header">
-                    {this.props.title}
-                </div> : null}
-                <div className="card-body">
-                    {this.props.children}
-                </div>
-                {this.props.footerContent != undefined ?
-                    <div className="card-footer">
-                        {this.props.footerContent}
-                    </div>
-                    : null}
-            </div>
-        )
-    }
-
-}
+export default Card;

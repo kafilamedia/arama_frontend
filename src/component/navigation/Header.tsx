@@ -10,12 +10,12 @@ import User from './../../models/User';
 import { performLogout } from './../../redux/actionCreators';
 import BaseComponent from './../BaseComponent';
 import './Header.css';
-class IState {
+class State {
   showNavLinks: boolean = false;
 }
-class Header extends BaseComponent<any, IState> {
-  state: IState = new IState();
-  buttonToggleNavRef: React.RefObject<HTMLButtonElement> = React.createRef();
+class Header extends BaseComponent<any, State> {
+  state = new State();
+  private buttonToggleNavRef: React.RefObject<HTMLButtonElement> = React.createRef();
   constructor(props: any) {
     super(props, false);
   }
@@ -24,8 +24,7 @@ class Header extends BaseComponent<any, IState> {
   }
   onLogout = (e: any) => {
     const app = this;
-    app.showConfirmation("Logout?").then(
-      function (ok) {
+    app.showConfirmation("Logout?").then((ok) => {
         if (ok) {
           app.props.performLogout(app.parentApp);
         }
@@ -37,16 +36,18 @@ class Header extends BaseComponent<any, IState> {
       this.buttonToggleNavRef.current.click();
     }
     this.props.setMenu(menu);
-
   }
   render() {
-    const showNavLinks: boolean = this.state.showNavLinks;
+    const showNavLinks = this.state.showNavLinks;
     const menus = getMenus();
     const user = this.getLoggedUser();
     const profile = this.getApplicationProfile();
     const { appName } = profile;
     return (
-      <div className="bg-dark container-fluid" style={{ position: 'fixed', zIndex: 55, padding: 0, margin: 0 }}>
+      <div
+        className="bg-dark container-fluid"
+        style={{ position: 'fixed', zIndex: 55, padding: 0, margin: 0 }}
+      >
         <NavBarTop profile={profile} />
         <nav id="navbar" className="w-100 navbar navbar-expand-lg navbar-dark bg-dark">
           <a id="navbar-brand" className="navbar-brand" href="#">
@@ -100,7 +101,7 @@ const NavBarTop = (props: { profile: ApplicationProfile }) => {
     </div>
   );
 }
-const UserIcon = (props: { user: User | undefined, setMenuNull(): any, onLogout(e): any }) => {
+const UserIcon = (props: { user?: User, setMenuNull(): any, onLogout(e): any }) => {
   if (props.user) {
     return (
       <Fragment>
@@ -118,7 +119,6 @@ const UserIcon = (props: { user: User | undefined, setMenuNull(): any, onLogout(
       </Fragment>);
   }
   return (
-
     <Link
       onClick={props.setMenuNull}
       className="btn btn-sm btn-info my-2 my-sm-0 mr-2"

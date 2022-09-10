@@ -30,7 +30,7 @@ class StudentForm extends BaseComponent<any, State> {
     this.loadStudent();
   }
   itemsLoaded = (response: WebResponse) => {
-    this.setState({ items: response.items });
+    this.setState({ items: response.result.items });
   }
   loadStudent = () => {
     const request: WebRequest = {
@@ -99,11 +99,10 @@ class StudentForm extends BaseComponent<any, State> {
 }
 
 const ItemDetail = (props: { item: Student }) => {
-
   return (
     <>
       <FormGroup label="Name">{props.item.user?.fullName}</FormGroup>
-      <FormGroup label="Kelas">{Class.studentClassString(props.item)}</FormGroup>
+      <FormGroup label="Kelas">{props.item.classLevel}{props.item.classLetter} {props.item.schoolName}</FormGroup>
 
     </>
   )

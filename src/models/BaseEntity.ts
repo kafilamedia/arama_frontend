@@ -1,6 +1,6 @@
 
-export default class BaseEntity {
+export default abstract class BaseEntity {
 	id?: number;
-	created_at?: string;
-	updated_at?: string;
+	createdAt?: string;
+	updatedAt?: string;
 }

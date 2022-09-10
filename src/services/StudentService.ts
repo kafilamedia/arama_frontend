@@ -65,19 +65,19 @@ export default class StudentService {
     });
   }
   public getFollowUpReminders = (): Promise<WebResponse> => {
-    return commonAjaxPostCalls(contextPath() + 'api/dormitorymanagement/followupreminders', {});
+    return commonAjaxPostCalls(contextPath('api/dormitorymanagement/followupreminders'), {});
   }
   public getRaporData = (classId: string): Promise<WebResponse> => {
-    return commonAjaxGetCalls(contextPath() + `api/asrama/report/load-data/${classId}`);
+    return commonAjaxGetCalls(contextPath(`api/asrama/report/load-data/${classId}`));
   }
   public downloadRaporData = (classId: string): Promise<any> => {
     // return commonAjaxPostCallsWithBlob(endpoint, request);
-    return commonAjaxGetCallsWithBlob(contextPath() + `api/asrama/report/load-data-xls/${classId}`);
+    return commonAjaxGetCallsWithBlob(contextPath(`api/asrama/report/load-data-xls/${classId}`));
   }
 
 
   public submitMedicalRecord = (record: MedicalRecord) => {
-    return commonAjaxPostCalls(contextPath() + 'api/dormitorymanagement/submitmedicalrecord', record)
+    return commonAjaxPostCalls(contextPath('api/dormitorymanagement/submitmedicalrecord'), record)
   }
   public loadMonthlyMedicalRecord = (studentId: number, month: number, year: number) => {
     const req: WebRequest = {
@@ -85,7 +85,7 @@ export default class StudentService {
         fieldsFilter: { student_id: studentId }
       }
     }
-    return commonAjaxPostCalls(contextPath() + 'api/dormitorymanagement/monthlymedicalrecord', req)
+    return commonAjaxPostCalls(contextPath('api/dormitorymanagement/monthlymedicalrecord'), req)
   }
 
   public setPointDropped = (id: number, dropped: boolean) => {

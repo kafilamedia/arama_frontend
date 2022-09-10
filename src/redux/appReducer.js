@@ -2,7 +2,6 @@ import * as types from './types'
 
 export const initState = { 
     mainApp: undefined
-
 };
 
 export const reducer = (state = initState, action) => {

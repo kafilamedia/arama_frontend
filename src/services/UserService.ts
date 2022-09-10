@@ -9,7 +9,7 @@ import { commonAjaxGetCalls, commonAjaxPublicGetCalls } from './Promises';
 @injectable()
 export default class UserService {
   requestApplicationId = (callbackSuccess: (response: WebResponse) => any, callbackError: () => any) => {
-    const url = contextPath() + 'api/public/asrama/config';
+    const url = contextPath('api/public/asrama/config');
     commonAjaxGetCalls(url).then((data) => {
       if (data.code != '00') {
         alert('Error requesting app ID');
@@ -45,7 +45,6 @@ export default class UserService {
       callbackSuccess(data);
     }).catch(e => {
       console.error('ERROR requestApplicationId No Auth: ', e);
-      //   alert('Error, please reload OR try again');
       callbackError();
     });
   }

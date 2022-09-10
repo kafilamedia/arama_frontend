@@ -1,17 +1,10 @@
 
-import School from './School';
-import Student from './Student';
+import BaseEntity from './BaseEntity';
 
-export default class Class {
-    static studentClassString(student: Student| undefined): string {
-        return (student?.kelas?.level??"") +(student?.kelas?.rombel??"") + " " + (student?.kelas?.sekolah?.nama??"");
-    }
-    id?:string;
-    name?:string;
-    level?:string;
-    rombel?:string;
-    sekolah?:School;
+export default class Class extends BaseEntity {
+    name?: string;
+    level?: string;
     //
-    letter?:string;
-    schoolName?:string;
+    letter?: string;
+    schoolName?: string;
 }
