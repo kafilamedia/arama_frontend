@@ -178,7 +178,9 @@ const Detail = (props: { record: PointRecord, back(): any }) => {
         </FormGroup>
       }
       <hr />
-      <FormGroup><a onClick={props.back} className="btn btn-dark">Ok</a></FormGroup>
+      <FormGroup>
+        <a onClick={props.back} className="btn btn-dark">Ok</a>
+      </FormGroup>
     </div>
   )
 }
@@ -188,15 +190,15 @@ const Warning = () => {
     <div className="container-fluid section-body">
       <h2>Form Input Pelanggaran</h2>
       <SimpleError>
-        <i className="fas fa-exclamation-circle mr-2" /><span>Please select student</span><hr />
-        <AnchorWithIcon to={"/asrama/studentlist"} iconClassName="fas fa-list">Student List</AnchorWithIcon>
+        <i className="fas fa-exclamation-circle mr-2" />
+        <span>Please select student</span>
+        <hr />
+        <AnchorWithIcon to="/asrama/studentlist" iconClassName="fas fa-list">
+          Student List
+        </AnchorWithIcon>
       </SimpleError>
     </div>
   )
 }
 
-export default withRouter(
-  connect(
-    mapCommonUserStateToProps
-  )(InputPointForm)
-)
+export default withRouter(connect(mapCommonUserStateToProps)(InputPointForm));

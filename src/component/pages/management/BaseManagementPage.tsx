@@ -20,7 +20,7 @@ export default abstract class BaseManagementPage<P, S> extends BasePage<P, S> {
 
   constructor(props,
               protected modelName: string,
-              protected menu: 'asrama' | 'management' | 'school-data',
+              protected menu: 'asrama' | 'school-data',
               protected overrideLoading: boolean = false) {
     super(props, "Asrama KIIS", true);
     this.modelName = modelName ?? this.modelName;

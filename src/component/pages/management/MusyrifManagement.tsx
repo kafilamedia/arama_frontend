@@ -20,7 +20,7 @@ class State {
 class MusyrifManagement extends BaseManagementPage<any, State> {
   state = new State();
   constructor(props) {
-    super(props, 'employees', 'management');
+    super(props, 'musyrif', 'asrama');
     this.state.filter.limit = 10;
     this.state.filter.orderBy = 'user.fullName';
     this.state.filter.fieldsFilter = {}
