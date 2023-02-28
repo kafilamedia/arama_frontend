@@ -91,7 +91,7 @@ class CategoryPredicateManagement extends BaseManagementPage<any, State> {
         </div>
       )
     }
-    const selectedCategoryId = filter.fieldsFilter && filter.fieldsFilter['category_id'] ? filter.fieldsFilter['category_id'] : "ALL";
+    const selectedCategoryId = filter.fieldsFilter && filter.fieldsFilter['category.id'] ? filter.fieldsFilter['category.id'] : "ALL";
     return (
       <div className="container-fluid section-body">
         <h2>Predikat Rapor</h2>
@@ -110,7 +110,7 @@ class CategoryPredicateManagement extends BaseManagementPage<any, State> {
             <div className="input-group">
               <input name="name" placeholder="nama" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
               <input name="code" placeholder="kode" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['kode'] : ""} onChange={this.updateFieldsFilter} />
-              <select value={selectedCategoryId} className="form-control-sm" name="category_id" onChange={this.updateFieldsFilter} >
+              <select value={selectedCategoryId} className="form-control-sm" name="category.id" onChange={this.updateFieldsFilter} >
                 {[{ id: "", name: "Semua Kategori" }, ...categories].map((c) => {
                   return <option key={"filter-cat-" + c.id} value={c.id}>{c.name}</option>
                 })}
@@ -160,6 +160,7 @@ const ItemsList = (props: { startingNumber: number, items: CategoryPredicate[], 
                   <EditDeleteButton
                     recordLoaded={props.recordLoaded}
                     recordDeleted={props.recordDeleted}
+                    types={['delete', 'edit']}
                     record={item}
                     modelName={MODEL_NAME}
                     menu={MENU}

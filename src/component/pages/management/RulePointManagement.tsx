@@ -92,7 +92,7 @@ class RulePointManagement extends BaseManagementPage<any, State> {
         </div>
       )
     }
-    const selectedCategoryId = filter.fieldsFilter && filter.fieldsFilter['category_id'] ? filter.fieldsFilter['category_id'] : "ALL";
+    const selectedCategoryId = filter.fieldsFilter && filter.fieldsFilter['category.id'] ? filter.fieldsFilter['category.id'] : "ALL";
     return (
       <div className="container-fluid section-body">
         <h2>Poin Pelanggaran</h2>
@@ -102,7 +102,7 @@ class RulePointManagement extends BaseManagementPage<any, State> {
           <FormGroup label="Cari">
             <div className="input-group">
               <input name="name" placeholder="nama" className="form-control-sm" value={filter.fieldsFilter ? filter.fieldsFilter['name'] : ""} onChange={this.updateFieldsFilter} />
-              <select value={selectedCategoryId} className="form-control-sm" name="category_id" onChange={this.updateFieldsFilter} >
+              <select value={selectedCategoryId} className="form-control-sm" name="category.id" onChange={this.updateFieldsFilter} >
                 {[{ id: "", name: "Semua Kategori" }, ...categories].map((c) => {
                   return <option key={"filter-cat-" + c.id} value={c.id}>{c.name}</option>
                 })}
@@ -150,6 +150,7 @@ const ItemsList = (props: { startingNumber: number, items: RulePoint[], recordLo
                   <EditDeleteButton
                     recordLoaded={props.recordLoaded}
                     recordDeleted={props.recordDeleted}
+                    types={['delete', 'edit']}
                     record={item}
                     modelName={MODEL_NAME}
                     menu={MENU}

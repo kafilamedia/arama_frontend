@@ -119,6 +119,7 @@ const ItemsList = (props: ItemProps) => {
                   <EditDeleteButton
                     recordLoaded={props.recordLoaded}
                     recordDeleted={props.recordDeleted}
+                    types={['delete', 'edit']}
                     record={item}
                     menu={MENU}
                     modelName={MODEL_NAME} />
